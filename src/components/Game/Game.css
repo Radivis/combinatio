@@ -1,0 +1,18 @@
+.game {
+    display: flex;
+    flex-direction: row;
+    width: 480px;
+    margin: 0 auto;
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+}
+
+.sidePanel {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+}

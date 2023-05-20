@@ -1,0 +1,9 @@
+.colorPin {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+    margin: 5px;
+}

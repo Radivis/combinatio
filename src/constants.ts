@@ -3,3 +3,4 @@ export const defaultNumRows = 8;
 export const defaultNumColors = 6;
 export const defaultBaseSaturation = 75;
 export const defaultBaseLightness = 50;
+export const gameStates = ['running', 'won', 'lost', 'initalizing'];

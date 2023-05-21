@@ -1,22 +1,40 @@
-import { Dispatch, SetStateAction, useState, useReducer } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 import Color from "../../util/Color";
 import ColorRow from "../ColorRow/ColorRow";
 import InfoPins from "../InfoPins/InfoPins";
 
 import './GameRow.css';
+import { gameStates, numPinsPerRow } from "../../constants";
 
 interface gameRowProps {
     rowKey: number;
+    numRows: number;
     baseColors: Color[];
     solutionColors: Color[];
     initialColors: Color[];
     activeRowIndex: number;
     setActiveRowIndex: Dispatch<SetStateAction<number>>;
+    gameState: string;
+    setGameState: Dispatch<SetStateAction<string>>;
+    shouldClearBoard: boolean;
+    setShouldClearBoard: Dispatch<SetStateAction<boolean>>;
 }
 
 const GameRow = (props: gameRowProps) => {
-    const { rowKey, baseColors, initialColors, solutionColors, activeRowIndex, setActiveRowIndex } = props;
+    const {
+        rowKey,
+        numRows,
+        baseColors,
+        initialColors,
+        solutionColors,
+        activeRowIndex,
+        setActiveRowIndex,
+        gameState,
+        setGameState,
+        shouldClearBoard,
+        setShouldClearBoard
+    } = props;
 
     // console.log(`GameRow ${rowKey} initialColors: `, initialColors);
 
@@ -30,9 +48,17 @@ const GameRow = (props: gameRowProps) => {
 
     // console.log(`GameRow ${rowKey} colors: `, colors);
 
-    const onSumbitRow = () => {
-        console.log('colors', colors);
+    const revealSolution = () => {
+        console.log('revealSolution called');
         console.log('solutionColors', solutionColors);
+        console.log('[...solutionColors].map(color => color.clone())', [...solutionColors].map(color => color.clone()));
+        /*if (rowKey === 0) */ setColors(() => [...solutionColors].map(color => color.clone()));
+        console.log('colors', colors);
+    }
+
+    const onSumbitRow = () => {
+        // Disable board clearing
+        setShouldClearBoard(false);
 
         // Compute number of fully correct pins
         let _numFullyCorrect = 0;
@@ -65,8 +91,28 @@ const GameRow = (props: gameRowProps) => {
 
         setNumCorrectColor(_numCorrectColor);
         
+
+
         setActiveRowIndex(activeRowIndex+1);
+
+        // Check for victory condition
+        if (_numFullyCorrect === numPinsPerRow) {
+            setGameState(gameStates[1]);
+            revealSolution();
+            return;
+        }
+
+        // Check for running out of rows -> loss
+        if (activeRowIndex === numRows) {
+            setGameState(gameStates[2]);
+            revealSolution();
+            return;
+        }
     }
+
+    useEffect(() => {
+        if (shouldClearBoard) setColors([...initialColors]);
+    }, [shouldClearBoard, initialColors]);
 
     return <div className="game-row">
         {rowKey}
@@ -83,6 +129,7 @@ const GameRow = (props: gameRowProps) => {
             isActiveRow = {activeRowIndex === rowKey}
             numCorrectColor = {numCorrectColor}
             numFullyCorrect = {numFullyCorrect}
+            shouldClearBoard = {shouldClearBoard}
         />
     </div>
 }

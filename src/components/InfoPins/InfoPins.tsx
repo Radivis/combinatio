@@ -10,16 +10,17 @@ interface infoPinsProps {
     isActiveRow: boolean;
     numCorrectColor: number;
     numFullyCorrect: number;
+    shouldClearBoard: boolean;
 };
 
 const InfoPins = (props: infoPinsProps) => {
-    const { rowKey, onSubmitRow, isActiveRow, numCorrectColor, numFullyCorrect } = props;
+    const { rowKey, onSubmitRow, isActiveRow, numCorrectColor, numFullyCorrect, shouldClearBoard } = props;
 
     const pinClasses: string[] = new Array(numPinsPerRow).fill('info-pin');
 
     pinClasses.forEach((_pinClass: string, index: number) => {
-        if (numFullyCorrect > index) pinClasses[index] += ' black';
-        else if (numCorrectColor > index) pinClasses[index] += ' white';
+        if (numFullyCorrect > index && shouldClearBoard === false) pinClasses[index] += ' black';
+        else if (numCorrectColor > index && shouldClearBoard === false) pinClasses[index] += ' white';
         else pinClasses[index] += ' grey';
     });
 

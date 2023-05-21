@@ -9,10 +9,12 @@
     display: flex;
     flex-direction: column;
     width: 240px;
+    margin: 10px;
 }
 
 .sidePanel {
     display: flex;
     flex-direction: column;
     width: 240px;
+    margin: 10px;
 }

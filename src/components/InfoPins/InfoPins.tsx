@@ -35,8 +35,8 @@ const InfoPins = (props: infoPinsProps) => {
                     <div key={rowKey} className="info-pins">
                         <div key={`${rowKey}: 3`} className={pinClasses[3]}></div>
                         <div key={`${rowKey}: 2`} className={pinClasses[2]}></div>
-                        <div key={`${rowKey}: 1`} className={pinClasses[1]}></div>
                         <div key={`${rowKey}: 0`} className={pinClasses[0]}></div>
+                        <div key={`${rowKey}: 1`} className={pinClasses[1]}></div>
                     </div>
                 )
             }

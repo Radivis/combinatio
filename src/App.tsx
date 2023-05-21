@@ -26,7 +26,6 @@ const App = () => {
 				<nav>
 					<button onClick={() => {setActivePage('settings')}}>Settings</button>
 					<button onClick={() => {setActivePage('game')}}>Game</button>
-					<button>Start New Game</button>
 				</nav>
 	  		</header>
 			<main>

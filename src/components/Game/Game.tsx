@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { numPinsPerRow } from "../../constants";
 
 import GameRow from "../GameRow/GameRow";
@@ -16,17 +16,24 @@ interface gameProps {
 
 const Game = (props: gameProps) => {
     const { numRows, baseColors } = props;
-    const rowKeys = [...Array(numRows).keys()].map(i => i+1);
-
-    const solutionColors = range(numPinsPerRow).map(i => {
-        return baseColors[~~(Math.random()*baseColors.length -1)];
-    })
-
-    console.log(solutionColors);
 
     const defaultStartColorArray = range(numPinsPerRow).map(i => {
         return Color.makeHsl(0, 0, 0);
     })
+
+    const [activeRowIndex, setActiveRowIndex] = useState(1);
+    const [solutionColors, setSolutionColors] = useState(defaultStartColorArray);
+
+    const rowKeys = range(numRows+1, 1);
+
+    useEffect(() => {
+        const _solutionColors = range(numPinsPerRow).map(i => {
+            return baseColors[~~(Math.random()*baseColors.length -1)];
+        });
+        setSolutionColors(_solutionColors);
+    }, [baseColors]);
+
+    console.log('Game.tsx solution colors: ', solutionColors);
 
     return <div>
         This is the game
@@ -35,14 +42,20 @@ const Game = (props: gameProps) => {
                 <GameRow
                     key={0}
                     rowKey={0}
-                    colors={solutionColors}
+                    baseColors={baseColors}
+                    initialColors={solutionColors}
                     solutionColors={solutionColors}
+                    activeRowIndex = {activeRowIndex}
+                    setActiveRowIndex = {setActiveRowIndex}
                 />
                 {rowKeys.reverse().map(rowKey => <GameRow
                     key={rowKey}
                     rowKey={rowKey}
-                    colors={defaultStartColorArray}
+                    baseColors={baseColors}
+                    initialColors={defaultStartColorArray}
                     solutionColors={solutionColors}
+                    activeRowIndex = {activeRowIndex}
+                    setActiveRowIndex={setActiveRowIndex}
                 />)}
             </div>
             <div className="side-panel">

@@ -28,6 +28,16 @@ class Color {
     get hsl() {
         return `hsl(${this._hue},${this._saturation}%,${this._lightness}%)`;
     }
+
+    public equals(otherColor: Color): boolean {
+        return this.hue === otherColor.hue &&
+        this.saturation === otherColor.saturation &&
+        this.lightness === otherColor.lightness;
+    }
+
+    public hasSameHue(otherColor: Color): boolean {
+        return this.hue === otherColor.hue;
+    }
 }
 
 export default Color;

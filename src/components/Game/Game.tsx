@@ -22,10 +22,11 @@ const Game = (props: gameProps) => {
     })
 
     const [activeRowIndex, setActiveRowIndex] = useState(1);
-    const [solutionColors, setSolutionColors] = useState(defaultStartColorArray);
+    const [solutionColors, setSolutionColors] = useState([...defaultStartColorArray]);
 
     const rowKeys = range(numRows+1, 1);
 
+    // Generate the solutionColors in a useEffect, so that they don't change after each re-render!
     useEffect(() => {
         const _solutionColors = range(numPinsPerRow).map(i => {
             return baseColors[~~(Math.random()*baseColors.length -1)];
@@ -43,7 +44,7 @@ const Game = (props: gameProps) => {
                     key={0}
                     rowKey={0}
                     baseColors={baseColors}
-                    initialColors={solutionColors}
+                    initialColors={defaultStartColorArray}
                     solutionColors={solutionColors}
                     activeRowIndex = {activeRowIndex}
                     setActiveRowIndex = {setActiveRowIndex}

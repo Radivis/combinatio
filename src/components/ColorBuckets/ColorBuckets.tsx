@@ -12,7 +12,7 @@ const ColorBuckets = (props: colorBucketsProps) => {
     return <div className="color-buckets">
         {baseColors.map((color: Color, index: number) => {
             return (
-                <Drag dragPayloadObject={{
+                <Drag key={index} dragPayloadObject={{
                     hue: color.hue,
                     saturation: color.saturation,
                     lightness: color.lightness

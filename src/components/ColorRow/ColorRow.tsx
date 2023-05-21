@@ -9,6 +9,7 @@ import { hslColorObject } from "../../interfaces";
 import './ColorRow.css';
 
 interface colorRowProps {
+    rowKey: number;
     initialColors: Color[];
     isActiveRow: boolean;
     colors: Color[];
@@ -16,7 +17,7 @@ interface colorRowProps {
 }
 
 const ColorRow = (props: colorRowProps) => {
-    const { initialColors, isActiveRow, colors, setColors } = props;
+    const { rowKey, initialColors, isActiveRow, colors, setColors } = props;
 
     const onColorDropped = (colorObject: hslColorObject, index: number) => {
         const newColors = [...colors];
@@ -26,9 +27,9 @@ const ColorRow = (props: colorRowProps) => {
 
     return <div className='colorRow'>
         {[...Array(numPinsPerRow).keys()].map((i: number) =>
-        { return <DropTarget onItemDropped={(color: Color) => {if (isActiveRow) onColorDropped(color, i)}}>
+        { return <DropTarget key = {`${rowKey}: ${i}`} onItemDropped={(color: Color) => {if (isActiveRow) onColorDropped(color, i)}}>
             <ColorPin
-                key = {i}
+                key = {`${rowKey}: ${i}`}
                 color = {colors[i]}
             />
             </DropTarget>

@@ -29,6 +29,10 @@ class Color {
         return `hsl(${this._hue},${this._saturation}%,${this._lightness}%)`;
     }
 
+    public clone = (): Color => {
+        return new Color(this.hue, this.saturation, this.lightness);
+    }
+
     public equals(otherColor: Color): boolean {
         return this.hue === otherColor.hue &&
         this.saturation === otherColor.saturation &&

@@ -18,7 +18,7 @@ const Game = (props: gameProps) => {
     const { numRows, baseColors } = props;
 
     const defaultStartColorArray = range(numPinsPerRow).map(i => {
-        return Color.makeHsl(1, 0, 0);
+        return Color.makeHsl(30, 25, 25);
     })
 
     

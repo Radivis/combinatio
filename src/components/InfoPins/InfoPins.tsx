@@ -18,9 +18,11 @@ const InfoPins = (props: infoPinsProps) => {
 
     const pinClasses: string[] = new Array(numPinsPerRow).fill('info-pin');
 
+    const numWhite = numCorrectColor - numFullyCorrect;
+
     pinClasses.forEach((_pinClass: string, index: number) => {
-        if (numFullyCorrect > index && shouldClearBoard === false) pinClasses[index] += ' black';
-        else if (numCorrectColor > index && shouldClearBoard === false) pinClasses[index] += ' white';
+        if (numWhite > index && shouldClearBoard === false) pinClasses[index] += ' white';
+        else if (numCorrectColor > index && shouldClearBoard === false) pinClasses[index] += ' black';
         else pinClasses[index] += ' grey';
     });
 

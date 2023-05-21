@@ -1,5 +1,14 @@
+body {
+  background-color: burlywood;
+}
+
+button {
+  background-color: hsl(30, 20%, 75%);
+}
+
 .App {
   text-align: center;
+  background-color: burlywood;
 }
 
 .App-logo {

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { numPinsPerRow, gameStates } from "../../constants";
 
 import GameRow from "../GameRow/GameRow";
+import SolutionRow from "../SolutionRow/SolutionRow";
 import Color from "../../util/Color";
 import ColorBuckets from "../ColorBuckets/ColorBuckets";
 import { range } from "../../util/range";
@@ -59,19 +60,10 @@ const Game = (props: gameProps) => {
         </button>
         <div className="game">
             <div className="board">
-                <GameRow
-                    key={0}
-                    rowKey={0}
-                    numRows={numRows}
-                    baseColors={baseColors}
+                <SolutionRow
                     initialColors={defaultStartColorArray}
                     solutionColors={solutionColors}
-                    activeRowIndex = {activeRowIndex}
-                    setActiveRowIndex = {setActiveRowIndex}
                     gameState = {gameState}
-                    setGameState = {setGameState}
-                    shouldClearBoard = {shouldClearBoard}
-                    setShouldClearBoard = {setShouldClearBoard}
                 />
                 {rowKeys.reverse().map(rowKey => <GameRow
                     key={rowKey}

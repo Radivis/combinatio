@@ -36,25 +36,11 @@ const GameRow = (props: gameRowProps) => {
         setShouldClearBoard
     } = props;
 
-    // console.log(`GameRow ${rowKey} initialColors: `, initialColors);
-
     const copyOfInitialColors = [...initialColors].map(color => color.clone());
-
-    // console.log(`GameRow ${rowKey} copy of initialColors: `, copyOfInitialColors);
 
     const [ numCorrectColor, setNumCorrectColor ] = useState(0);
     const [ numFullyCorrect, setNumFullyCorrect ] = useState(0);
     const [ colors, setColors ] = useState([...copyOfInitialColors]);
-
-    // console.log(`GameRow ${rowKey} colors: `, colors);
-
-    const revealSolution = () => {
-        console.log('revealSolution called');
-        console.log('solutionColors', solutionColors);
-        console.log('[...solutionColors].map(color => color.clone())', [...solutionColors].map(color => color.clone()));
-        /*if (rowKey === 0) */ setColors(() => [...solutionColors].map(color => color.clone()));
-        console.log('colors', colors);
-    }
 
     const onSumbitRow = () => {
         // Disable board clearing
@@ -98,14 +84,12 @@ const GameRow = (props: gameRowProps) => {
         // Check for victory condition
         if (_numFullyCorrect === numPinsPerRow) {
             setGameState(gameStates[1]);
-            revealSolution();
             return;
         }
 
         // Check for running out of rows -> loss
         if (activeRowIndex === numRows) {
             setGameState(gameStates[2]);
-            revealSolution();
             return;
         }
     }

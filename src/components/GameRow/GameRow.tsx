@@ -93,7 +93,11 @@ const GameRow = (props: gameRowProps) => {
     }
 
     useEffect(() => {
-        if (shouldClearBoard) setColors([...initialColors]);
+        if (shouldClearBoard) {
+            setColors([...initialColors]);
+            setNumCorrectColor(0);
+            setNumFullyCorrect(0);
+        }
     }, [shouldClearBoard, initialColors]);
 
     return <div className="game-row">

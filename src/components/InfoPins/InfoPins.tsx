@@ -1,5 +1,6 @@
 import { numPinsPerRow } from '../../constants';
 import { range } from '../../util/range';
+import Color from '../../util/Color';
 
 import './InfoPins.css';
 
@@ -23,7 +24,7 @@ const InfoPins = (props: infoPinsProps) => {
     pinClasses.forEach((_pinClass: string, index: number) => {
         if (numWhite > index && shouldClearBoard === false) pinClasses[index] += ' white';
         else if (numCorrectColor > index && shouldClearBoard === false) pinClasses[index] += ' black';
-        else pinClasses[index] += ' grey';
+        else pinClasses[index] += ' hole';
     });
 
     return (

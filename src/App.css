@@ -3,12 +3,15 @@ body {
 }
 
 button {
-  background-color: hsl(30, 20%, 75%);
+  background-color: hsl(34, 40%, 75%);
+  border-radius: 50%;
+  border:hsl(30, 20%, 50%) 2px solid;
+  margin: 0px;
 }
 
 .App {
   text-align: center;
-  background-color: burlywood;
+  background-color: hsl(34, 57%, 70%);
 }
 
 .App-logo {

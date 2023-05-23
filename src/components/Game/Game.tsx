@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { numPinsPerRow, gameStates } from "../../constants";
+import { numPinsPerRow, gameStates, holeHue, holeLightness, holeSaturation } from "../../constants";
 
 import GameRow from "../GameRow/GameRow";
 import SolutionRow from "../SolutionRow/SolutionRow";
@@ -15,11 +15,15 @@ interface gameProps {
     baseColors: Color[];
 }
 
+// Idea: Game mode where a number of rows is automatically filled and evaluated
+
 const Game = (props: gameProps) => {
     const { numRows, baseColors } = props;
 
+    const holeColor = Color.makeHsl(holeHue, holeSaturation, holeLightness);
+
     const defaultStartColorArray = range(numPinsPerRow).map(i => {
-        return Color.makeHsl(30, 25, 25);
+        return holeColor;
     })
 
     

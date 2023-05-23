@@ -77,8 +77,6 @@ const GameRow = (props: gameRowProps) => {
 
         setNumCorrectColor(_numCorrectColor);
         
-
-
         setActiveRowIndex(activeRowIndex+1);
 
         // Check for victory condition
@@ -111,8 +109,8 @@ const GameRow = (props: gameRowProps) => {
             rowKey = {rowKey}
             onSubmitRow={onSumbitRow}
             isActiveRow = {activeRowIndex === rowKey}
-            numCorrectColor = {numCorrectColor}
-            numFullyCorrect = {numFullyCorrect}
+            numCorrectColor = {shouldClearBoard === false ? numCorrectColor : 0}
+            numFullyCorrect = {shouldClearBoard === false ? numFullyCorrect : 0}
             shouldClearBoard = {shouldClearBoard}
         />
     </div>

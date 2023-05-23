@@ -21,8 +21,8 @@
     width: 36px;
 }
 
-.grey {
-    background-color: grey;
+.hole {
+    background-color: hsl(34, 57%, 50%);
 }
 
 .black {

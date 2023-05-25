@@ -15,6 +15,14 @@ class Colors extends Array<Color> {
     public readonly clone = () => {
         return new Colors(this as Array<Color>);
     }
+
+    public readonly serialize = () => {
+        return JSON.stringify((this as Array<Color>).map((color) => color.serialize()));
+    }
+
+    public static deserialize = (colorsString: string): Colors => {
+        return new Colors(JSON.parse(colorsString).map((colorString: string) => Color.deserialize(colorString)));
+    }
 }
 
 export default Colors;

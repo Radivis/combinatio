@@ -42,6 +42,22 @@ class Color {
     public hasSameHue(otherColor: Color): boolean {
         return this.hue === otherColor.hue;
     }
+
+    public serialize(): string {
+        return `hsl(${this._hue},${this._saturation}%,${this._lightness}%)`;
+    }
+
+    public static deserialize(colorString: string): Color {
+        // unpack hue, saturation, and lightness from colorString
+        const coreString = colorString.substring(colorString.indexOf('(')+1, colorString.indexOf(')'));
+        // remove the % signs and get the correct values
+        const [hue, saturation, lightness] = coreString
+            .replace('%','')
+            .split(',')
+            .map(value => +value);
+
+        return this.makeHsl(hue, saturation, lightness);
+    }
 }
 
 export default Color;

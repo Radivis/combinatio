@@ -1,6 +1,4 @@
 import { numPinsPerRow } from '../../constants';
-import { range } from '../../util/range';
-import Color from '../../util/Color';
 
 import './InfoPins.css';
 

@@ -26,7 +26,6 @@ const Game = (props: gameProps) => {
         return holeColor;
     })
 
-    
     const [activeRowIndex, setActiveRowIndex] = useState(1);
     const [solutionColors, setSolutionColors] = useState([...defaultStartColorArray]);
     const [gameState, setGameState] = useState(gameStates[0]);

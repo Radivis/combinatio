@@ -21,10 +21,6 @@ const App = () => {
 	let [activePage, setActivePage] = useState('game');
 	let [settings, setSettings] = useState(initialSettings);
 
-	const baseColors = [...Array(settings.numColors).keys()].map(i => {
-		return Color.makeHsl(i * 360/settings.numColors, defaultBaseSaturation, defaultBaseLightness);
-	})
-
  	return (
 		<div className="App">
 	  		<header className="App-header">
@@ -35,16 +31,17 @@ const App = () => {
 				</nav>
 	  		</header>
 			<main>
-				{activePage === 'settings' ? <Settings
-					currentSettings={settings}
-					setSettings={setSettings}
-					setActivePage={setActivePage}
+				{activePage === 'settings' ?
+					<Settings
+						currentSettings={settings}
+						setSettings={setSettings}
+						setActivePage={setActivePage}
 					/>
 				:
-				<Game
-					numColors={settings.numColors}
-					numRows={settings.numRows}
-					baseColors={baseColors}
+					<Game
+						numColors={settings.numColors}
+						numRows={settings.numRows}
+						baseColors={settings.palette}
 					/>
 				}
 			</main>

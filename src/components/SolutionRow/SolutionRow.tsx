@@ -22,17 +22,12 @@ const SolutionRow = (props: solutionRowProps) => {
    
     const [ colors, setColors ] = useState([...copyOfInitialColors]);
 
-    useEffect(() => {
-        if (gameStates.slice(1,3).includes(gameState)) setColors([...solutionColors]);
-        else setColors([...copyOfInitialColors]);
-    }, [initialColors, gameState, copyOfInitialColors, solutionColors]);
-
     return <div className="game-row">
         <ColorRow
             rowKey = {0}
             initialColors = {colors}
             isActiveRow = {false}
-            colors = {colors}
+            colors = {gameStates.slice(1,3).includes(gameState) ? solutionColors : colors}
             setColors = {setColors}
         />
     </div>

@@ -52,7 +52,7 @@ class Color {
         const coreString = colorString.substring(colorString.indexOf('(')+1, colorString.indexOf(')'));
         // remove the % signs and get the correct values
         const [hue, saturation, lightness] = coreString
-            .replace('%','')
+            .replaceAll('%','')
             .split(',')
             .map(value => +value);
 

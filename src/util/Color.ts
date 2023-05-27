@@ -1,4 +1,4 @@
-import { hslColorObject } from "../interfaces";
+import { hslColorObject } from "../interfaces/interfaces";
 
 
 class Color {
@@ -29,7 +29,7 @@ class Color {
         return `hsl(${this._hue},${this._saturation}%,${this._lightness}%)`;
     }
 
-    public clone = (): Color => {
+    public copy = (): Color => {
         return new Color(this.hue, this.saturation, this.lightness);
     }
 

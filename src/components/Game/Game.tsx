@@ -4,21 +4,25 @@ import { numPinsPerRow, gameStates, holeHue, holeLightness, holeSaturation } fro
 import GameRow from "../GameRow/GameRow";
 import SolutionRow from "../SolutionRow/SolutionRow";
 import Color from "../../util/Color";
+import Colors from "../../util/Colors";
 import ColorBuckets from "../ColorBuckets/ColorBuckets";
 import { range } from "../../util/range";
 
 import './Game.css';
+import { colorsDataString } from "../../interfaces/types";
 
 interface gameProps {
     numColors: number;
     numRows: number;
-    baseColors: Color[];
+    baseColorsDataString: colorsDataString;
 }
 
 // Idea: Game mode where a number of rows is automatically filled and evaluated
 
 const Game = (props: gameProps) => {
-    const { numRows, baseColors } = props;
+    const { numRows, baseColorsDataString } = props;
+
+    const baseColors: Colors = Colors.deserialize(baseColorsDataString);
 
     const holeColor = Color.makeHsl(holeHue, holeSaturation, holeLightness);
 
@@ -31,10 +35,10 @@ const Game = (props: gameProps) => {
     const [gameState, setGameState] = useState(gameStates[0]);
     const [shouldClearBoard, setShouldClearBoard] = useState(false);
     
-    const generateSolutionColors = useCallback((): Color[] => {
-        return range(numPinsPerRow).map(i => {
+    const generateSolutionColors = useCallback((): Colors => {
+        return new Colors(range(numPinsPerRow).map(i => {
             return baseColors[~~(Math.random()*baseColors.length -1)];
-        });
+        }));
     }, [baseColors])
     
     const rowKeys = range(numRows+1, 1);

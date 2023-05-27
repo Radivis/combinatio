@@ -4,7 +4,7 @@ import ColorPin from "../ColorPin/ColorPin";
 import Color from "../../util/Color";
 import DropTarget from "../DropTarget/DropTarget";
 import { numPinsPerRow } from "../../constants";
-import { hslColorObject } from "../../interfaces";
+import { hslColorObject } from "../../interfaces/interfaces";
 
 import './ColorRow.css';
 

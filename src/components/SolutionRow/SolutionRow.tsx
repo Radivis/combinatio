@@ -18,7 +18,7 @@ const SolutionRow = (props: solutionRowProps) => {
         solutionColors,
         gameState,
     } = props;
-    const copyOfInitialColors = [...initialColors].map(color => color.clone());
+    const copyOfInitialColors = [...initialColors].map(color => color.copy());
    
     const [ colors, setColors ] = useState([...copyOfInitialColors]);
 

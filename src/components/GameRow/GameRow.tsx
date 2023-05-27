@@ -36,7 +36,7 @@ const GameRow = (props: gameRowProps) => {
         setShouldClearBoard
     } = props;
 
-    const copyOfInitialColors = [...initialColors].map(color => color.clone());
+    const copyOfInitialColors = [...initialColors].map(color => color.copy());
 
     const [ numCorrectColor, setNumCorrectColor ] = useState(0);
     const [ numFullyCorrect, setNumFullyCorrect ] = useState(0);

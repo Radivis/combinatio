@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 import { defaultBaseLightness, defaultBaseSaturation } from "../../constants";
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
-import { settings } from "../../interfaces";
+import { settings } from "../../interfaces/interfaces";
 
 
 interface settingsProps {
@@ -48,7 +48,7 @@ const Settings = (props: settingsProps) => {
     }
 
     const onChangePalette = (ev: any) => {
-        setPalette(() => Colors.deserialize(ev.target.value))
+        setPalette(ev.target.value);
     }
 
     const onSubmit = () => {
@@ -65,7 +65,12 @@ const Settings = (props: settingsProps) => {
         <label htmlFor="rumRows">Number of rows: </label><input name='numRows' value={numRows} onChange={onChangeNumRows} />
         <label htmlFor="rumColors">Number of colors: </label><input name='numColors' value={numColors} onChange={onChangeNumColors}/>
         <select onChange={onChangePalette}>
-            {palettes.map((palette: Colors, index: number) => <option value={palette.serialize()}>{paletteLabels[index]}</option>)}
+            {palettes.map((palette: Colors, index: number) => <option
+                key={index}
+                value={Colors.serialize(palette)}>
+                    {paletteLabels[index]}
+                </option>
+            )}
         </select>
         <button type="button" onClick={onSubmit}>Save settings and start new game</button>
     </form>

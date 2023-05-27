@@ -10,14 +10,13 @@ import './ColorRow.css';
 
 interface colorRowProps {
     rowKey: number;
-    initialColors: Color[];
     isActiveRow: boolean;
     colors: Color[];
     setColors: Function;
 }
 
 const ColorRow = (props: colorRowProps) => {
-    const { rowKey, initialColors, isActiveRow, colors, setColors } = props;
+    const { rowKey, isActiveRow, colors, setColors } = props;
 
     const onColorDropped = (colorObject: hslColorObject, index: number) => {
         const newColors = [...colors];

@@ -1,16 +1,18 @@
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 import Color from "../../util/Color";
+import Colors from "../../util/Colors";
 import ColorRow from "../ColorRow/ColorRow";
 import InfoPins from "../InfoPins/InfoPins";
 
 import './GameRow.css';
 import { gameStates, numPinsPerRow } from "../../constants";
+import { colorsDataString } from "../../interfaces/types";
 
 interface gameRowProps {
     rowKey: number;
     numRows: number;
-    baseColors: Color[];
+    baseColorsDataString: colorsDataString;
     solutionColors: Color[];
     initialColors: Color[];
     activeRowIndex: number;
@@ -25,7 +27,7 @@ const GameRow = (props: gameRowProps) => {
     const {
         rowKey,
         numRows,
-        baseColors,
+        baseColorsDataString,
         initialColors,
         solutionColors,
         activeRowIndex,
@@ -35,6 +37,8 @@ const GameRow = (props: gameRowProps) => {
         shouldClearBoard,
         setShouldClearBoard
     } = props;
+
+    const baseColors: Colors = Colors.deserialize(baseColorsDataString);
 
     const copyOfInitialColors = [...initialColors].map(color => color.copy());
 
@@ -104,7 +108,6 @@ const GameRow = (props: gameRowProps) => {
         {rowKey}
         <ColorRow
             rowKey = {rowKey}
-            initialColors = {colors}
             isActiveRow = {activeRowIndex === rowKey}
             colors = { colors }
             setColors = {setColors}

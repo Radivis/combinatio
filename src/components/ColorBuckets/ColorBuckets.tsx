@@ -1,13 +1,17 @@
+import { colorsDataString } from "../../interfaces/types";
 import Color from "../../util/Color";
+import Colors from "../../util/Colors";
 import ColorPin from "../ColorPin/ColorPin";
 import Drag from "../Drag/Drag";
 
 interface colorBucketsProps {
-    baseColors: Color[];
+    baseColorsDataString: colorsDataString;
 }
 
 const ColorBuckets = (props: colorBucketsProps) => {
-    const { baseColors } = props;
+    const { baseColorsDataString } = props;
+
+    const baseColors = Colors.deserialize(baseColorsDataString);
 
     return <div className="color-buckets">
         {baseColors.map((color: Color, index: number) => {

@@ -22,24 +22,25 @@ interface gameProps {
 const Game = (props: gameProps) => {
     const { numRows, baseColorsDataString } = props;
 
-    const baseColors: Colors = Colors.deserialize(baseColorsDataString);
+    console.log('baseColorsDataString', baseColorsDataString);
 
     const holeColor = Color.makeHsl(holeHue, holeSaturation, holeLightness);
 
-    const defaultStartColorArray = range(numPinsPerRow).map(i => {
+    const defaultStartColorArray: Color[] = range(numPinsPerRow).map(i => {
         return holeColor;
     })
 
-    const [activeRowIndex, setActiveRowIndex] = useState(1);
+    const [activeRowIndex, setActiveRowIndex] = useState<number>(1);
     const [solutionColors, setSolutionColors] = useState([...defaultStartColorArray]);
     const [gameState, setGameState] = useState(gameStates[0]);
     const [shouldClearBoard, setShouldClearBoard] = useState(false);
     
     const generateSolutionColors = useCallback((): Colors => {
+        const baseColors: Colors = Colors.deserialize(baseColorsDataString);
         return new Colors(range(numPinsPerRow).map(i => {
             return baseColors[~~(Math.random()*baseColors.length -1)];
         }));
-    }, [baseColors])
+    }, [baseColorsDataString])
     
     const rowKeys = range(numRows+1, 1);
 
@@ -54,7 +55,7 @@ const Game = (props: gameProps) => {
     useEffect(() => {
         const _solutionColors = generateSolutionColors();
         setSolutionColors(_solutionColors);
-    }, [baseColors, generateSolutionColors]);
+    }, [baseColorsDataString, generateSolutionColors]);
 
     console.log('Game.tsx solution colors: ', solutionColors);
 
@@ -76,7 +77,7 @@ const Game = (props: gameProps) => {
                     key={rowKey}
                     rowKey={rowKey}
                     numRows={numRows}
-                    baseColors={baseColors}
+                    baseColorsDataString={baseColorsDataString}
                     initialColors={defaultStartColorArray}
                     solutionColors={solutionColors}
                     activeRowIndex = {activeRowIndex}
@@ -92,7 +93,7 @@ const Game = (props: gameProps) => {
                     Timer
                 </div>
                 <div>
-                    <ColorBuckets baseColors={baseColors} />
+                    <ColorBuckets baseColorsDataString={baseColorsDataString} />
                 </div>
             </div>
 

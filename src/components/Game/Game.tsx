@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { numPinsPerRow, gameStates, holeHue, holeLightness, holeSaturation } from "../../constants";
 
 import GameRow from "../GameRow/GameRow";
@@ -6,6 +6,7 @@ import SolutionRow from "../SolutionRow/SolutionRow";
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
 import ColorBuckets from "../ColorBuckets/ColorBuckets";
+import Timer from "../Timer/Timer";
 import { range } from "../../util/range";
 
 import './Game.css';
@@ -17,12 +18,8 @@ interface gameProps {
     baseColorsDataString: colorsDataString;
 }
 
-// Idea: Game mode where a number of rows is automatically filled and evaluated
-
 const Game = (props: gameProps) => {
     const { numRows, baseColorsDataString } = props;
-
-    console.log('baseColorsDataString', baseColorsDataString);
 
     const holeColor = Color.makeHsl(holeHue, holeSaturation, holeLightness);
 
@@ -34,6 +31,7 @@ const Game = (props: gameProps) => {
     const [solutionColors, setSolutionColors] = useState([...defaultStartColorArray]);
     const [gameState, setGameState] = useState(gameStates[0]);
     const [shouldClearBoard, setShouldClearBoard] = useState(false);
+    const [timerSeconds, setTimerSeconds] = useState(0);
     
     const generateSolutionColors = useCallback((): Colors => {
         const baseColors: Colors = Colors.deserialize(baseColorsDataString);
@@ -49,6 +47,7 @@ const Game = (props: gameProps) => {
         setSolutionColors(generateSolutionColors());
         setActiveRowIndex(1);
         setShouldClearBoard(true);
+        setTimerSeconds(0);
     };
 
     // Generate the solutionColors in a useEffect, so that they don't change after each re-render!
@@ -56,6 +55,17 @@ const Game = (props: gameProps) => {
         const _solutionColors = generateSolutionColors();
         setSolutionColors(_solutionColors);
     }, [baseColorsDataString, generateSolutionColors]);
+
+    useEffect(() => {
+        // Start game timer
+        const timer = setInterval(() => {
+            setTimerSeconds((prevTimerSeconds) => prevTimerSeconds + 1)
+        }, 1000);
+        // Stop timer once the game has finished
+        if (gameState !== gameStates[0]) clearInterval(timer);
+        // Clear the timer
+        return () => clearInterval(timer);
+    }, [gameState]);
 
     console.log('Game.tsx solution colors: ', solutionColors);
 
@@ -90,7 +100,7 @@ const Game = (props: gameProps) => {
             </div>
             <div className="side-panel">
                 <div>
-                    Timer
+                    <Timer seconds={timerSeconds} />
                 </div>
                 <div>
                     <ColorBuckets baseColorsDataString={baseColorsDataString} />

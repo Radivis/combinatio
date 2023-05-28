@@ -4,10 +4,10 @@ import Color from "../../util/Color";
 import Colors from "../../util/Colors";
 import ColorRow from "../ColorRow/ColorRow";
 import InfoPins from "../InfoPins/InfoPins";
-
-import './GameRow.css';
 import { gameStates, numPinsPerRow } from "../../constants";
 import { colorsDataString } from "../../interfaces/types";
+
+import './GameRow.css';
 
 interface gameRowProps {
     rowKey: number;
@@ -32,7 +32,6 @@ const GameRow = (props: gameRowProps) => {
         solutionColors,
         activeRowIndex,
         setActiveRowIndex,
-        gameState,
         setGameState,
         shouldClearBoard,
         setShouldClearBoard

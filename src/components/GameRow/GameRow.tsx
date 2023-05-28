@@ -101,6 +101,7 @@ const GameRow = (props: gameRowProps) => {
         }
     }
 
+    // Reset
     useEffect(() => {
         if (shouldClearBoard) {
             setColors([...initialColors]);

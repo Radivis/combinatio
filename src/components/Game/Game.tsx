@@ -104,7 +104,10 @@ const Game = (props: gameProps) => {
                     <Timer seconds={timerSeconds} />
                 </div>
                 <div>
-                    <ColorBuckets baseColorsDataString={baseColorsDataString} />
+                    <ColorBuckets
+                        baseColorsDataString={baseColorsDataString}
+                        shouldReset={ shouldClearBoard }
+                    />
                 </div>
             </div>
 

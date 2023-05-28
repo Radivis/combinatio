@@ -1,15 +1,16 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import './MinMaxControl.css';
 import IntegerControl from "../IntegerControl/IntegerControl";
 
 interface minMaxSliderProps {
     absoluteMin: number,
-    absoluteMax: number
+    absoluteMax: number,
+    shouldReset: boolean,
 }
 
 const MinMaxControl = (props: minMaxSliderProps) => {
-    const { absoluteMin, absoluteMax } = props;
+    const { absoluteMin, absoluteMax, shouldReset } = props;
 
     const [min, setMin] = useState(absoluteMin);
     const [max, setMax] = useState(absoluteMax);
@@ -18,6 +19,13 @@ const MinMaxControl = (props: minMaxSliderProps) => {
     for (let i = absoluteMin; i < min; i++) classArray.push('slider-block empty');
     for (let i = min; i <= max; i++) classArray.push('slider-block filled');
     for (let i = max + 1; i <= absoluteMax; i++) classArray.push('slider-block empty');
+
+    useEffect(() => {
+        if (shouldReset) {
+            setMin(absoluteMin);
+            setMax(absoluteMax);
+        }
+    }, [shouldReset, absoluteMin, absoluteMax]);
 
     return <div className='slider'>
         Min:<IntegerControl

@@ -10,10 +10,11 @@ import './ColorBuckets.css';
 
 interface colorBucketsProps {
     baseColorsDataString: colorsDataString;
+    shouldReset: boolean;
 }
 
 const ColorBuckets = (props: colorBucketsProps) => {
-    const { baseColorsDataString } = props;
+    const { baseColorsDataString, shouldReset } = props;
 
     const baseColors = Colors.deserialize(baseColorsDataString);
 
@@ -28,7 +29,12 @@ const ColorBuckets = (props: colorBucketsProps) => {
                     }}>
                         <ColorPin key={color.hue} color={color}/>
                     </Drag>
-                    <MinMaxControl key={color.hue + 720} absoluteMin={0} absoluteMax={numPinsPerRow}/>
+                    <MinMaxControl
+                    key={color.hue + 720}
+                    absoluteMin={0}
+                    absoluteMax={numPinsPerRow}
+                    shouldReset={shouldReset}
+                    />
                 </div>
             )
         })}

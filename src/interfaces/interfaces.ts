@@ -8,4 +8,5 @@ export interface settings {
     numColors: number,
     numRows: number,
     paletteName: string,
+    areColorAmountHintsActive: boolean,
 }

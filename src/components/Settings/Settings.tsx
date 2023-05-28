@@ -17,6 +17,7 @@ const Settings = (props: settingsProps) => {
     const [numRows, setNumRows] = useState<number>(currentSettings.numRows);
     const [numColors, setNumColors] = useState<number>(currentSettings.numColors);
     const [paletteName, setPaletteName] = useState<string>(currentSettings.paletteName);
+    const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(currentSettings.areColorAmountHintsActive);
 
     const validPaletteNames = paletteNames.filter(paletteName => {
         switch (paletteName) {
@@ -38,6 +39,10 @@ const Settings = (props: settingsProps) => {
         setPaletteName(ev.target.value);
     }
 
+    const onChangeAreColorAmountHintsActive = (ev: any) => {
+        setAreColorAmountHintsActive(ev.target.value === 'true' ? true : false);
+    }
+
     const onSubmit = (ev: any) => {
         ev.preventDefault();
         // explicitly choose the currently selected palette value to prevent setting an invalid palette
@@ -48,7 +53,8 @@ const Settings = (props: settingsProps) => {
             return {
             numRows,
             numColors,
-            paletteName: selectedPaletteName
+            paletteName: selectedPaletteName,
+            areColorAmountHintsActive,
         }});
         setActivePage('game');
     }
@@ -61,7 +67,7 @@ const Settings = (props: settingsProps) => {
                     <input name='numRows' value={numRows} onChange={onChangeNumRows} />
                 </div>
                 <div className="settings-row">
-                    <label htmlFor="rumColors">Number of colors: </label>
+                    <label htmlFor="numColors">Number of colors: </label>
                     <input name='numColors' value={numColors} onChange={onChangeNumColors}/>
                 </div>
                 <div className="settings-row">
@@ -76,6 +82,23 @@ const Settings = (props: settingsProps) => {
                             </option>
                         )}
                     </select>
+                </div>
+                <div className="settings-row">
+                    <label htmlFor="areColorAmountHintsActive">Use color amount hints: </label>
+                    Yes: <input
+                        name='areColorAmountHintsActive'
+                        type="radio"
+                        value="true"
+                        checked={areColorAmountHintsActive === true}
+                        onChange={onChangeAreColorAmountHintsActive}
+                    />
+                    No: <input
+                        name='areColorAmountHintsActive'
+                        type="radio"
+                        value="false"
+                        checked={areColorAmountHintsActive === false}
+                        onChange={onChangeAreColorAmountHintsActive}
+                    />
                 </div>
             </div>
             <button type="submit">Save settings and start new game</button>

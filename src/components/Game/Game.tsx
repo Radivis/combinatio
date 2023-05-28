@@ -16,10 +16,11 @@ interface gameProps {
     numColors: number;
     numRows: number;
     baseColorsDataString: colorsDataString;
+    areColorAmountHintsActive: boolean;
 }
 
 const Game = (props: gameProps) => {
-    const { numRows, baseColorsDataString } = props;
+    const { numRows, baseColorsDataString, areColorAmountHintsActive } = props;
 
     const holeColor = Color.makeHsl(holeHue, holeSaturation, holeLightness);
 
@@ -106,6 +107,7 @@ const Game = (props: gameProps) => {
                 <div>
                     <ColorBuckets
                         baseColorsDataString={baseColorsDataString}
+                        areColorAmountHintsActive={areColorAmountHintsActive}
                         shouldReset={ shouldClearBoard }
                     />
                 </div>

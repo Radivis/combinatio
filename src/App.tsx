@@ -45,7 +45,7 @@ const App = () => {
  	return (
 		<div className="App">
 	  		<header className="App-header">
-				Variablo
+				Combinatio
 				<nav>
 					<button onClick={() => {setActivePage('settings')}}>Settings</button>
 					<button onClick={() => {setActivePage('game')}}>Game</button>

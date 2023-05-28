@@ -1,0 +1,15 @@
+.integer-control {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 5px;
+}
+
+.crement-button {
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: bold;
+    margin: 0px 5px;
+}

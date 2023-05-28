@@ -1,0 +1,30 @@
+.slider {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.slider-block {
+    height: 25px;
+    width: 25px;
+    padding: 2.5px;
+}
+
+.filled {
+    background-color: hsl(34, 57%, 90%);
+    border-radius: 35%;
+}
+
+.empty {
+    background-color: hsl(34, 57%, 70%);
+    opacity: 20%;
+}
+
+.value-display {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 0px 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+}

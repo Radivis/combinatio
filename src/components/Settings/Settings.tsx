@@ -1,10 +1,7 @@
 import { useState } from "react";
 
-import { defaultBaseLightness, defaultBaseSaturation } from "../../constants";
-import Color from "../../util/Color";
-import Colors from "../../util/Colors";
+import { paletteNames } from "../../constants";
 import { settings } from "../../interfaces/interfaces";
-
 
 interface settingsProps {
     currentSettings: settings,
@@ -15,29 +12,17 @@ interface settingsProps {
 const Settings = (props: settingsProps) => {
     const { currentSettings, setSettings, setActivePage } = props;
 
-    const [numRows, setNumRows] = useState(currentSettings.numRows);
-    const [numColors, setNumColors] = useState(currentSettings.numColors);
-    const [palette, setPalette] = useState(currentSettings.palette);
+    const [numRows, setNumRows] = useState<number>(currentSettings.numRows);
+    const [numColors, setNumColors] = useState<number>(currentSettings.numColors);
+    const [paletteName, setPaletteName] = useState<string>(currentSettings.paletteName);
 
-
-    const regularPalette: Colors = new Colors([...Array(numColors).keys()].map(i => {
-		return Color.makeHsl(i * 360/numColors, defaultBaseSaturation, defaultBaseLightness);
-	}));
-    const zanthiaPalette: Colors = new Colors([
-        Color.makeHsl(204, 72, 53),
-        Color.makeHsl(52, 94, 51),
-        Color.makeHsl(131, 74, 38),
-        Color.makeHsl(343, 88, 41),
-        Color.makeHsl(264, 67, 63),
-        Color.makeHsl(32, 59, 48)
-    ]);
-    const palettes: Colors[] = [regularPalette];
-    if (numColors === 6) palettes.push(zanthiaPalette);
-
-    const paletteLabels: string[] = [
-        'regular',
-        'zanthia',
-    ]
+    const validPaletteNames = paletteNames.filter(paletteName => {
+        switch (paletteName) {
+            case 'regular': return true;
+            case 'zanthia': return numColors === 6;      
+            default: return false;
+        }
+    });
 
     const onChangeNumRows = (ev: any) => {
         setNumRows(+ev.target.value!);
@@ -47,8 +32,8 @@ const Settings = (props: settingsProps) => {
         setNumColors(+ev.target.value!);
     }
 
-    const onChangePalette = (ev: any) => {
-        setPalette(ev.target.value);
+    const onChangePaletteName = (ev: any) => {
+        setPaletteName(ev.target.value);
     }
 
     const onSubmit = () => {
@@ -56,7 +41,7 @@ const Settings = (props: settingsProps) => {
             return {
             numRows,
             numColors,
-            palette
+            paletteName
         }});
         setActivePage('game');
     }
@@ -64,11 +49,13 @@ const Settings = (props: settingsProps) => {
     return <form onSubmit={onSubmit}>
         <label htmlFor="rumRows">Number of rows: </label><input name='numRows' value={numRows} onChange={onChangeNumRows} />
         <label htmlFor="rumColors">Number of colors: </label><input name='numColors' value={numColors} onChange={onChangeNumColors}/>
-        <select onChange={onChangePalette}>
-            {palettes.map((palette: Colors, index: number) => <option
-                key={index}
-                value={Colors.serialize(palette)}>
-                    {paletteLabels[index]}
+        <label htmlFor="paletteName">Color Palette: </label><select name='paletteName' onChange={onChangePaletteName}>
+            {validPaletteNames.map((paletteName: string) => <option
+                key={paletteName}
+                value={paletteName}
+                selected={currentSettings.paletteName === paletteName}
+                >
+                    {paletteName}
                 </option>
             )}
         </select>

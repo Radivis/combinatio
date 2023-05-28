@@ -7,3 +7,4 @@ export const holeHue = 34;
 export const holeSaturation = 57;
 export const holeLightness = 20;
 export const gameStates = ['running', 'won', 'lost', 'initalizing'];
+export const paletteNames = ['regular', 'zanthia'];

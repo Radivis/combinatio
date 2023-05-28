@@ -1,5 +1,3 @@
-import { colorsDataString } from "./types";
-
 export interface hslColorObject {
     hue: number;
     saturation: number;
@@ -9,5 +7,5 @@ export interface hslColorObject {
 export interface settings {
     numColors: number,
     numRows: number,
-    palette: colorsDataString,
+    paletteName: string,
 }

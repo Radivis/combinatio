@@ -26,7 +26,7 @@ const SolutionRow = (props: solutionRowProps) => {
         <ColorRow
             rowKey = {0}
             isActiveRow = {false}
-            colors = {gameStates.slice(1,3).includes(gameState) ? solutionColors : colors}
+            colors = {gameStates.slice(2,4).includes(gameState) ? solutionColors : colors}
             setColors = {setColors}
         />
     </div>

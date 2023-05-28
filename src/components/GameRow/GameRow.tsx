@@ -83,15 +83,21 @@ const GameRow = (props: gameRowProps) => {
         
         setActiveRowIndex(activeRowIndex+1);
 
+        // Start game once submitting the first row
+        if (activeRowIndex === 1) {
+            setGameState(gameStates[1]);
+            return;
+        }
+
         // Check for victory condition
         if (_numFullyCorrect === numPinsPerRow) {
-            setGameState(gameStates[1]);
+            setGameState(gameStates[2]);
             return;
         }
 
         // Check for running out of rows -> loss
         if (activeRowIndex === numRows) {
-            setGameState(gameStates[2]);
+            setGameState(gameStates[3]);
             return;
         }
     }

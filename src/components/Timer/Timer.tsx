@@ -1,3 +1,5 @@
+import './Timer.css';
+
 interface timerProps {
     seconds: number
 }
@@ -12,8 +14,8 @@ const Timer = (props: timerProps) => {
     const minuteCount = Math.floor(seconds / 60);
     const secondCount = seconds % 60;
 
-    return <div>
-        Timer: {`${pad(minuteCount)}:${pad(secondCount)}`}
+    return <div className='timer'>
+        Timer: <span className='time'>{`${pad(minuteCount)}:${pad(secondCount)}`}</span>
     </div>
 }
 

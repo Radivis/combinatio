@@ -62,7 +62,7 @@ const Game = (props: gameProps) => {
             setTimerSeconds((prevTimerSeconds) => prevTimerSeconds + 1)
         }, 1000);
         // Stop timer once the game has finished
-        if (gameState !== gameStates[0]) clearInterval(timer);
+        if (gameState !== gameStates[1]) clearInterval(timer);
         // Clear the timer
         return () => clearInterval(timer);
     }, [gameState]);
@@ -70,9 +70,10 @@ const Game = (props: gameProps) => {
     console.log('Game.tsx solution colors: ', solutionColors);
 
     return <div>
-        {gameState === gameStates[0] && <h2>Game running</h2>}
-        {gameState === gameStates[1] && <h2>Game won!</h2>}
-        {gameState === gameStates[2] && <h2>Game lost!</h2>}
+        {gameState === gameStates[0] && <h2>Game waiting</h2>}
+        {gameState === gameStates[1] && <h2>Game running</h2>}
+        {gameState === gameStates[2] && <h2>Game won!</h2>}
+        {gameState === gameStates[3] && <h2>Game lost!</h2>}
         <button onClick={restartGame}>
             Start new game
         </button>

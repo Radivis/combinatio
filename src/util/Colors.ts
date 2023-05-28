@@ -23,6 +23,7 @@ class Colors extends Array<Color> {
     }
 
     public static readonly serialize = (colors: Colors): string => {
+        if (!Array.isArray(colors)) throw new TypeError('Could not serialize colors, because the passed value is not an array');
         return JSON.stringify((colors as Array<Color>).map((color) => color.serialize()));
     }
 

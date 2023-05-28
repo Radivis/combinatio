@@ -3,6 +3,8 @@ import { useState } from "react";
 import { paletteNames } from "../../constants";
 import { settings } from "../../interfaces/interfaces";
 
+import './Settings.css';
+
 interface settingsProps {
     currentSettings: settings,
     setSettings: Function,
@@ -36,31 +38,49 @@ const Settings = (props: settingsProps) => {
         setPaletteName(ev.target.value);
     }
 
-    const onSubmit = () => {
+    const onSubmit = (ev: any) => {
+        ev.preventDefault();
+        // explicitly choose the currently selected palette value to prevent setting an invalid palette
+        const formEntriesArray: any[] = Array.from(ev.target);
+        const selectedPaletteName = formEntriesArray.find((inputElement: any) => inputElement.name === 'paletteName').value;
+
         setSettings(() => {
             return {
             numRows,
             numColors,
-            paletteName
+            paletteName: selectedPaletteName
         }});
         setActivePage('game');
     }
 
-    return <form onSubmit={onSubmit}>
-        <label htmlFor="rumRows">Number of rows: </label><input name='numRows' value={numRows} onChange={onChangeNumRows} />
-        <label htmlFor="rumColors">Number of colors: </label><input name='numColors' value={numColors} onChange={onChangeNumColors}/>
-        <label htmlFor="paletteName">Color Palette: </label><select name='paletteName' onChange={onChangePaletteName}>
-            {validPaletteNames.map((paletteName: string) => <option
-                key={paletteName}
-                value={paletteName}
-                selected={currentSettings.paletteName === paletteName}
-                >
-                    {paletteName}
-                </option>
-            )}
-        </select>
-        <button type="button" onClick={onSubmit}>Save settings and start new game</button>
-    </form>
+    return (
+        <form onSubmit={onSubmit}>
+            <div className="settings-table">
+                <div className="settings-row">
+                    <label htmlFor="rumRows">Number of rows: </label>
+                    <input name='numRows' value={numRows} onChange={onChangeNumRows} />
+                </div>
+                <div className="settings-row">
+                    <label htmlFor="rumColors">Number of colors: </label>
+                    <input name='numColors' value={numColors} onChange={onChangeNumColors}/>
+                </div>
+                <div className="settings-row">
+                    <label htmlFor="paletteName">Color Palette: </label>
+                    <select name='paletteName' onChange={onChangePaletteName}>
+                        {validPaletteNames.map((paletteName: string) => <option
+                            key={paletteName}
+                            value={paletteName}
+                            selected={currentSettings.paletteName === paletteName}
+                            >
+                                {paletteName}
+                            </option>
+                        )}
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Save settings and start new game</button>
+        </form>
+    )
 }
 
 export default Settings;

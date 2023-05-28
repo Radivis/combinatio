@@ -38,7 +38,7 @@ const App = () => {
         Color.makeHsl(32, 59, 48)
     ]);
     const palettes: {[paletteName: string]: Colors} = {'regular': regularPalette};
-    if (numColors === 6) palettes['zanthia']=zanthiaPalette;
+    if (numColors === 6) palettes['zanthia'] = zanthiaPalette;
 
 	const currentPaletteDataString: colorsDataString = Colors.serialize(palettes[paletteName]);
 

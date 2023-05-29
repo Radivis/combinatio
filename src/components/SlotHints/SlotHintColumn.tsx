@@ -7,10 +7,11 @@ import './SlotHintColumn.css';
 
 interface slotHintColumnProps {
     baseColorsDataString: colorsDataString
+    shouldReset: boolean
 }
 
 const SlotHintColumn = (props: slotHintColumnProps) => {
-    const { baseColorsDataString } = props;
+    const { baseColorsDataString, shouldReset } = props;
 
     const baseColors = Colors.deserialize(baseColorsDataString);
 
@@ -18,7 +19,12 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         <div className='slot-hint-column'>
             {baseColors.map((color: Color) => {
                 return (
-                    <ColorPin key={color.hue} color={color} isOpacityToogleActive={true}/>
+                    <ColorPin
+                        key={color.hue}
+                        color={color}
+                        isOpacityToogleActive={true}
+                        shouldReset={shouldReset}
+                    />
                 );
             })}
         </div>

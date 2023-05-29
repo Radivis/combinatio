@@ -91,12 +91,14 @@ const GameRow = (props: gameRowProps) => {
         // Check for victory condition
         if (_numFullyCorrect === numPinsPerRow) {
             setGameState(gameStates[2]);
+            setActiveRowIndex(-1);
             return;
         }
 
         // Check for running out of rows -> loss
         if (activeRowIndex === numRows) {
             setGameState(gameStates[3]);
+            setActiveRowIndex(-1);
             return;
         }
     }

@@ -8,10 +8,11 @@ import './SlotHints.css';
 
 interface slotHintsProps {
     baseColorsDataString: colorsDataString
+    shouldReset: boolean
 }
 
 const SlotHints = (props: slotHintsProps) => {
-    const { baseColorsDataString } = props;
+    const { baseColorsDataString, shouldReset } = props;
 
     const baseColors = Colors.deserialize(baseColorsDataString);
 
@@ -20,7 +21,11 @@ const SlotHints = (props: slotHintsProps) => {
     return (
         <div className='slot-hints-container'>
             {columnArray.map(columnIndex => {
-                return <SlotHintColumn key={columnIndex} baseColorsDataString={baseColorsDataString}/>
+                return <SlotHintColumn
+                    key={columnIndex}
+                    baseColorsDataString={baseColorsDataString}
+                    shouldReset={shouldReset}
+                />
             })}
         </div>
     );

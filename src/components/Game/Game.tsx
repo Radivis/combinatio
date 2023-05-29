@@ -101,7 +101,10 @@ const Game = (props: gameProps) => {
                     shouldClearBoard = {shouldClearBoard}
                     setShouldClearBoard = {setShouldClearBoard}
                 />)}
-                {areSlotHintsActive && <SlotHints baseColorsDataString={baseColorsDataString} />}
+                {areSlotHintsActive && <SlotHints
+                    baseColorsDataString={baseColorsDataString}
+                    shouldReset = { shouldClearBoard }
+                />}
             </div>
             <div className="side-panel">
                 <div>

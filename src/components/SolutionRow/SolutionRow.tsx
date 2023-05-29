@@ -4,6 +4,7 @@ import Color from "../../util/Color";
 import ColorRow from "../ColorRow/ColorRow";
 
 import '../GameRow/GameRow.css';
+import './SolutionRow.css'
 import { gameStates } from "../../constants";
 
 interface solutionRowProps {
@@ -22,7 +23,7 @@ const SolutionRow = (props: solutionRowProps) => {
    
     const [ colors, setColors ] = useState([...copyOfInitialColors]);
 
-    return <div className="game-row">
+    return <div className="game-row solution-row">
         <ColorRow
             rowKey = {0}
             isActiveRow = {false}

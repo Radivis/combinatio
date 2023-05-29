@@ -7,6 +7,7 @@ export interface hslColorObject {
 export interface settings {
     numColors: number,
     numRows: number,
+    numColumns: number,
     paletteName: string,
     areColorAmountHintsActive: boolean,
     areSlotHintsActive: boolean,

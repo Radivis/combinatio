@@ -4,7 +4,7 @@ import Color from "../../util/Color";
 import Colors from "../../util/Colors";
 import ColorRow from "../ColorRow/ColorRow";
 import InfoPins from "../InfoPins/InfoPins";
-import { gameStates, numPinsPerRow } from "../../constants";
+import { gameStates } from "../../constants";
 import { colorsDataString } from "../../interfaces/types";
 
 import './GameRow.css';
@@ -12,6 +12,7 @@ import './GameRow.css';
 interface gameRowProps {
     rowKey: number;
     numRows: number;
+    numColumns: number;
     baseColorsDataString: colorsDataString;
     solutionColors: Color[];
     initialColors: Color[];
@@ -27,6 +28,7 @@ const GameRow = (props: gameRowProps) => {
     const {
         rowKey,
         numRows,
+        numColumns,
         baseColorsDataString,
         initialColors,
         solutionColors,
@@ -89,7 +91,7 @@ const GameRow = (props: gameRowProps) => {
         }
 
         // Check for victory condition
-        if (_numFullyCorrect === numPinsPerRow) {
+        if (_numFullyCorrect === numColumns) {
             setGameState(gameStates[2]);
             setActiveRowIndex(-1);
             return;
@@ -116,12 +118,14 @@ const GameRow = (props: gameRowProps) => {
         {rowKey}
         <ColorRow
             rowKey = {rowKey}
+            numColumns = {numColumns}
             isActiveRow = {activeRowIndex === rowKey}
             colors = { colors }
             setColors = {setColors}
         />
         <InfoPins
             rowKey = {rowKey}
+            numColumns = {numColumns}
             onSubmitRow={onSumbitRow}
             isActiveRow = {activeRowIndex === rowKey}
             numCorrectColor = {shouldClearBoard === false ? numCorrectColor : 0}

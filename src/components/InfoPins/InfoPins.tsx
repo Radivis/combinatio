@@ -1,10 +1,9 @@
-import { numPinsPerRow } from '../../constants';
-
 import './InfoPins.css';
 
 
 interface infoPinsProps {
     rowKey: number;
+    numColumns: number;
     onSubmitRow: () => void;
     isActiveRow: boolean;
     numCorrectColor: number;
@@ -13,9 +12,17 @@ interface infoPinsProps {
 };
 
 const InfoPins = (props: infoPinsProps) => {
-    const { rowKey, onSubmitRow, isActiveRow, numCorrectColor, numFullyCorrect, shouldClearBoard } = props;
+    const {
+        rowKey,
+        numColumns,
+        onSubmitRow,
+        isActiveRow,
+        numCorrectColor,
+        numFullyCorrect,
+        shouldClearBoard
+    } = props;
 
-    const pinClasses: string[] = new Array(numPinsPerRow).fill('info-pin');
+    const pinClasses: string[] = new Array(numColumns).fill('info-pin');
 
     const numWhite = numCorrectColor - numFullyCorrect;
 

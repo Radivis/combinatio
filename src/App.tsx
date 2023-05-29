@@ -5,7 +5,14 @@ import Color from './util/Color';
 import Colors from './util/Colors';
 import Settings from './components/Settings/Settings';
 import { settings } from './interfaces/interfaces';
-import { defaultBaseSaturation, defaultBaseLightness, defaultNumColors, defaultNumRows, paletteNames } from './constants';
+import {
+	defaultBaseSaturation,
+	defaultBaseLightness,
+	defaultNumColors,
+	defaultNumRows,
+	paletteNames,
+	defaultNumColumns,
+ } from './constants';
 
 import './App.css';
 import { colorsDataString } from './interfaces/types';
@@ -20,6 +27,7 @@ const App = () => {
 	const initialSettings: settings = {
 		numColors: defaultNumColors,
 		numRows: defaultNumRows,
+		numColumns: defaultNumColumns,
 		paletteName: paletteNames[0],
 		areColorAmountHintsActive: true,
 		areSlotHintsActive: true,
@@ -64,6 +72,7 @@ const App = () => {
 					<Game
 						numColors={settings.numColors}
 						numRows={settings.numRows}
+						numColumns={settings.numColumns}
 						baseColorsDataString={currentPaletteDataString}
 						areColorAmountHintsActive={areColorAmountHintsActive}
 						areSlotHintsActive={areSlotHintsActive}

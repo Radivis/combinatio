@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { numPinsPerRow, gameStates, holeHue, holeLightness, holeSaturation } from "../../constants";
+import { useState, useEffect, useCallback, } from "react";
+import { gameStates, holeHue, holeLightness, holeSaturation } from "../../constants";
 
 import GameRow from "../GameRow/GameRow";
 import SolutionRow from "../SolutionRow/SolutionRow";
@@ -16,17 +16,24 @@ import { colorsDataString } from "../../interfaces/types";
 interface gameProps {
     numColors: number;
     numRows: number;
+    numColumns: number;
     baseColorsDataString: colorsDataString;
     areColorAmountHintsActive: boolean;
     areSlotHintsActive: boolean;
 }
 
 const Game = (props: gameProps) => {
-    const { numRows, baseColorsDataString, areColorAmountHintsActive, areSlotHintsActive } = props;
+    const {
+        numRows,
+        numColumns,
+        baseColorsDataString,
+        areColorAmountHintsActive,
+        areSlotHintsActive
+    } = props;
 
     const holeColor = Color.makeHsl(holeHue, holeSaturation, holeLightness);
 
-    const defaultStartColorArray: Color[] = range(numPinsPerRow).map(i => {
+    const defaultStartColorArray: Color[] = range(numColumns).map(i => {
         return holeColor;
     })
 
@@ -38,10 +45,10 @@ const Game = (props: gameProps) => {
     
     const generateSolutionColors = useCallback((): Colors => {
         const baseColors: Colors = Colors.deserialize(baseColorsDataString);
-        return new Colors(range(numPinsPerRow).map(i => {
+        return new Colors(range(numColumns).map(i => {
             return baseColors[~~(Math.random()*baseColors.length -1)];
         }));
-    }, [baseColorsDataString])
+    }, [baseColorsDataString, numColumns])
     
     const rowKeys = range(numRows+1, 1);
 
@@ -83,6 +90,7 @@ const Game = (props: gameProps) => {
         <div className="game">
             <div className="board">
                 <SolutionRow
+                    numColumns={numColumns}
                     initialColors={defaultStartColorArray}
                     solutionColors={solutionColors}
                     gameState = {gameState}
@@ -91,6 +99,7 @@ const Game = (props: gameProps) => {
                     key={rowKey}
                     rowKey={rowKey}
                     numRows={numRows}
+                    numColumns={numColumns}
                     baseColorsDataString={baseColorsDataString}
                     initialColors={defaultStartColorArray}
                     solutionColors={solutionColors}
@@ -102,6 +111,7 @@ const Game = (props: gameProps) => {
                     setShouldClearBoard = {setShouldClearBoard}
                 />)}
                 {areSlotHintsActive && <SlotHints
+                    numColumns={numColumns}
                     baseColorsDataString={baseColorsDataString}
                     shouldReset = { shouldClearBoard }
                 />}
@@ -112,6 +122,7 @@ const Game = (props: gameProps) => {
                 </div>
                 <div>
                     <ColorBuckets
+                        numColumns={numColumns}
                         baseColorsDataString={baseColorsDataString}
                         areColorAmountHintsActive={areColorAmountHintsActive}
                         shouldReset={ shouldClearBoard }

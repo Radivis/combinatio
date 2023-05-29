@@ -15,6 +15,7 @@ const Settings = (props: settingsProps) => {
     const { currentSettings, setSettings, setActivePage } = props;
 
     const [numRows, setNumRows] = useState<number>(currentSettings.numRows);
+    const [numColumns, setNumColumns] = useState<number>(currentSettings.numColumns);
     const [numColors, setNumColors] = useState<number>(currentSettings.numColors);
     const [paletteName, setPaletteName] = useState<string>(currentSettings.paletteName);
     const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(currentSettings.areColorAmountHintsActive);
@@ -30,6 +31,10 @@ const Settings = (props: settingsProps) => {
 
     const onChangeNumRows = (ev: any) => {
         setNumRows(+ev.target.value!);
+    }
+
+    const onChangeNumColumns = (ev: any) => {
+        setNumColumns(+ev.target.value!);
     }
 
     const onChangeNumColors = (ev: any) => {
@@ -57,6 +62,7 @@ const Settings = (props: settingsProps) => {
         setSettings(() => {
             return {
             numRows,
+            numColumns,
             numColors,
             paletteName: selectedPaletteName,
             areColorAmountHintsActive,
@@ -71,6 +77,10 @@ const Settings = (props: settingsProps) => {
                 <div className="settings-row">
                     <label htmlFor="rumRows">Number of rows: </label>
                     <input name='numRows' value={numRows} onChange={onChangeNumRows} />
+                </div>
+                <div className="settings-row">
+                    <label htmlFor="rumColumns">Number of columns: </label>
+                    <input name='numColumns' value={numColumns} onChange={onChangeNumColumns} />
                 </div>
                 <div className="settings-row">
                     <label htmlFor="numColors">Number of colors: </label>

@@ -1,5 +1,4 @@
 import { colorsDataString } from "../../interfaces/types";
-import { numPinsPerRow } from "../../constants";
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
 import ColorPin from "../ColorPin/ColorPin";
@@ -9,14 +8,14 @@ import MinMaxControl from "../MinMaxControl/MinMaxControl";
 import './ColorBuckets.css';
 
 interface colorBucketsProps {
+    numColumns: number;
     baseColorsDataString: colorsDataString;
     areColorAmountHintsActive: boolean;
-    shouldReset: boolean;
-    
+    shouldReset: boolean;  
 }
 
 const ColorBuckets = (props: colorBucketsProps) => {
-    const { baseColorsDataString, areColorAmountHintsActive, shouldReset } = props;
+    const { numColumns, baseColorsDataString, areColorAmountHintsActive, shouldReset } = props;
 
     const baseColors = Colors.deserialize(baseColorsDataString);
 
@@ -39,7 +38,7 @@ const ColorBuckets = (props: colorBucketsProps) => {
                     {areColorAmountHintsActive ? <MinMaxControl
                         key={color.hue + 720}
                         absoluteMin={0}
-                        absoluteMax={numPinsPerRow}
+                        absoluteMax={numColumns}
                         shouldReset={shouldReset}
                         /> : null
                     }

@@ -8,6 +8,7 @@ import './SolutionRow.css'
 import { gameStates } from "../../constants";
 
 interface solutionRowProps {
+    numColumns: number;
     solutionColors: Color[];
     initialColors: Color[];
     gameState: string;
@@ -15,6 +16,7 @@ interface solutionRowProps {
 
 const SolutionRow = (props: solutionRowProps) => {
     const {
+        numColumns,
         initialColors,
         solutionColors,
         gameState,
@@ -26,6 +28,7 @@ const SolutionRow = (props: solutionRowProps) => {
     return <div className="game-row solution-row">
         <ColorRow
             rowKey = {0}
+            numColumns={numColumns}
             isActiveRow = {false}
             colors = {gameStates.slice(2,4).includes(gameState) ? solutionColors : colors}
             setColors = {setColors}

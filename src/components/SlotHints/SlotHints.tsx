@@ -1,22 +1,19 @@
 import { colorsDataString } from '../../interfaces/types';
-import Colors from '../../util/Colors';
 import { range } from '../../util/range';
-import { numPinsPerRow } from '../../constants';
 import SlotHintColumn from './SlotHintColumn';
 
 import './SlotHints.css';
 
 interface slotHintsProps {
+    numColumns: number;
     baseColorsDataString: colorsDataString
     shouldReset: boolean
 }
 
 const SlotHints = (props: slotHintsProps) => {
-    const { baseColorsDataString, shouldReset } = props;
+    const { numColumns, baseColorsDataString, shouldReset } = props;
 
-    const baseColors = Colors.deserialize(baseColorsDataString);
-
-    const columnArray = range(numPinsPerRow);
+    const columnArray = range(numColumns);
 
     return (
         <div className='slot-hints-container'>

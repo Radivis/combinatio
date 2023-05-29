@@ -25,7 +25,7 @@ const SolutionRow = (props: solutionRowProps) => {
    
     const [ colors, setColors ] = useState([...copyOfInitialColors]);
 
-    return <div className="game-row solution-row">
+    return <div className="solution-row">
         <ColorRow
             rowKey = {0}
             numColumns={numColumns}

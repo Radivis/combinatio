@@ -1,9 +1,12 @@
+.info-pins-container {
+    height: 36px;
+}
+
 .info-pins {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     height: 36px;
-    width: 36px;
 }
 
 .info-pin {

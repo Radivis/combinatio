@@ -1,3 +1,5 @@
+import { range } from '../../util/range';
+
 import './InfoPins.css';
 
 
@@ -26,14 +28,21 @@ const InfoPins = (props: infoPinsProps) => {
 
     const numWhite = numCorrectColor - numFullyCorrect;
 
-    pinClasses.forEach((_pinClass: string, index: number) => {
-        if (numWhite > index && shouldClearBoard === false) pinClasses[index] += ' white';
-        else if (numCorrectColor > index && shouldClearBoard === false) pinClasses[index] += ' black';
-        else pinClasses[index] += ' hole';
+    pinClasses.forEach((_pinClass: string, columnIndex: number) => {
+        if (numWhite > columnIndex && shouldClearBoard === false) pinClasses[columnIndex] += ' white';
+        else if (numCorrectColor > columnIndex && shouldClearBoard === false) pinClasses[columnIndex] += ' black';
+        else pinClasses[columnIndex] += ' hole';
     });
 
+    // The width of the into pin container is natively determined by the width of the row submit-button
+    // Instead, compute it according to numColumns / 2
+
+    const infoPinBlockWidth = 18;
+
+    const infoPinContainerWidth = Math.max(Math.ceil(numColumns / 2) * infoPinBlockWidth, infoPinBlockWidth * 2);
+
     return (
-        <div key={rowKey}>
+        <div key={rowKey} className='info-pins-container' style={{width: infoPinContainerWidth}}>
             {
                 (isActiveRow === true) ? (
                     <button key={rowKey} className="submit-button" type="button" onClick={onSubmitRow}>
@@ -41,10 +50,9 @@ const InfoPins = (props: infoPinsProps) => {
                     </button>
                 ) : (
                     <div key={rowKey} className="info-pins">
-                        <div key={`${rowKey}: 3`} className={pinClasses[3]}></div>
-                        <div key={`${rowKey}: 2`} className={pinClasses[2]}></div>
-                        <div key={`${rowKey}: 0`} className={pinClasses[0]}></div>
-                        <div key={`${rowKey}: 1`} className={pinClasses[1]}></div>
+                        {pinClasses.map((pinClass, columnIndex) => {
+                            return <div key={`${rowKey}: ${columnIndex}`} className={pinClass}></div>
+                        })}
                     </div>
                 )
             }

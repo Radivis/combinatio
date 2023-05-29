@@ -1,0 +1,6 @@
+.slot-hints-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding-left: 15px;
+}

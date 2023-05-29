@@ -7,3 +7,7 @@
     border-style: solid;
     margin: 5px;
 }
+
+.opaque {
+    opacity: 0.15;
+}

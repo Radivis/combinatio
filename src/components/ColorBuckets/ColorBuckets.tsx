@@ -29,7 +29,7 @@ const ColorBuckets = (props: colorBucketsProps) => {
                         saturation: color.saturation,
                         lightness: color.lightness
                     }}>
-                        <ColorPin key={color.hue} color={color}/>
+                        <ColorPin key={color.hue} color={color} isOpacityToogleActive={true}/>
                     </Drag>
                     {areColorAmountHintsActive ? <MinMaxControl
                         key={color.hue + 720}

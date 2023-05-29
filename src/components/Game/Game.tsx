@@ -6,6 +6,7 @@ import SolutionRow from "../SolutionRow/SolutionRow";
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
 import ColorBuckets from "../ColorBuckets/ColorBuckets";
+import SlotHints from "../SlotHints/SlotHints";
 import Timer from "../Timer/Timer";
 import { range } from "../../util/range";
 
@@ -99,6 +100,7 @@ const Game = (props: gameProps) => {
                     shouldClearBoard = {shouldClearBoard}
                     setShouldClearBoard = {setShouldClearBoard}
                 />)}
+                <SlotHints baseColorsDataString={baseColorsDataString} />
             </div>
             <div className="side-panel">
                 <div>

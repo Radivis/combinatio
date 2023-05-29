@@ -22,12 +22,13 @@ const App = () => {
 		numRows: defaultNumRows,
 		paletteName: paletteNames[0],
 		areColorAmountHintsActive: true,
+		areSlotHintsActive: true,
 	}
 
-	let [activePage, setActivePage] = useState('game');
-	let [settings, setSettings] = useState(initialSettings);
+	let [activePage, setActivePage] = useState<string>('game');
+	let [settings, setSettings] = useState<settings>(initialSettings);
 
-	const { numColors, paletteName, areColorAmountHintsActive } = settings;
+	const { numColors, paletteName, areColorAmountHintsActive, areSlotHintsActive } = settings;
 
 	const regularPalette: Colors = generateRegularPalette(numColors)
     const zanthiaPalette: Colors = new Colors([
@@ -65,6 +66,7 @@ const App = () => {
 						numRows={settings.numRows}
 						baseColorsDataString={currentPaletteDataString}
 						areColorAmountHintsActive={areColorAmountHintsActive}
+						areSlotHintsActive={areSlotHintsActive}
 					/>
 				}
 			</main>

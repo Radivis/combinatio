@@ -18,6 +18,7 @@ const Settings = (props: settingsProps) => {
     const [numColors, setNumColors] = useState<number>(currentSettings.numColors);
     const [paletteName, setPaletteName] = useState<string>(currentSettings.paletteName);
     const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(currentSettings.areColorAmountHintsActive);
+    const [areSlotHintsActive, setAreSlotHintsActive] = useState<boolean>(currentSettings.areSlotHintsActive);
 
     const validPaletteNames = paletteNames.filter(paletteName => {
         switch (paletteName) {
@@ -43,6 +44,10 @@ const Settings = (props: settingsProps) => {
         setAreColorAmountHintsActive(ev.target.value === 'true' ? true : false);
     }
 
+    const onChangeAreSlotHintsActive = (ev: any) => {
+        setAreSlotHintsActive(ev.target.value === 'true' ? true : false);
+    }
+
     const onSubmit = (ev: any) => {
         ev.preventDefault();
         // explicitly choose the currently selected palette value to prevent setting an invalid palette
@@ -55,6 +60,7 @@ const Settings = (props: settingsProps) => {
             numColors,
             paletteName: selectedPaletteName,
             areColorAmountHintsActive,
+            areSlotHintsActive,
         }});
         setActivePage('game');
     }
@@ -98,6 +104,23 @@ const Settings = (props: settingsProps) => {
                         value="false"
                         checked={areColorAmountHintsActive === false}
                         onChange={onChangeAreColorAmountHintsActive}
+                    />
+                </div>
+                <div className="settings-row">
+                    <label htmlFor="areSlotHintsActive">Use slot hints: </label>
+                    Yes: <input
+                        name='areSlotHintsActive'
+                        type="radio"
+                        value="true"
+                        checked={areSlotHintsActive === true}
+                        onChange={onChangeAreSlotHintsActive}
+                    />
+                    No: <input
+                        name='areSlotHintsActive'
+                        type="radio"
+                        value="false"
+                        checked={areSlotHintsActive === false}
+                        onChange={onChangeAreSlotHintsActive}
                     />
                 </div>
             </div>

@@ -18,10 +18,11 @@ interface gameProps {
     numRows: number;
     baseColorsDataString: colorsDataString;
     areColorAmountHintsActive: boolean;
+    areSlotHintsActive: boolean;
 }
 
 const Game = (props: gameProps) => {
-    const { numRows, baseColorsDataString, areColorAmountHintsActive } = props;
+    const { numRows, baseColorsDataString, areColorAmountHintsActive, areSlotHintsActive } = props;
 
     const holeColor = Color.makeHsl(holeHue, holeSaturation, holeLightness);
 
@@ -100,7 +101,7 @@ const Game = (props: gameProps) => {
                     shouldClearBoard = {shouldClearBoard}
                     setShouldClearBoard = {setShouldClearBoard}
                 />)}
-                <SlotHints baseColorsDataString={baseColorsDataString} />
+                {areSlotHintsActive && <SlotHints baseColorsDataString={baseColorsDataString} />}
             </div>
             <div className="side-panel">
                 <div>

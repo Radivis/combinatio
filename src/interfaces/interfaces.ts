@@ -9,4 +9,5 @@ export interface settings {
     numRows: number,
     paletteName: string,
     areColorAmountHintsActive: boolean,
+    areSlotHintsActive: boolean,
 }

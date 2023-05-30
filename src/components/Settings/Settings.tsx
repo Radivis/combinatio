@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import IntegerSelect from "./IntegerSelect";
 import { paletteNames } from "../../constants";
 import { settings } from "../../interfaces/interfaces";
 
@@ -88,22 +89,42 @@ const Settings = (props: settingsProps) => {
         <form onSubmit={onSubmit}>
             <div className="settings-table">
                 <div className="settings-row">
-                    <label htmlFor="rumRows">Number of rows: </label>
-                    <input name='numRows' value={numRows} onChange={onChangeNumRows} />
+                    <label htmlFor="numRows">Number of rows: </label>
+                    <IntegerSelect 
+                        name={'numRows'} 
+                        min={2}
+                        max={20}
+                        defaultValue={numRows}
+                        onChange={onChangeNumRows}
+                    />
                 </div>
                 <div className="settings-row">
-                    <label htmlFor="rumColumns">Number of columns: </label>
-                    <input name='numColumns' value={numColumns} onChange={onChangeNumColumns} />
+                    <label htmlFor="numColumns">Number of columns: </label>
+                    <IntegerSelect
+                        name={'numColumns'} 
+                        min={2}
+                        max={20}
+                        defaultValue={numColumns}
+                        onChange={onChangeNumColumns}
+                    />
                 </div>
                 <div className="settings-row">
                     <label htmlFor="numColors">Number of colors: </label>
-                    <input name='numColors' value={numColors} onChange={onChangeNumColors}/>
+                    <IntegerSelect
+                        name={'numColors'}  
+                        min={2}
+                        max={20}
+                        defaultValue={numColors}
+                        onChange={onChangeNumColors}
+                    />
                 </div>
                 <div className="settings-row">
                     <label htmlFor="maxIdenticalColorsInSolutions">Max. number of same colors: </label>
-                    <input
-                        name='maxIdenticalColorsInSolution'
-                        value={maxIdenticalColorsInSolution}
+                    <IntegerSelect
+                        name={'maxIdenticalColorsInSolutions'}   
+                        min={1}
+                        max={numColumns}
+                        defaultValue={maxIdenticalColorsInSolution}
                         onChange={onChangeMaxIdenticalColorsInSolution}
                     />
                 </div>

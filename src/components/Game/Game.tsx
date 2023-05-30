@@ -17,6 +17,7 @@ interface gameProps {
     numColors: number;
     numRows: number;
     numColumns: number;
+    maxIdenticalColorsInSolution: number;
     baseColorsDataString: colorsDataString;
     areColorAmountHintsActive: boolean;
     areSlotHintsActive: boolean;
@@ -26,6 +27,7 @@ const Game = (props: gameProps) => {
     const {
         numRows,
         numColumns,
+        maxIdenticalColorsInSolution,
         baseColorsDataString,
         areColorAmountHintsActive,
         areSlotHintsActive
@@ -45,10 +47,31 @@ const Game = (props: gameProps) => {
     
     const generateSolutionColors = useCallback((): Colors => {
         const baseColors: Colors = Colors.deserialize(baseColorsDataString);
-        return new Colors(range(numColumns).map(i => {
-            return baseColors[~~(Math.random()*baseColors.length -1)];
-        }));
-    }, [baseColorsDataString, numColumns])
+        const solutionColors: Color[] = [];
+        // Implicit assumption: All colors have different hues!
+        const colorHueCountPairs = baseColors.map((color: Color) => [color.hue, maxIdenticalColorsInSolution]);
+        console.log('colorHueCountPairs', colorHueCountPairs);
+        let slotsLeft = numColumns;
+        while (slotsLeft > 0) {
+            const randomColorHueCountPair = colorHueCountPairs[~~(Math.random()*(colorHueCountPairs.length))];
+            console.log('randomColorHueCountPair', randomColorHueCountPair);
+            // Decrement the count of the chosen color
+            randomColorHueCountPair[1] -= 1;
+            // If the count has reached zero, remove the pair from the array
+            if (randomColorHueCountPair[1] === 0) {
+                const pairIndex = colorHueCountPairs.indexOf(randomColorHueCountPair);
+                colorHueCountPairs.splice(pairIndex, 1);
+            }
+            console.log('colorHueCountPairs after reduction', colorHueCountPairs);
+            // Add the chosen color to the solution and decrement the slot counter
+            const solutionColor = baseColors.find((color: Color) => color.hue === randomColorHueCountPair[0]);
+            if (solutionColor !== undefined) {
+                solutionColors.push(solutionColor);
+                slotsLeft--;
+            }
+        }
+        return new Colors(solutionColors);
+    }, [baseColorsDataString, numColumns, maxIdenticalColorsInSolution])
     
     const rowKeys = range(numRows+1, 1);
 

@@ -17,6 +17,7 @@ const Settings = (props: settingsProps) => {
     const [numRows, setNumRows] = useState<number>(currentSettings.numRows);
     const [numColumns, setNumColumns] = useState<number>(currentSettings.numColumns);
     const [numColors, setNumColors] = useState<number>(currentSettings.numColors);
+    const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(currentSettings.maxIdenticalColorsInSolution);
     const [paletteName, setPaletteName] = useState<string>(currentSettings.paletteName);
     const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(currentSettings.areColorAmountHintsActive);
     const [areSlotHintsActive, setAreSlotHintsActive] = useState<boolean>(currentSettings.areSlotHintsActive);
@@ -39,6 +40,17 @@ const Settings = (props: settingsProps) => {
 
     const onChangeNumColors = (ev: any) => {
         setNumColors(+ev.target.value!);
+    }
+
+    const onChangeMaxIdenticalColorsInSolution = (ev: any) => {
+        let newMaxIdenticalColorsInSolution = +ev.target.value!;
+        // Clamp the value between 0 and numColumns
+        if (newMaxIdenticalColorsInSolution <= 0) {
+            newMaxIdenticalColorsInSolution = 1;
+        } else if (newMaxIdenticalColorsInSolution > numColumns) {
+            newMaxIdenticalColorsInSolution = numColumns;
+        }
+        setMaxIdenticalColorsInSolution(newMaxIdenticalColorsInSolution);
     }
 
     const onChangePaletteName = (ev: any) => {
@@ -64,6 +76,7 @@ const Settings = (props: settingsProps) => {
             numRows,
             numColumns,
             numColors,
+            maxIdenticalColorsInSolution,
             paletteName: selectedPaletteName,
             areColorAmountHintsActive,
             areSlotHintsActive,
@@ -85,6 +98,14 @@ const Settings = (props: settingsProps) => {
                 <div className="settings-row">
                     <label htmlFor="numColors">Number of colors: </label>
                     <input name='numColors' value={numColors} onChange={onChangeNumColors}/>
+                </div>
+                <div className="settings-row">
+                    <label htmlFor="maxIdenticalColorsInSolutions">Max. number of same colors: </label>
+                    <input
+                        name='maxIdenticalColorsInSolution'
+                        value={maxIdenticalColorsInSolution}
+                        onChange={onChangeMaxIdenticalColorsInSolution}
+                    />
                 </div>
                 <div className="settings-row">
                     <label htmlFor="paletteName">Color Palette: </label>

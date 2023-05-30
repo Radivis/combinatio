@@ -146,6 +146,7 @@ const Game = (props: gameProps) => {
                 <div>
                     <ColorBuckets
                         numColumns={numColumns}
+                        maxIdenticalColorsInSolution={maxIdenticalColorsInSolution}
                         baseColorsDataString={baseColorsDataString}
                         areColorAmountHintsActive={areColorAmountHintsActive}
                         shouldReset={ shouldClearBoard }

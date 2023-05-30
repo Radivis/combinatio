@@ -9,13 +9,19 @@ import './ColorBuckets.css';
 
 interface colorBucketsProps {
     numColumns: number;
+    maxIdenticalColorsInSolution: number;
     baseColorsDataString: colorsDataString;
     areColorAmountHintsActive: boolean;
     shouldReset: boolean;  
 }
 
 const ColorBuckets = (props: colorBucketsProps) => {
-    const { numColumns, baseColorsDataString, areColorAmountHintsActive, shouldReset } = props;
+    const {
+        maxIdenticalColorsInSolution,
+        baseColorsDataString,
+        areColorAmountHintsActive,
+        shouldReset
+    } = props;
 
     const baseColors = Colors.deserialize(baseColorsDataString);
 
@@ -38,7 +44,7 @@ const ColorBuckets = (props: colorBucketsProps) => {
                     {areColorAmountHintsActive ? <MinMaxControl
                         key={color.hue + 720}
                         absoluteMin={0}
-                        absoluteMax={numColumns}
+                        absoluteMax={maxIdenticalColorsInSolution}
                         shouldReset={shouldReset}
                         /> : null
                     }

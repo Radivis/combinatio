@@ -91,7 +91,6 @@ const initialGameState = {
         gameState: gameStates[0],
         timerSeconds: 0,
     }
-
 }
 
 const useGameStore = create<gameState & gameActions>()(
@@ -116,7 +115,6 @@ const useGameStore = create<gameState & gameActions>()(
         start: () => {
             set((state: gameState) => {
                 state.game.gameState = gameStates[1];
-                
             })
         },
         win: () => {

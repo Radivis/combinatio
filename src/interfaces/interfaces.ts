@@ -6,9 +6,17 @@ export interface hslColorObject {
     lightness: number;
 }
 
+export interface gameRow {
+    rowColorsDataString: colorsDataString,
+    numCorrectColor: number,
+    numFullyCorrect: number,
+}
+
 export interface game {
+    paletteColorsDataString: colorsDataString;
     activeRowIndex: number,
     solutionColorsDataString: colorsDataString;
+    gameRows: gameRow[];
     gameState: string;
     timerSeconds: number;
 }

@@ -27,7 +27,7 @@ type gameState = {
 
 type gameActions = {
     changeSettings: (newSettings: settings) => void,
-    setSolution: (solutionColors: Colors) => void,
+    generateSolution: () => void,
     placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => void,
     start: () => void,
     win: () => void,
@@ -115,9 +115,37 @@ const useGameStore = create<gameState & gameActions>()(
                 state.game.paletteColorsDataString = gamePaletteDataString;
             });
         },
-        setSolution: (solutionColors: Colors) => {
+        generateSolution: () => {
+            const state = get();
+            const { maxIdenticalColorsInSolution, numColumns } = state.settings;
+            const { paletteColorsDataString } = state.game;
+            const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
+            const solutionColors: Color[] = [];
+            // Implicit assumption: All colors have different hues!
+            const colorHueCountPairs = paletteColors
+                .map((color: Color) => [color.hue, maxIdenticalColorsInSolution]);
+            console.log('colorHueCountPairs', colorHueCountPairs);
+            let slotsLeft = numColumns;
+            while (slotsLeft > 0) {
+                const randomColorHueCountPair = colorHueCountPairs[~~(Math.random()*(colorHueCountPairs.length))];
+                console.log('randomColorHueCountPair', randomColorHueCountPair);
+                // Decrement the count of the chosen color
+                randomColorHueCountPair[1] -= 1;
+                // If the count has reached zero, remove the pair from the array
+                if (randomColorHueCountPair[1] === 0) {
+                    const pairIndex = colorHueCountPairs.indexOf(randomColorHueCountPair);
+                    colorHueCountPairs.splice(pairIndex, 1);
+                }
+                console.log('colorHueCountPairs after reduction', colorHueCountPairs);
+                // Add the chosen color to the solution and decrement the slot counter
+                const solutionColor = paletteColors.find((color: Color) => color.hue === randomColorHueCountPair[0]);
+                if (solutionColor !== undefined) {
+                    solutionColors.push(solutionColor);
+                    slotsLeft--;
+                }
+            }
             set((state: gameState) => {
-                state.game.solutionColorsDataString = Colors.serialize(solutionColors);
+                state.game.solutionColorsDataString = Colors.serialize(new Colors(solutionColors));
             });
         },
         placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => {
@@ -145,18 +173,34 @@ const useGameStore = create<gameState & gameActions>()(
             })
         },
         reset: () => {
+            const { generateSolution } = get();
             set((state: gameState) => {
                 state.game.gameState = gameStates[0];
                 state.game.activeRowIndex = 1;
                 state.game.timerSeconds = 0;
+                generateSolution();
             })
         },
         guess: () => {
             const state = get();
+            const { generateSolution, guess } = state;
             const gamePalette = Colors.deserialize(state.game.paletteColorsDataString);
             const solutionColors = Colors.deserialize(state.game.solutionColorsDataString);
             const rowIndex = state.game.activeRowIndex;
+            const { numColumns } = state.settings;
+            const { solutionColorsDataString } = state.game;
             const currentRowColors = Colors.deserialize(state.game.gameRows[rowIndex].rowColorsDataString);
+
+            // Generate solution colors on the fly, if they haven't been set, yet
+            if (solutionColorsDataString === defaultRowColorsDataString(numColumns)) {
+                generateSolution();
+                // Call guess again to restart the algorithm with a valid solution
+                guess();
+                return;
+            }
+
+            console.log("guessing solution: " + state.game.solutionColorsDataString);
+            console.log("guess: " + state.game.gameRows[rowIndex].rowColorsDataString);
 
             // Compute number of fully correct pins
             let _numFullyCorrect = 0;
@@ -188,7 +232,7 @@ const useGameStore = create<gameState & gameActions>()(
 
             // Compute new game state and activeRowIndex
             let newGameState = state.game.gameState;
-            let newActiveRowIndex = state.game.activeRowIndex+1;
+            let newActiveRowIndex = state.game.activeRowIndex + 1;
 
             // Start game once submitting the first row
             if (state.game.activeRowIndex === 1) newGameState = gameStates[1];

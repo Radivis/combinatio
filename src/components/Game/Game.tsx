@@ -24,7 +24,6 @@ const Game = (props: gameProps) => {
         numRows,
         maxIdenticalColorsInSolution,
         paletteColorsDataString,
-        setSolution,
     ] = useGameStore((state) => {
         const {
             areColorAmountHintsActive,
@@ -34,7 +33,6 @@ const Game = (props: gameProps) => {
             numRows,
         } = state.settings;
         const { paletteColorsDataString } = state.game;
-        const { setSolution } = state;
         return [
             areColorAmountHintsActive,
             areSlotHintsActive,
@@ -42,7 +40,6 @@ const Game = (props: gameProps) => {
             numRows,
             maxIdenticalColorsInSolution,
             paletteColorsDataString,
-            setSolution,
         ];
     })
 
@@ -52,57 +49,18 @@ const Game = (props: gameProps) => {
         return holeColor;
     })
 
-    const [activeRowIndex, setActiveRowIndex] = useState<number>(1);
-    const [solutionColors, setSolutionColors] = useState([...defaultStartColorArray]);
-    const [gameState, setGameState] = useState(gameStates[0]);
+    const { activeRowIndex, solutionColorsDataString, gameState, reset } = useGameStore((state) => {
+        const { activeRowIndex, solutionColorsDataString, gameState } = state.game;
+        const { reset } = state;
+        return { activeRowIndex, solutionColorsDataString, gameState, reset };
+    })
+
+    const solutionColors = Colors.deserialize(solutionColorsDataString);
     const [shouldClearBoard, setShouldClearBoard] = useState(false);
     const [timerSeconds, setTimerSeconds] = useState(0);
     
-    const generateSolutionColors = useCallback((): Colors => {
-        const baseColors: Colors = Colors.deserialize(paletteColorsDataString);
-        const solutionColors: Color[] = [];
-        // Implicit assumption: All colors have different hues!
-        const colorHueCountPairs = baseColors.map((color: Color) => [color.hue, maxIdenticalColorsInSolution]);
-        console.log('colorHueCountPairs', colorHueCountPairs);
-        let slotsLeft = numColumns;
-        while (slotsLeft > 0) {
-            const randomColorHueCountPair = colorHueCountPairs[~~(Math.random()*(colorHueCountPairs.length))];
-            console.log('randomColorHueCountPair', randomColorHueCountPair);
-            // Decrement the count of the chosen color
-            randomColorHueCountPair[1] -= 1;
-            // If the count has reached zero, remove the pair from the array
-            if (randomColorHueCountPair[1] === 0) {
-                const pairIndex = colorHueCountPairs.indexOf(randomColorHueCountPair);
-                colorHueCountPairs.splice(pairIndex, 1);
-            }
-            console.log('colorHueCountPairs after reduction', colorHueCountPairs);
-            // Add the chosen color to the solution and decrement the slot counter
-            const solutionColor = baseColors.find((color: Color) => color.hue === randomColorHueCountPair[0]);
-            if (solutionColor !== undefined) {
-                solutionColors.push(solutionColor);
-                slotsLeft--;
-            }
-        }
-        setSolution(new Colors(solutionColors));
-        return new Colors(solutionColors);
-    }, [paletteColorsDataString, numColumns, maxIdenticalColorsInSolution, setSolution])
-    
     const rowKeys = range(numRows+1, 1);
-
-    const restartGame = () => {
-        setGameState(gameStates[0]);
-        setSolutionColors(generateSolutionColors());
-        setActiveRowIndex(1);
-        setShouldClearBoard(true);
-        setTimerSeconds(0);
-    };
-
-    // Generate the solutionColors in a useEffect, so that they don't change after each re-render!
-    useEffect(() => {
-        const _solutionColors = generateSolutionColors();
-        setSolutionColors(_solutionColors);
-    }, [paletteColorsDataString, generateSolutionColors]);
-
+    
     useEffect(() => {
         // Start game timer
         const timer = setInterval(() => {
@@ -119,7 +77,7 @@ const Game = (props: gameProps) => {
         {gameState === gameStates[1] && <h2>Game running</h2>}
         {gameState === gameStates[2] && <h2>Game won!</h2>}
         {gameState === gameStates[3] && <h2>Game lost!</h2>}
-        <button onClick={restartGame}>
+        <button onClick={reset}>
             Start new game
         </button>
         <div className="game">
@@ -133,17 +91,9 @@ const Game = (props: gameProps) => {
                 {rowKeys.reverse().map(rowKey => <GameRow
                     key={rowKey}
                     rowKey={rowKey}
-                    numRows={numRows}
                     numColumns={numColumns}
-                    baseColorsDataString={paletteColorsDataString}
-                    initialColors={defaultStartColorArray}
-                    solutionColors={solutionColors}
                     activeRowIndex = {activeRowIndex}
-                    setActiveRowIndex= {setActiveRowIndex}
-                    gameState = {gameState}
-                    setGameState = {setGameState}
                     shouldClearBoard = {shouldClearBoard}
-                    setShouldClearBoard = {setShouldClearBoard}
                 />)}
                 {areSlotHintsActive && <SlotHints
                     numColumns={numColumns}

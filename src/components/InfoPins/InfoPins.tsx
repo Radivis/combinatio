@@ -6,20 +6,17 @@ import './InfoPins.css';
 interface infoPinsProps {
     rowKey: number;
     isActiveRow: boolean;
-    shouldClearBoard: boolean;
 };
 
 const InfoPins = (props: infoPinsProps) => {
     const {
         rowKey,
         isActiveRow,
-        shouldClearBoard
     } = props;
 
     const { numColumns, numCorrectColor, numFullyCorrect, guess } = useGameStore((state) => {
         const { guess } = state;
         const { numColumns }= state.settings;
-        console.log(`Info Pins row ${rowKey}: state.game.gameRows[rowKey]: ${JSON.stringify(state.game.gameRows[rowKey])}`)
         const { numCorrectColor, numFullyCorrect } = state.game.gameRows[rowKey];
         return { numColumns, numCorrectColor, numFullyCorrect, guess };
     })
@@ -29,8 +26,8 @@ const InfoPins = (props: infoPinsProps) => {
     const numWhite = numCorrectColor - numFullyCorrect;
 
     pinClasses.forEach((_pinClass: string, columnIndex: number) => {
-        if (numWhite > columnIndex && shouldClearBoard === false) pinClasses[columnIndex] += ' white';
-        else if (numCorrectColor > columnIndex && shouldClearBoard === false) pinClasses[columnIndex] += ' black';
+        if (numWhite > columnIndex) pinClasses[columnIndex] += ' white';
+        else if (numCorrectColor > columnIndex) pinClasses[columnIndex] += ' black';
         else pinClasses[columnIndex] += ' hole';
     });
 

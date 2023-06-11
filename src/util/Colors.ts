@@ -5,13 +5,15 @@ class Colors extends Array<Color> {
     constructor(colorData: ({color: Color | string, length: number} | Array<Color | string>)) {
         super();
         if (Array.isArray(colorData)) {
+            // Create Colors object from an Array
             colorData.forEach((color, index) => {
                 if (typeof color === 'string') this[index] = Color.deserialize(color);
                 else this[index] = color;
             });
         } else {
-            const { color } = colorData;
-            for (let i = 0; i < this.length; i++) {
+            // Create Colors object from a single color and a length
+            const { color, length } = colorData;
+            for (let i = 0; i < length; i++) {
                 if (typeof color === 'string') this[i] = Color.deserialize(color);
                 else this[i] = color;
             }

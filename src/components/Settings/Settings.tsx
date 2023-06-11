@@ -2,26 +2,25 @@ import { useState } from "react";
 
 import IntegerSelect from "./IntegerSelect";
 import { paletteNames } from "../../constants";
-import { settings } from "../../interfaces/interfaces";
+import useGameStore from "../../store/gameStore";
 
 import './Settings.css';
 
 interface settingsProps {
-    currentSettings: settings,
-    setSettings: Function,
     setActivePage: Function,
 }
 
 const Settings = (props: settingsProps) => {
-    const { currentSettings, setSettings, setActivePage } = props;
+    const { setActivePage } = props;
 
-    const [numRows, setNumRows] = useState<number>(currentSettings.numRows);
-    const [numColumns, setNumColumns] = useState<number>(currentSettings.numColumns);
-    const [numColors, setNumColors] = useState<number>(currentSettings.numColors);
-    const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(currentSettings.maxIdenticalColorsInSolution);
-    const [paletteName, setPaletteName] = useState<string>(currentSettings.paletteName);
-    const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(currentSettings.areColorAmountHintsActive);
-    const [areSlotHintsActive, setAreSlotHintsActive] = useState<boolean>(currentSettings.areSlotHintsActive);
+    const [settings, changeSettings] = useGameStore((state) => [state.settings, state.changeSettings]);
+    const [numRows, setNumRows] = useState<number>(settings.numRows);
+    const [numColumns, setNumColumns] = useState<number>(settings.numColumns);
+    const [numColors, setNumColors] = useState<number>(settings.numColors);
+    const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(settings.maxIdenticalColorsInSolution);
+    const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
+    const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(settings.areColorAmountHintsActive);
+    const [areSlotHintsActive, setAreSlotHintsActive] = useState<boolean>(settings.areSlotHintsActive);
 
     const validPaletteNames = paletteNames.filter(paletteName => {
         switch (paletteName) {
@@ -72,8 +71,7 @@ const Settings = (props: settingsProps) => {
         const formEntriesArray: any[] = Array.from(ev.target);
         const selectedPaletteName = formEntriesArray.find((inputElement: any) => inputElement.name === 'paletteName').value;
 
-        setSettings(() => {
-            return {
+        changeSettings({
             numRows,
             numColumns,
             numColors,
@@ -81,7 +79,7 @@ const Settings = (props: settingsProps) => {
             paletteName: selectedPaletteName,
             areColorAmountHintsActive,
             areSlotHintsActive,
-        }});
+        })
         setActivePage('game');
     }
 
@@ -134,7 +132,7 @@ const Settings = (props: settingsProps) => {
                         {validPaletteNames.map((paletteName: string) => <option
                             key={paletteName}
                             value={paletteName}
-                            selected={currentSettings.paletteName === paletteName}
+                            selected={settings.paletteName === paletteName}
                             >
                                 {paletteName}
                             </option>

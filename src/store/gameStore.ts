@@ -27,6 +27,8 @@ type gameState = {
 
 type gameActions = {
     changeSettings: (newSettings: settings) => void,
+    setSolution: (solutionColors: Colors) => void,
+    placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => void,
     start: () => void,
     win: () => void,
     lose: () => void,
@@ -65,7 +67,8 @@ const generatePalette = (numberColors: number, paletteName: string): Colors => {
     }
  }
 
-const initializeGameRows = (numRows: number, numColumns: number): gameRow[] => range(numRows).map((_rowIndex: number) => {
+const initializeGameRows = (numRows: number, numColumns: number): gameRow[] => range(numRows + 1)
+.map((_rowIndex: number) => {
     return {
         rowColorsDataString: defaultRowColorsDataString(numColumns),
         numCorrectColor: 0,
@@ -110,6 +113,18 @@ const useGameStore = create<gameState & gameActions>()(
             set((state: gameState) => {
                 state.settings = newSettings;
                 state.game.paletteColorsDataString = gamePaletteDataString;
+            });
+        },
+        setSolution: (solutionColors: Colors) => {
+            set((state: gameState) => {
+                state.game.solutionColorsDataString = Colors.serialize(solutionColors);
+            });
+        },
+        placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => {
+            const rowColors: Colors = Colors.deserialize(get().game.gameRows[row].rowColorsDataString);
+            rowColors[column] = color;
+            set((state: gameState) => {
+                state.game.gameRows[row].rowColorsDataString = Colors.serialize(rowColors);
             });
         },
         start: () => {

@@ -1,28 +1,28 @@
-import { range } from '../../util/range';
+import useGameStore from '../../store/gameStore';
 
 import './InfoPins.css';
 
 
 interface infoPinsProps {
     rowKey: number;
-    numColumns: number;
-    onSubmitRow: () => void;
     isActiveRow: boolean;
-    numCorrectColor: number;
-    numFullyCorrect: number;
     shouldClearBoard: boolean;
 };
 
 const InfoPins = (props: infoPinsProps) => {
     const {
         rowKey,
-        numColumns,
-        onSubmitRow,
         isActiveRow,
-        numCorrectColor,
-        numFullyCorrect,
         shouldClearBoard
     } = props;
+
+    const { numColumns, numCorrectColor, numFullyCorrect, guess } = useGameStore((state) => {
+        const { guess } = state;
+        const { numColumns }= state.settings;
+        console.log(`Info Pins row ${rowKey}: state.game.gameRows[rowKey]: ${JSON.stringify(state.game.gameRows[rowKey])}`)
+        const { numCorrectColor, numFullyCorrect } = state.game.gameRows[rowKey];
+        return { numColumns, numCorrectColor, numFullyCorrect, guess };
+    })
 
     const pinClasses: string[] = new Array(numColumns).fill('info-pin');
 
@@ -45,7 +45,7 @@ const InfoPins = (props: infoPinsProps) => {
         <div key={rowKey} className='info-pins-container' style={{width: infoPinContainerWidth}}>
             {
                 (isActiveRow === true) ? (
-                    <button key={rowKey} className="submit-button" type="button" onClick={onSubmitRow}>
+                    <button key={rowKey} className="submit-button" type="button" onClick={guess}>
                         ?
                     </button>
                 ) : (

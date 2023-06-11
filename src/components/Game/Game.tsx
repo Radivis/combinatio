@@ -9,29 +9,42 @@ import ColorBuckets from "../ColorBuckets/ColorBuckets";
 import SlotHints from "../SlotHints/SlotHints";
 import Timer from "../Timer/Timer";
 import { range } from "../../util/range";
+import useGameStore from "../../store/gameStore";
 
 import './Game.css';
-import { colorsDataString } from "../../interfaces/types";
 
 interface gameProps {
-    numColors: number;
-    numRows: number;
-    numColumns: number;
-    maxIdenticalColorsInSolution: number;
-    baseColorsDataString: colorsDataString;
-    areColorAmountHintsActive: boolean;
-    areSlotHintsActive: boolean;
 }
 
 const Game = (props: gameProps) => {
-    const {
-        numRows,
-        numColumns,
-        maxIdenticalColorsInSolution,
-        baseColorsDataString,
+    const [
         areColorAmountHintsActive,
-        areSlotHintsActive
-    } = props;
+        areSlotHintsActive,
+        numColumns,
+        numRows,
+        maxIdenticalColorsInSolution,
+        paletteColorsDataString,
+        setSolution,
+    ] = useGameStore((state) => {
+        const {
+            areColorAmountHintsActive,
+            areSlotHintsActive,
+            maxIdenticalColorsInSolution,
+            numColumns,
+            numRows,
+        } = state.settings;
+        const { paletteColorsDataString } = state.game;
+        const { setSolution } = state;
+        return [
+            areColorAmountHintsActive,
+            areSlotHintsActive,
+            numColumns,
+            numRows,
+            maxIdenticalColorsInSolution,
+            paletteColorsDataString,
+            setSolution,
+        ];
+    })
 
     const holeColor = Color.makeHsl(holeHue, holeSaturation, holeLightness);
 
@@ -46,7 +59,7 @@ const Game = (props: gameProps) => {
     const [timerSeconds, setTimerSeconds] = useState(0);
     
     const generateSolutionColors = useCallback((): Colors => {
-        const baseColors: Colors = Colors.deserialize(baseColorsDataString);
+        const baseColors: Colors = Colors.deserialize(paletteColorsDataString);
         const solutionColors: Color[] = [];
         // Implicit assumption: All colors have different hues!
         const colorHueCountPairs = baseColors.map((color: Color) => [color.hue, maxIdenticalColorsInSolution]);
@@ -70,8 +83,9 @@ const Game = (props: gameProps) => {
                 slotsLeft--;
             }
         }
+        setSolution(new Colors(solutionColors));
         return new Colors(solutionColors);
-    }, [baseColorsDataString, numColumns, maxIdenticalColorsInSolution])
+    }, [paletteColorsDataString, numColumns, maxIdenticalColorsInSolution, setSolution])
     
     const rowKeys = range(numRows+1, 1);
 
@@ -87,7 +101,7 @@ const Game = (props: gameProps) => {
     useEffect(() => {
         const _solutionColors = generateSolutionColors();
         setSolutionColors(_solutionColors);
-    }, [baseColorsDataString, generateSolutionColors]);
+    }, [paletteColorsDataString, generateSolutionColors]);
 
     useEffect(() => {
         // Start game timer
@@ -99,8 +113,6 @@ const Game = (props: gameProps) => {
         // Clear the timer
         return () => clearInterval(timer);
     }, [gameState]);
-
-    console.log('Game.tsx solution colors: ', solutionColors);
 
     return <div>
         {gameState === gameStates[0] && <h2>Game waiting</h2>}
@@ -123,11 +135,11 @@ const Game = (props: gameProps) => {
                     rowKey={rowKey}
                     numRows={numRows}
                     numColumns={numColumns}
-                    baseColorsDataString={baseColorsDataString}
+                    baseColorsDataString={paletteColorsDataString}
                     initialColors={defaultStartColorArray}
                     solutionColors={solutionColors}
                     activeRowIndex = {activeRowIndex}
-                    setActiveRowIndex={setActiveRowIndex}
+                    setActiveRowIndex= {setActiveRowIndex}
                     gameState = {gameState}
                     setGameState = {setGameState}
                     shouldClearBoard = {shouldClearBoard}
@@ -135,7 +147,7 @@ const Game = (props: gameProps) => {
                 />)}
                 {areSlotHintsActive && <SlotHints
                     numColumns={numColumns}
-                    baseColorsDataString={baseColorsDataString}
+                    baseColorsDataString={paletteColorsDataString}
                     shouldReset = { shouldClearBoard }
                 />}
             </div>
@@ -147,7 +159,7 @@ const Game = (props: gameProps) => {
                     <ColorBuckets
                         numColumns={numColumns}
                         maxIdenticalColorsInSolution={maxIdenticalColorsInSolution}
-                        baseColorsDataString={baseColorsDataString}
+                        baseColorsDataString={paletteColorsDataString}
                         areColorAmountHintsActive={areColorAmountHintsActive}
                         shouldReset={ shouldClearBoard }
                     />

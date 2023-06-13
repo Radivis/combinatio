@@ -21,6 +21,11 @@ export interface game {
     timerSeconds: number;
 }
 
+export interface hints {
+    colorsMinMax: [number, number][];
+    possibleSlotColorsDataString: colorsDataString[];
+}
+
 export interface settings {
     numColors: number,
     numRows: number,

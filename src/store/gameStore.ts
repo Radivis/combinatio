@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-import { game, gameRow, settings } from '../interfaces/interfaces';
+import { game, gameRow, hints, settings } from '../interfaces/interfaces';
 import {
     defaultNumColors,
     defaultNumColumns,
@@ -22,7 +22,8 @@ import { range } from '../util/range';
 
 type gameState = {
     settings: settings,
-    game: game
+    game: game,
+    hints: hints
 }
 
 type gameActions = {
@@ -34,6 +35,8 @@ type gameActions = {
     lose: () => void,
     reset: () => void,
     guess: () => void,
+    resetHints: () => void,
+    setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
 }
 
 const defaultRowColorsDataString = (numColumns: number): colorsDataString => Colors.serialize(new Colors(
@@ -93,6 +96,11 @@ const initialGameState = {
         gameRows: initializeGameRows(defaultNumRows, defaultNumColumns),
         gameState: gameStates[0],
         timerSeconds: 0,
+    },
+    hints: {
+        colorsMinMax: Array(defaultNumColors).fill([...[0, defaultNumColumns]]),
+        possibleSlotColorsDataString: Array(defaultNumColumns)
+            .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
     }
 }
 
@@ -100,6 +108,7 @@ const useGameStore = create<gameState & gameActions>()(
     devtools(immer((set, get) => ({
         settings: initialGameState.settings,
         game: initialGameState.game,
+        hints: initialGameState.hints,
         changeSettings: (newSettings: settings): void => {
             const oldState = get();
 
@@ -173,11 +182,12 @@ const useGameStore = create<gameState & gameActions>()(
             })
         },
         reset: () => {
-            const { generateSolution } = get();
+            const { generateSolution, resetHints } = get();
             set((state: gameState) => {
                 state.game.gameState = gameStates[0];
                 state.game.activeRowIndex = 1;
                 state.game.timerSeconds = 0;
+                resetHints();
                 generateSolution();
             })
         },
@@ -258,6 +268,21 @@ const useGameStore = create<gameState & gameActions>()(
                 state.game.gameState = newGameState;
                 state.game.activeRowIndex = newActiveRowIndex;
             })
+        },
+        resetHints: () => {
+            set((state: gameState) => {
+                state.hints = initialGameState.hints;
+            });
+        },
+        setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => {
+            set((state: gameState) => {
+                if (min !== undefined) {
+                    state.hints.colorsMinMax[colorIndex][0] = min;
+                }
+                if (max !== undefined) {
+                    state.hints.colorsMinMax[colorIndex][1] = max;
+                }
+            });
         },
     })))
 );

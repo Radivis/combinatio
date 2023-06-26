@@ -184,9 +184,17 @@ const useGameStore = create<gameState & gameActions>()(
         reset: () => {
             const { generateSolution, resetHints } = get();
             set((state: gameState) => {
+                const { numRows, numColumns } = state.settings;
+
+                // reset game state
                 state.game.gameState = gameStates[0];
                 state.game.activeRowIndex = 1;
                 state.game.timerSeconds = 0;
+
+                // reset all game rows
+                state.game.gameRows = initializeGameRows(numRows, numColumns);
+
+                // reset hints
                 resetHints();
                 generateSolution();
             })

@@ -24,11 +24,13 @@ const ColorBuckets = (props: colorBucketsProps) => {
         shouldReset
     } = props;
 
-    const { colorsMinMax, setColorMinMax } = useGameStore((state) => {
+    const { colorsMinMax, disabledColorsDataString, setColorMinMax } = useGameStore((state) => {
         const { setColorMinMax } = state;
-        const { colorsMinMax } = state.hints;
-        return { colorsMinMax, setColorMinMax };
+        const { colorsMinMax, disabledColorsDataString } = state.hints;
+        return { colorsMinMax, disabledColorsDataString, setColorMinMax };
     })
+
+    const disabledColors = Colors.deserialize(disabledColorsDataString);
 
     const baseColors = Colors.deserialize(baseColorsDataString);
 
@@ -45,8 +47,8 @@ const ColorBuckets = (props: colorBucketsProps) => {
                             key={color.hue}
                             color={color}
                             colorIndex={colorIndex}
-                            isOpacityToogleActive={true}
-                            isDisabled={colorsMinMax[colorIndex][1] === 0}
+                            isDisabledToggleActive={true}
+                            isDisabled={colorsMinMax[colorIndex][1] === 0 || disabledColors.isIncluded(color)}
                             shouldReset={shouldReset}
                         />
                     </Drag>

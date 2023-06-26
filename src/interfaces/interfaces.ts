@@ -23,7 +23,8 @@ export interface game {
 
 export interface hints {
     colorsMinMax: [number, number][];
-    possibleSlotColorsDataString: colorsDataString[];
+    possibleSlotColorsDataStrings: colorsDataString[];
+    disabledColorsDataString: colorsDataString;
 }
 
 export interface settings {

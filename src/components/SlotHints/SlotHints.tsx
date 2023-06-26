@@ -20,6 +20,7 @@ const SlotHints = (props: slotHintsProps) => {
             {columnArray.map(columnIndex => {
                 return <SlotHintColumn
                     key={columnIndex}
+                    columnIndex={columnIndex}
                     baseColorsDataString={baseColorsDataString}
                     shouldReset={shouldReset}
                 />

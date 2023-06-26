@@ -4,14 +4,23 @@ import Color from '../../util/Color';
 import ColorPin from '../ColorPin/ColorPin';
 
 import './SlotHintColumn.css';
+import useGameStore from '../../store/gameStore';
 
 interface slotHintColumnProps {
     baseColorsDataString: colorsDataString
+    columnIndex: number,
     shouldReset: boolean
 }
 
 const SlotHintColumn = (props: slotHintColumnProps) => {
-    const { baseColorsDataString, shouldReset } = props;
+    const { baseColorsDataString, columnIndex, shouldReset } = props;
+
+    const { possibleSlotColorsDataString } = useGameStore((state) => {
+        const possibleSlotColorsDataString = state.hints.possibleSlotColorsDataStrings[columnIndex];
+        return { possibleSlotColorsDataString };
+    });
+
+    const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataString);
 
     const baseColors = Colors.deserialize(baseColorsDataString);
 

@@ -20,6 +20,25 @@ class Colors extends Array<Color> {
         }
     }
 
+    public readonly isIncluded = (color: Color): boolean => {
+        for (let i = 0; i < this.length; i++) {
+            if (color.equals(this[i])) return true;
+        }
+        return false;
+    }
+
+    public readonly add = (color: Color) => {
+        if(!this.isIncluded(color)) {
+            this.push(color);
+        }
+    }
+
+    public readonly remove = (color: Color) => {
+        for (let i = 0; i < this.length; i++) {
+            if (color.equals(this[i])) this.splice(i, 1);
+        }
+    }
+
     public readonly copy = () => {
         return new Colors(this as Array<Color>);
     }

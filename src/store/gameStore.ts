@@ -17,7 +17,7 @@ import {
 } from '../constants';
 import Colors from '../util/Colors';
 import Color from '../util/Color';
-import { colorsDataString } from '../interfaces/types';
+import { colorDataString, colorsDataString } from '../interfaces/types';
 import { range } from '../util/range';
 
 type gameState = {
@@ -36,6 +36,7 @@ type gameActions = {
     reset: () => void,
     guess: () => void,
     resetHints: () => void,
+    toggleDisableColor: (color: Color) => void,
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
 }
 
@@ -99,8 +100,9 @@ const initialGameState = {
     },
     hints: {
         colorsMinMax: Array(defaultNumColors).fill([...[0, defaultNumColumns]]),
-        possibleSlotColorsDataString: Array(defaultNumColumns)
+        possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
+        disabledColorsDataString: '[]',
     }
 }
 
@@ -276,6 +278,18 @@ const useGameStore = create<gameState & gameActions>()(
                 state.game.gameState = newGameState;
                 state.game.activeRowIndex = newActiveRowIndex;
             })
+        },
+        toggleDisableColor: (color: Color) => {
+            const state = get();
+            const disabledColors = Colors.deserialize(state.hints.disabledColorsDataString);
+            set((state: gameState) => {
+                if (disabledColors.isIncluded(color)) {
+                    disabledColors.remove(color);
+                } else {
+                    disabledColors.add(color);
+                }
+                state.hints.disabledColorsDataString = Colors.serialize(disabledColors);
+            });
         },
         resetHints: () => {
             set((state: gameState) => {

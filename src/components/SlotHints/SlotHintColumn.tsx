@@ -15,16 +15,27 @@ interface slotHintColumnProps {
 const SlotHintColumn = (props: slotHintColumnProps) => {
     const { baseColorsDataString, columnIndex, shouldReset } = props;
 
-    const { disabledColorsDataString, possibleSlotColorsDataString } = useGameStore((state) => {
+    const { disabledColorsDataString, possibleSlotColorsDataString, setPossibleColors } = useGameStore((state) => {
         const possibleSlotColorsDataString = state.hints.possibleSlotColorsDataStrings[columnIndex];
         const disabledColorsDataString = state.hints.disabledColorsDataString;
-        return { disabledColorsDataString, possibleSlotColorsDataString };
+        const { setPossibleColors } = state;
+        return { disabledColorsDataString, possibleSlotColorsDataString, setPossibleColors };
     });
 
-    const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataString);
-
+    let possibleSlotColors = Colors.deserialize(possibleSlotColorsDataString);
     const baseColors = Colors.deserialize(baseColorsDataString);
     const disabledColors = Colors.deserialize(disabledColorsDataString);
+
+    const opacityToogleCallback = (color: Color) => {
+        if (possibleSlotColors.has(color)) {
+            // Color was possible, must now be removed from possible colors
+            possibleSlotColors.remove(color);
+        } else {
+            // Color was impossible, must now be added to possible colors
+            possibleSlotColors.add(color);
+        }
+        setPossibleColors(possibleSlotColors, columnIndex);
+    }
 
     return (
         <div className='slot-hint-column'>
@@ -34,7 +45,9 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
                         key={color.hue}
                         color={color}
                         isDisabled={disabledColors.has(color)}
+                        isOpaque={!possibleSlotColors.has(color)}
                         isOpacityToogleActive={true}
+                        opacityToogleCallback={opacityToogleCallback}
                         shouldReset={shouldReset}
                     />
                 );

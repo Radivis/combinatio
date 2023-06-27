@@ -37,6 +37,7 @@ type gameActions = {
     guess: () => void,
     resetHints: () => void,
     toggleDisableColor: (color: Color) => void,
+    setPossibleColors: (colors: Colors, columnIndex: number) => void,
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
 }
 
@@ -300,6 +301,11 @@ const useGameStore = create<gameState & gameActions>()(
                 }
                 state.hints.disabledColorsDataString = Colors.serialize(disabledColors);
             });
+        },
+        setPossibleColors: (colors: Colors, columnIndex: number) => {
+            set((state: gameState) => {
+                state.hints.possibleSlotColorsDataStrings[columnIndex] = Colors.serialize(colors);
+            })
         },
         resetHints: () => {
             set((state: gameState) => {

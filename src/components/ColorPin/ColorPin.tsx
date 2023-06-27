@@ -8,9 +8,11 @@ import useGameStore from "../../store/gameStore";
 interface ColorPinProps {
     color: Color;
     colorIndex?: number;
+    isDisabled?: boolean,
+    isOpaque?: boolean,
     isOpacityToogleActive?: boolean,
     isDisabledToggleActive?: boolean,
-    isDisabled?: boolean,
+    opacityToogleCallback?: (color: Color) => void,
     shouldReset?: boolean
 }
 
@@ -21,8 +23,12 @@ const ColorPin = (props: ColorPinProps) => {
         isOpacityToogleActive,
         isDisabledToggleActive,
         isDisabled,
-        shouldReset
+        shouldReset,
+        opacityToogleCallback,
     } = props;
+
+    let {isOpaque} = props;
+    if (isOpaque === undefined) isOpaque = false;
 
     const { colorsMinMax, setColorMinMax, toggleDisableColor } = useGameStore((state) => {
         const { setColorMinMax, toggleDisableColor } = state;
@@ -30,7 +36,7 @@ const ColorPin = (props: ColorPinProps) => {
         return { colorsMinMax, setColorMinMax, toggleDisableColor };
     })
 
-    const [isOpaque, setIsOpaque] = useState<boolean>(false);
+    // const [isOpaque, setIsOpaque] = useState<boolean>(false);
 
     const className=`colorPin ${isOpaque ? 'opaque' : ''} ${isDisabled ? 'disabled' : ''}`.trim();
 
@@ -40,26 +46,27 @@ const ColorPin = (props: ColorPinProps) => {
         else {
             if (isDisabledToggleActive) {
                 toggleDisableColor(color);
-            } else if (isOpacityToogleActive) {
-                setIsOpaque((prevIsOpaque) => {
-                    if (prevIsOpaque === true
-                        && colorIndex !== undefined
-                        && colorsMinMax[colorIndex][1] === 0
-                        ) {
-                        setColorMinMax({colorIndex, max: 1});
-                    } 
-                    return !prevIsOpaque
-                });
+            } else if (isOpacityToogleActive && opacityToogleCallback !== undefined) {
+                opacityToogleCallback(color);
+                // setIsOpaque((prevIsOpaque) => {
+                //     // if (prevIsOpaque === true
+                //     //     && colorIndex !== undefined
+                //     //     && colorsMinMax[colorIndex][1] === 0
+                //     //     ) {
+                //     //     setColorMinMax({colorIndex, max: 1});
+                //     // }
+                //     return !prevIsOpaque
+                // });
             }
         }
     }
 
     // Reset opacity
-    useEffect(() => {
-        if (shouldReset) {
-            setIsOpaque(false);
-        }
-    }, [shouldReset]);
+    // useEffect(() => {
+    //     if (shouldReset) {
+    //         setIsOpaque(false);
+    //     }
+    // }, [shouldReset]);
 
     return <div className={className} style={{backgroundColor: color.hsl}} onClick={onClick}></div>;
 };

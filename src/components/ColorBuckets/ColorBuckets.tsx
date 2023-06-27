@@ -48,7 +48,7 @@ const ColorBuckets = (props: colorBucketsProps) => {
                             color={color}
                             colorIndex={colorIndex}
                             isDisabledToggleActive={true}
-                            isDisabled={colorsMinMax[colorIndex][1] === 0 || disabledColors.isIncluded(color)}
+                            isDisabled={disabledColors.has(color)}
                             shouldReset={shouldReset}
                         />
                     </Drag>

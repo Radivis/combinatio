@@ -286,14 +286,17 @@ const useGameStore = create<gameState & gameActions>()(
             const paletteColors = Colors.deserialize(state.game.paletteColorsDataString);
             const colorIndex = paletteColors.indexOfColor(color);
             set((state: gameState) => {
-                if (disabledColors.isIncluded(color)) {
+                if (disabledColors.has(color)) {
                     // Enable color
                     disabledColors.remove(color);
-                    // set max of this color to 1
-                    state.hints.colorsMinMax[colorIndex][1] = 1;
+                    // set max of this color to absolute max
+                    state.hints.colorsMinMax[colorIndex][1] = state.settings.maxIdenticalColorsInSolution;
                 } else {
                     // disable color
                     disabledColors.add(color);
+                    // set min and max of this color to 0
+                    state.hints.colorsMinMax[colorIndex][0] = 0;
+                    state.hints.colorsMinMax[colorIndex][1] = 0;
                 }
                 state.hints.disabledColorsDataString = Colors.serialize(disabledColors);
             });
@@ -309,7 +312,28 @@ const useGameStore = create<gameState & gameActions>()(
                     state.hints.colorsMinMax[colorIndex][0] = min;
                 }
                 if (max !== undefined) {
+                    // Enable color, if max was 0 and is set to a different value
+                    if (state.hints.colorsMinMax[colorIndex][1] === 0 && max !== 0) {
+                        const paletteColors = Colors.deserialize(state.game.paletteColorsDataString);
+                        const disabledColors = Colors.deserialize(state.hints.disabledColorsDataString);
+                        const color = paletteColors[colorIndex];
+                        if (disabledColors.has(color)) {
+                            disabledColors.remove(color);
+                            state.hints.disabledColorsDataString = Colors.serialize(disabledColors);
+                        }
+                    }
                     state.hints.colorsMinMax[colorIndex][1] = max;
+                    // Disable color, if max is set to 0
+                    if (max === 0) {
+                        const paletteColors = Colors.deserialize(state.game.paletteColorsDataString);
+                        const disabledColors = Colors.deserialize(state.hints.disabledColorsDataString);
+                        const color = paletteColors[colorIndex];
+                        if (!disabledColors.has(color)) {
+                            disabledColors.add(color);
+                            state.hints.disabledColorsDataString = Colors.serialize(disabledColors);
+                        }
+                        
+                    }
                 }
             });
         },

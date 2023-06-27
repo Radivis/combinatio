@@ -20,7 +20,7 @@ class Colors extends Array<Color> {
         }
     }
 
-    public readonly isIncluded = (color: Color): boolean => {
+    public readonly has = (color: Color): boolean => {
         for (let i = 0; i < this.length; i++) {
             if (color.equals(this[i])) return true;
         }
@@ -36,7 +36,7 @@ class Colors extends Array<Color> {
     }
 
     public readonly add = (color: Color) => {
-        if(!this.isIncluded(color)) {
+        if(!this.has(color)) {
             this.push(color);
         }
     }

@@ -32,8 +32,6 @@ const ColorPin = (props: ColorPinProps) => {
 
     const [isOpaque, setIsOpaque] = useState<boolean>(false);
 
-    // if (isDisabled === true && !isOpaque) setIsOpaque(true);
-
     const className=`colorPin ${isOpaque ? 'opaque' : ''} ${isDisabled ? 'disabled' : ''}`.trim();
 
     const onClick = (ev: any) => {

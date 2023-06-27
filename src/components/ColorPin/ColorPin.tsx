@@ -35,18 +35,22 @@ const ColorPin = (props: ColorPinProps) => {
     const className=`colorPin ${isOpaque ? 'opaque' : ''} ${isDisabled ? 'disabled' : ''}`.trim();
 
     const onClick = (ev: any) => {
-        if (isDisabledToggleActive) {
-            toggleDisableColor(color);
-        } else if (isOpacityToogleActive) {
-            setIsOpaque((prevIsOpaque) => {
-                if (prevIsOpaque === true
-                    && colorIndex !== undefined
-                    && colorsMinMax[colorIndex][1] === 0
-                    ) {
-                    setColorMinMax({colorIndex, max: 1});
-                } 
-                return !prevIsOpaque
-            });
+        // enable color in any case by clicking, if it is disabled
+        if (isDisabled) toggleDisableColor(color);
+        else {
+            if (isDisabledToggleActive) {
+                toggleDisableColor(color);
+            } else if (isOpacityToogleActive) {
+                setIsOpaque((prevIsOpaque) => {
+                    if (prevIsOpaque === true
+                        && colorIndex !== undefined
+                        && colorsMinMax[colorIndex][1] === 0
+                        ) {
+                        setColorMinMax({colorIndex, max: 1});
+                    } 
+                    return !prevIsOpaque
+                });
+            }
         }
     }
 

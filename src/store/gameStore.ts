@@ -282,10 +282,17 @@ const useGameStore = create<gameState & gameActions>()(
         toggleDisableColor: (color: Color) => {
             const state = get();
             const disabledColors = Colors.deserialize(state.hints.disabledColorsDataString);
+            // get color index
+            const paletteColors = Colors.deserialize(state.game.paletteColorsDataString);
+            const colorIndex = paletteColors.indexOfColor(color);
             set((state: gameState) => {
                 if (disabledColors.isIncluded(color)) {
+                    // Enable color
                     disabledColors.remove(color);
+                    // set max of this color to 1
+                    state.hints.colorsMinMax[colorIndex][1] = 1;
                 } else {
+                    // disable color
                     disabledColors.add(color);
                 }
                 state.hints.disabledColorsDataString = Colors.serialize(disabledColors);

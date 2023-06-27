@@ -27,6 +27,14 @@ class Colors extends Array<Color> {
         return false;
     }
 
+    public readonly indexOfColor = (color: Color): number => {
+        let index = -1
+        for (let i = 0; i < this.length; i++) {
+            if (color.equals(this[i])) index = i;
+        }
+        return index;
+    }
+
     public readonly add = (color: Color) => {
         if(!this.isIncluded(color)) {
             this.push(color);

@@ -6,49 +6,36 @@ import IntegerControl from "../IntegerControl/IntegerControl";
 interface minMaxSliderProps {
     absoluteMin: number,
     absoluteMax: number,
-    shouldReset: boolean,
-    setMinCallback?: (min: number) => void,
-    setMaxCallback?: (max: number) => void,
+    min: number,
+    max: number,
+    setMin: (min: number) => void,
+    setMax: (max: number) => void,
 }
 
 const MinMaxControl = (props: minMaxSliderProps) => {
-    const { absoluteMin, absoluteMax, shouldReset, setMaxCallback, setMinCallback } = props;
-
-    const [min, setMin] = useState(absoluteMin);
-    const [max, setMax] = useState(absoluteMax);
-
-    const setMinExternal = (min: number) => {
-        if (setMinCallback !== undefined) setMinCallback(min);
-        setMin(min);
-    }
-
-    const setMaxExternal = (max: number) => {
-        if (setMaxCallback !== undefined) setMaxCallback(max);
-        setMax(max);
-    }
+    const {
+        absoluteMin,
+        absoluteMax,
+        min,
+        max,
+        setMax,
+        setMin } = props;
 
     const classArray: string[] = [];
     for (let i = absoluteMin; i < min; i++) classArray.push('slider-block empty');
     for (let i = min; i <= max; i++) classArray.push('slider-block filled');
     for (let i = max + 1; i <= absoluteMax; i++) classArray.push('slider-block empty');
 
-    useEffect(() => {
-        if (shouldReset) {
-            setMin(absoluteMin);
-            setMax(absoluteMax);
-        }
-    }, [shouldReset, absoluteMin, absoluteMax]);
-
     return <div className='slider'>
         Min:<IntegerControl
             integer={min}
             minValue={absoluteMin}
             maxValue = {absoluteMax}
-            setInteger={setMinExternal}
+            setInteger={setMin}
             isIncrementCodependent={true}
             isDecrementCodependent={false}
             codependentValue={max}
-            setCodependentValue={setMaxExternal}
+            setCodependentValue={setMax}
         />
         <div className='value-display'>
             {classArray.map((className, index) => <div className={className} key={index}>
@@ -60,11 +47,11 @@ const MinMaxControl = (props: minMaxSliderProps) => {
             integer={max}
             minValue={absoluteMin}
             maxValue={absoluteMax}
-            setInteger={setMaxExternal}
+            setInteger={setMax}
             isIncrementCodependent={false}
             isDecrementCodependent={true}
             codependentValue={min}
-            setCodependentValue={setMinExternal}
+            setCodependentValue={setMin}
         />
     </div>
 }

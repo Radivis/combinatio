@@ -55,10 +55,11 @@ const ColorBuckets = (props: colorBucketsProps) => {
                     {areColorAmountHintsActive ? <MinMaxControl
                         key={color.hue + 720}
                         absoluteMin={0}
-                        setMinCallback={(min:number) => setColorMinMax({ colorIndex, min })}
-                        setMaxCallback={(max:number) => setColorMinMax({ colorIndex, max })}
+                        min={colorsMinMax[colorIndex][0]}
+                        max={colorsMinMax[colorIndex][1]}
+                        setMin={(min:number) => setColorMinMax({ colorIndex, min })}
+                        setMax={(max:number) => setColorMinMax({ colorIndex, max })}
                         absoluteMax={maxIdenticalColorsInSolution}
-                        shouldReset={shouldReset}
                         /> : null
                     }
                 </div>

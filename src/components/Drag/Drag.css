@@ -1,0 +1,7 @@
+div[draggable=true] {
+   cursor: grab;
+}
+
+.no-drag {
+   cursor:alias
+}

@@ -56,20 +56,16 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         const paletteColors = Colors.deserialize(paletteColorsDataString);
         const colorIndex = paletteColors.indexOfColor(color);
 
-        // DEBUG
-        console.log("color", color, "numColorPossible", numColorPossible);
-        console.log("color", color, "colorsMinMax[columnIndex][1]", colorsMinMax[columnIndex][1]);
-
         if (possibleSlotColors.has(color)) {
             // Color was possible, must now be removed from possible colors
             possibleSlotColors.remove(color);
             // Decrement max of this color, if max in sync
-            setColorMinMax({colorIndex, max: numColorPossible - 1})
+            setColorMinMax({colorIndex, max: numColorPossible - 1});
         } else {
             // Color was impossible, must now be added to possible colors
             possibleSlotColors.add(color);
             // Indecement max of this color
-            setColorMinMax({colorIndex, max: numColorPossible + 1})
+            setColorMinMax({colorIndex, max: numColorPossible + 1});
         }
         setPossibleColors(possibleSlotColors, columnIndex);
     }

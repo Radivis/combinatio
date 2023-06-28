@@ -38,11 +38,14 @@ const ColorBuckets = (props: colorBucketsProps) => {
         {baseColors.map((color: Color, colorIndex: number) => {
             return (
                 <div key={color.hue - 1440} className='color-bucket'>
-                    <Drag key={color.hue - 720} dragPayloadObject={{
-                        hue: color.hue,
-                        saturation: color.saturation,
-                        lightness: color.lightness
-                    }}>
+                    <Drag
+                        key={color.hue - 720}
+                        isActive={!disabledColors.has(color)}
+                        dragPayloadObject={{
+                            hue: color.hue,
+                            saturation: color.saturation,
+                            lightness: color.lightness,
+                        }}>
                         <ColorPin
                             key={color.hue}
                             color={color}

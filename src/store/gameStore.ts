@@ -17,7 +17,7 @@ import {
 } from '../constants';
 import Colors from '../util/Colors';
 import Color from '../util/Color';
-import { colorDataString, colorsDataString } from '../interfaces/types';
+import { colorsDataString } from '../interfaces/types';
 import { range } from '../util/range';
 
 type gameState = {

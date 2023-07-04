@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, } from "react";
+import { useState, useEffect, } from "react";
 import { gameStates, holeHue, holeLightness, holeSaturation } from "../../constants";
 
 import GameRow from "../GameRow/GameRow";
@@ -67,7 +67,13 @@ const Game = (props: gameProps) => {
             setTimerSeconds((prevTimerSeconds) => prevTimerSeconds + 1)
         }, 1000);
         // Stop timer once the game has finished
-        if (gameState !== gameStates[1]) clearInterval(timer);
+        if (gameState !== gameStates[1]) {
+            clearInterval(timer);
+        }
+        if (gameState === gameStates[0]) {
+            // Reset time to zero, if game state is "starting"
+            setTimerSeconds(0);
+        }
         // Clear the timer
         return () => clearInterval(timer);
     }, [gameState]);

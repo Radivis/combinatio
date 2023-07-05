@@ -34,12 +34,14 @@ class Color {
     }
 
     public equals(otherColor: Color): boolean {
+        if (otherColor === undefined) return false;
         return this.hue === otherColor.hue &&
         this.saturation === otherColor.saturation &&
         this.lightness === otherColor.lightness;
     }
 
     public hasSameHue(otherColor: Color): boolean {
+        if (otherColor === undefined) return false;
         return this.hue === otherColor.hue;
     }
 

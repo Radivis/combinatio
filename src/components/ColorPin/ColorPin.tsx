@@ -30,8 +30,6 @@ const ColorPin = (props: ColorPinProps) => {
         return { toggleDisableColor };
     })
 
-    // const [isOpaque, setIsOpaque] = useState<boolean>(false);
-
     const className=`colorPin ${isOpaque ? 'opaque' : ''} ${isDisabled ? 'disabled' : ''}`.trim();
 
     const onClick = (ev: any) => {
@@ -46,7 +44,10 @@ const ColorPin = (props: ColorPinProps) => {
         }
     }
 
-    return <div className={className} style={{backgroundColor: color.hsl}} onClick={onClick}></div>;
+    // This case shouldn't happen, it's just for error handling
+    const style = color !== undefined ? {backgroundColor: color.hsl} : {};
+
+    return <div className={className} style={style} onClick={onClick}></div>;
 };
 
 export default ColorPin;

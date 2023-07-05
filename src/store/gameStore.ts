@@ -163,10 +163,38 @@ const useGameStore = create<gameState & gameActions>()(
             || oldState.settings.paletteName !== newSettings.paletteName) {
                 gamePaletteDataString = Colors.serialize(generatePalette(newSettings.numColors, newSettings.paletteName));
             }
-
+            
             set((state: gameState) => {
+                const {
+                    maxIdenticalColorsInSolution,
+                    numColumns,
+                    numColors,
+                    numRows
+                } = newSettings;
+
                 state.settings = newSettings;
+                
+                // reset game state
+                state.game.gameState = gameStates[0];
+                state.game.activeRowIndex = 1;
+                state.game.timerSeconds = 0;
+
+                // Regenerate game
                 state.game.paletteColorsDataString = gamePaletteDataString;
+                state.game.gameRows = initializeGameRows(numRows, numColumns);
+
+                // Regenerate possibleSlotColorsDataStrings
+                state.hints.possibleSlotColorsDataStrings =  Array(numColumns)
+                    .fill(gamePaletteDataString);
+
+                // Regenerate colorsMinMax
+                state.hints.colorsMinMax = Array(numColors)
+                    .fill([...[0, maxIdenticalColorsInSolution]]);
+
+                // Regenerate solution
+                const solutionColors = generateSolution(state);
+                state.game.solutionColorsDataString = Colors.serialize(solutionColors);
+
             }, false, 'changeSettings');
         },
         placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => {
@@ -235,9 +263,6 @@ const useGameStore = create<gameState & gameActions>()(
                 solutionColorsDataString = Colors.serialize(solutionColors);
             }
 
-            // console.log("guessing solution: " + state.game.solutionColorsDataString);
-            // console.log("guess: " + state.game.gameRows[rowIndex].rowColorsDataString);
-
             // Compute number of fully correct pins
             let _numFullyCorrect = 0;
             currentRowColors.forEach((color, index) => {
@@ -277,10 +302,8 @@ const useGameStore = create<gameState & gameActions>()(
             if (_numFullyCorrect === state.settings.numColumns) {
                 newGameState = gameStates[2];
                 newActiveRowIndex = -1;
-            }
-
-            // Check for running out of rows -> loss
-            if (state.game.activeRowIndex === state.settings.numRows) {
+                // Check for running out of rows -> loss
+            } else if (state.game.activeRowIndex === state.settings.numRows) {
                 newGameState = gameStates[3];
                 newActiveRowIndex = -1;
             }

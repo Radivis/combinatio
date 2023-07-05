@@ -16,6 +16,7 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
 
     const {
         disabledColorsDataString,
+        maxIdenticalColorsInSolution,
         paletteColorsDataString,
         possibleSlotColorsDataString,
         possibleSlotColorsDataStrings,
@@ -26,9 +27,11 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         const possibleSlotColorsDataString = state.hints.possibleSlotColorsDataStrings[columnIndex];
         const disabledColorsDataString = state.hints.disabledColorsDataString;
         const { paletteColorsDataString } = state.game;
+        const { maxIdenticalColorsInSolution } = state.settings;
         const { setPossibleColors, setColorMinMax } = state;
         return {
             disabledColorsDataString,
+            maxIdenticalColorsInSolution,
             paletteColorsDataString,
             possibleSlotColorsDataString,
             possibleSlotColorsDataStrings,
@@ -46,7 +49,8 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         let numColorPossible = 0;
         possibleSlotColorsDataStrings.forEach((_possibleSlotColorsDataString: colorsDataString) => {
             const _possibleSlotColors = Colors.deserialize(_possibleSlotColorsDataString);
-            if (_possibleSlotColors.has(color)) numColorPossible++;
+            if (_possibleSlotColors.has(color)
+            && numColorPossible < maxIdenticalColorsInSolution) numColorPossible++;
         })
         // get index of color in colorsPalette
         const paletteColors = Colors.deserialize(paletteColorsDataString);

@@ -56,7 +56,6 @@ const Game = (props: gameProps) => {
     })
 
     const solutionColors = Colors.deserialize(solutionColorsDataString);
-    const [shouldClearBoard, setShouldClearBoard] = useState(false);
     const [timerSeconds, setTimerSeconds] = useState(0);
     
     const rowKeys = range(numRows+1, 1);
@@ -99,12 +98,10 @@ const Game = (props: gameProps) => {
                     rowKey={rowKey}
                     numColumns={numColumns}
                     activeRowIndex = {activeRowIndex}
-                    shouldClearBoard = {shouldClearBoard}
                 />)}
                 {areSlotHintsActive && <SlotHints
                     numColumns={numColumns}
                     baseColorsDataString={paletteColorsDataString}
-                    shouldReset = { shouldClearBoard }
                 />}
             </div>
             <div className="side-panel">
@@ -117,7 +114,6 @@ const Game = (props: gameProps) => {
                         maxIdenticalColorsInSolution={maxIdenticalColorsInSolution}
                         baseColorsDataString={paletteColorsDataString}
                         areColorAmountHintsActive={areColorAmountHintsActive}
-                        shouldReset={ shouldClearBoard }
                     />
                 </div>
             </div>

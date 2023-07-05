@@ -7,7 +7,6 @@ interface gameRowProps {
     rowKey: number;
     numColumns: number;
     activeRowIndex: number;
-    shouldClearBoard: boolean;
 }
 
 const GameRow = (props: gameRowProps) => {

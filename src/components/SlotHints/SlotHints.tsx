@@ -7,11 +7,10 @@ import './SlotHints.css';
 interface slotHintsProps {
     numColumns: number;
     baseColorsDataString: colorsDataString
-    shouldReset: boolean
 }
 
 const SlotHints = (props: slotHintsProps) => {
-    const { numColumns, baseColorsDataString, shouldReset } = props;
+    const { numColumns, baseColorsDataString } = props;
 
     const columnArray = range(numColumns);
 
@@ -22,7 +21,6 @@ const SlotHints = (props: slotHintsProps) => {
                     key={columnIndex}
                     columnIndex={columnIndex}
                     baseColorsDataString={baseColorsDataString}
-                    shouldReset={shouldReset}
                 />
             })}
         </div>

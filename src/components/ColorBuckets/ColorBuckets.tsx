@@ -13,7 +13,6 @@ interface colorBucketsProps {
     maxIdenticalColorsInSolution: number;
     baseColorsDataString: colorsDataString;
     areColorAmountHintsActive: boolean;
-    shouldReset: boolean;  
 }
 
 const ColorBuckets = (props: colorBucketsProps) => {
@@ -21,7 +20,6 @@ const ColorBuckets = (props: colorBucketsProps) => {
         maxIdenticalColorsInSolution,
         baseColorsDataString,
         areColorAmountHintsActive,
-        shouldReset
     } = props;
 
     const { colorsMinMax, disabledColorsDataString, setColorMinMax } = useGameStore((state) => {
@@ -52,7 +50,6 @@ const ColorBuckets = (props: colorBucketsProps) => {
                             colorIndex={colorIndex}
                             isDisabledToggleActive={true}
                             isDisabled={disabledColors.has(color)}
-                            shouldReset={shouldReset}
                         />
                     </Drag>
                     {areColorAmountHintsActive ? <MinMaxControl

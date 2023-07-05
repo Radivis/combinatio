@@ -9,14 +9,12 @@ import useGameStore from '../../store/gameStore';
 interface slotHintColumnProps {
     baseColorsDataString: colorsDataString
     columnIndex: number,
-    shouldReset: boolean
 }
 
 const SlotHintColumn = (props: slotHintColumnProps) => {
-    const { baseColorsDataString, columnIndex, shouldReset } = props;
+    const { baseColorsDataString, columnIndex } = props;
 
     const {
-        colorsMinMax,
         disabledColorsDataString,
         paletteColorsDataString,
         possibleSlotColorsDataString,
@@ -28,10 +26,8 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         const possibleSlotColorsDataString = state.hints.possibleSlotColorsDataStrings[columnIndex];
         const disabledColorsDataString = state.hints.disabledColorsDataString;
         const { paletteColorsDataString } = state.game;
-        const { colorsMinMax } = state.hints;
         const { setPossibleColors, setColorMinMax } = state;
         return {
-            colorsMinMax,
             disabledColorsDataString,
             paletteColorsDataString,
             possibleSlotColorsDataString,
@@ -81,7 +77,6 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
                         isOpaque={!possibleSlotColors.has(color)}
                         isOpacityToogleActive={true}
                         opacityToogleCallback={opacityToogleCallback}
-                        shouldReset={shouldReset}
                     />
                 );
             })}

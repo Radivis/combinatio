@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import IntegerSelect from "./IntegerSelect";
 import { paletteNames } from "../../constants";
@@ -83,6 +83,16 @@ const Settings = (props: settingsProps) => {
         setActivePage('game');
     }
 
+    /**
+     * Check whether given the current setting a complete setting can be made,
+     * and if not, increases maxIdenticalColorsInSolution to the minimum required value
+     */
+    useEffect(() => {
+        if (numColors * maxIdenticalColorsInSolution < numColumns) {
+            setMaxIdenticalColorsInSolution(Math.ceil(numColumns / numColors));
+        }
+    }, [numColumns, numColors, maxIdenticalColorsInSolution]);
+
     return (
         <form onSubmit={onSubmit}>
             <div className="settings-table">
@@ -120,7 +130,7 @@ const Settings = (props: settingsProps) => {
                     <label htmlFor="maxIdenticalColorsInSolutions">Max. number of same colors: </label>
                     <IntegerSelect
                         name={'maxIdenticalColorsInSolutions'}   
-                        min={1}
+                        min={Math.ceil(numColumns / numColors) /** Any less is not possible! */}
                         max={numColumns}
                         defaultValue={maxIdenticalColorsInSolution}
                         onChange={onChangeMaxIdenticalColorsInSolution}

@@ -45,13 +45,13 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
     const baseColors = Colors.deserialize(baseColorsDataString);
     const disabledColors = Colors.deserialize(disabledColorsDataString);
 
-    // compute number of slots in which this color is possible
+    // compute number of slots in which this color is theoretically possible,
+    // disregarding the limitation given by maxIdenticalColorsInSolution
     const computeNumColorPossible = (color: Color): number => {
         let numColorPossible = 0;
         possibleSlotColorsDataStrings.forEach((_possibleSlotColorsDataString: colorsDataString) => {
             const _possibleSlotColors = Colors.deserialize(_possibleSlotColorsDataString);
-            if (_possibleSlotColors.has(color)
-            && numColorPossible < maxIdenticalColorsInSolution) numColorPossible++;
+            if (_possibleSlotColors.has(color)) numColorPossible++;
         })
         return numColorPossible;
     }

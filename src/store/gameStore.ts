@@ -600,7 +600,14 @@ const useGameStore = create<gameState & gameActions>()(
                             disabledColors.add(color);
                             state.hints.disabledColorsDataString = Colors.serialize(disabledColors);
                         }
-                        
+                        // remove this color from the possibleSlotColors for all slots
+                        // Note: This is a duplication of the code in toggleDisableColor
+                        // TODO: Check whether this can be solved via some kind of "reaction"
+                        state.hints.possibleSlotColorsDataStrings.forEach((possibleSlotColorsDataString, index) => {
+                        const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataString);
+                        possibleSlotColors.remove(color);
+                        state.hints.possibleSlotColorsDataStrings[index] = Colors.serialize(possibleSlotColors);
+                    })
                     }
                 }
             }, false, 'setColorMinMax');

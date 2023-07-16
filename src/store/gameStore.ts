@@ -199,7 +199,6 @@ const generateRandomGuess = (state: gameState): Colors => {
     }
 
     // Step 2: Fill slots until the colorsMinMax min numbers are satisfied
-    // TODO: This doesn't seem to be working reliably - fix this
     const colorMinPairs: [Color, number][] = paletteColors.map((color, colorIndex) => {
         const colorMin = colorsMinMax[colorIndex][0];
         return [color, colorMin];
@@ -207,6 +206,11 @@ const generateRandomGuess = (state: gameState): Colors => {
 
     // Fill random slots with necessary colors
     let numNecessaryColors = colorMinPairs.reduce((acc, colorMinPair) => colorMinPair[1] + acc, 0);
+
+    // Throw an error, if the number of necessary colors exceeds the number of columns!
+    if (numNecessaryColors > numColumns) {
+        throw new Error(`Cannot place more colors than there are slots! Check your min numbers!`)
+    }
 
     // Get the indices of the slots yet to be filled
     let remainingSlotIndices: number[] = [];
@@ -216,7 +220,7 @@ const generateRandomGuess = (state: gameState): Colors => {
 
     while (numNecessaryColors > 0) {
         // Pick necessary color
-        const necessaryColorPair = colorMinPairs.find((color, colorMin) => colorMin > 0)!;
+        const necessaryColorPair = colorMinPairs.find((colorPair) => colorPair[1] > 0)!;
         // const necessaryColorPairIndex = colorMinPairs.indexOf(necessaryColorPair);
         
         let isColorPlaced = false;
@@ -224,14 +228,26 @@ const generateRandomGuess = (state: gameState): Colors => {
         while (!isColorPlaced) {
             // Select slot, in which the color is possible to add that color in
             let remainingSlotIndex = remainingSlotIndices[metaIndex];
+
             if (Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex])
                 .has(necessaryColorPair[0])) {
                 // color is possible in this slot, add it!
-                const colorToPlace = necessaryColorPair[0]; 
+                const colorToPlace = necessaryColorPair[0];
+                
                 guessColors[remainingSlotIndex] = colorToPlace;
 
                 // decrement min of the selected Color-min-pair
-                colorMinPairs[remainingSlotIndex][1]--;
+                let isDecremented = false;
+                let pairIndex = 0;
+                while (!isDecremented) {
+                    const colorMinPair = colorMinPairs[pairIndex];
+                    if (colorMinPair[0].equals(colorToPlace)){
+                        colorMinPair[1]--;
+                        isDecremented = true;
+                    } else {
+                        pairIndex++;
+                    }
+                }
 
                 // decrement numNecessaryColors
                 numNecessaryColors--;
@@ -257,28 +273,16 @@ const generateRandomGuess = (state: gameState): Colors => {
         }
     }
 
-    // <DEBUG>
-    console.log('remainingSlotIndices', remainingSlotIndices);
-    // </DEBUG>
-
     // Step 3: Fill the remaining slots randomly, respecting the colorsMinMax max numbers
     while (remainingSlotIndices.length > 0) {
         // Select the first remaining slot
         const remainingSlotIndex = remainingSlotIndices[0];
-
-        // <DEBUG>
-        console.log('remainingSlotIndex', remainingSlotIndex);
-        // </DEBUG>
 
         // fill it with a random color that can still be placed
         let isColorPlaced = false;
         while (!isColorPlaced) {
             const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex]);
             
-            // <DEBUG>
-            console.log('possibleSlotColors', possibleSlotColors);
-            // </DEBUG>
-
             // eslint-disable-next-line no-loop-func
             possibleSlotColors.forEach(color => {
                 if (!isColorPlaced) {
@@ -313,10 +317,6 @@ const generateRandomGuess = (state: gameState): Colors => {
             })
         }
     }
-
-    // <DEBUG>
-    console.log(guessColors);
-    // </DEBUG>
 
     let areAllGuessColorsDefined = true;
     guessColors.forEach((color) => {

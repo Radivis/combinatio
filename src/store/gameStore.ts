@@ -199,6 +199,7 @@ const generateRandomGuess = (state: gameState): Colors => {
     }
 
     // Step 2: Fill slots until the colorsMinMax min numbers are satisfied
+    // TODO: This doesn't seem to be working reliably - fix this
     const colorMinPairs: [Color, number][] = paletteColors.map((color, colorIndex) => {
         const colorMin = colorsMinMax[colorIndex][0];
         return [color, colorMin];
@@ -269,7 +270,7 @@ const generateRandomGuess = (state: gameState): Colors => {
         console.log('remainingSlotIndex', remainingSlotIndex);
         // </DEBUG>
 
-        // fill it with the first colors that can still be placed
+        // fill it with a random color that can still be placed
         let isColorPlaced = false;
         while (!isColorPlaced) {
             const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex]);
@@ -281,17 +282,20 @@ const generateRandomGuess = (state: gameState): Colors => {
             // eslint-disable-next-line no-loop-func
             possibleSlotColors.forEach(color => {
                 if (!isColorPlaced) {
-                    // Check whether the color can still be placed
-                    const possibleColorMaxPair = colorMaxPairs.find((pair: [Color, number]) => {
-                        if (pair[1] > 0) return color.equals(pair[0]);
+                    // Check which the colors can still be placed
+                    const possibleColorMaxPairs = colorMaxPairs.filter((pair: [Color, number]) => {
+                        if (pair[1] > 0) return true;
                         return false;
                     })
 
-                    if (possibleColorMaxPair === undefined) {
+                    if (possibleColorMaxPairs.length === 0) {
                         throw new Error(`Cannot fill slot with index ${remainingSlotIndex}, because no remaining color could be found`);
                     }
 
-                    const colorToPlace = possibleColorMaxPair[0];
+                    // Select a random index to get a random possible color
+                    const randomIndex = Math.floor(Math.random() * possibleColorMaxPairs.length);
+
+                    const colorToPlace = possibleColorMaxPairs[randomIndex][0];
 
                     // Place the color in the remaining slot
                     guessColors[remainingSlotIndex] = colorToPlace;

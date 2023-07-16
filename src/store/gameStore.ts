@@ -204,6 +204,19 @@ const generateRandomGuess = (state: gameState): Colors => {
         return [color, colorMin];
     })
 
+    // Check whether necessary colors have already been placed in step 1
+    colorMinPairs.forEach((colorMinPair: [Color, number]) => {
+        if (colorMinPair[1] > 0) {
+            // Check each slot, whether the color already has been placed there
+            guessColors.forEach((color, slotIndex) => {
+                if (color !== undefined && colorMinPair[0].equals(color)) {
+                    // decrement colorMax
+                    colorMinPair[1]--;
+                }
+            })
+        }
+    })
+
     // Fill random slots with necessary colors
     let numNecessaryColors = colorMinPairs.reduce((acc, colorMinPair) => colorMinPair[1] + acc, 0);
 
@@ -225,7 +238,7 @@ const generateRandomGuess = (state: gameState): Colors => {
         
         let isColorPlaced = false;
         let metaIndex = 0;
-        while (!isColorPlaced) {
+        while (!isColorPlaced && remainingSlotIndices.length > 0) {
             // Select slot, in which the color is possible to add that color in
             let remainingSlotIndex = remainingSlotIndices[metaIndex];
 
@@ -270,6 +283,11 @@ const generateRandomGuess = (state: gameState): Colors => {
                     throw new Error("Cannot complete random guess, because no slot for a necessary color can be found!");
                 }
             }
+        }
+        // 
+        if (numNecessaryColors > 0) {
+            // Necessary colors could not be placed!
+            throw new Error("Cannot complete random guess, because there are no available slots left for the necessary colors! Check your min numbers!");
         }
     }
 

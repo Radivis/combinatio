@@ -33,6 +33,7 @@ type gameActions = {
     win: () => void,
     lose: () => void,
     reset: () => void,
+    randomGuess: () => void,
     guess: () => void,
     resetHints: () => void,
     toggleDisableColor: (color: Color) => void,
@@ -157,6 +158,172 @@ const generateSolution = (state: gameState): Colors => {
     return new Colors(solutionColors);
 }
 
+/**
+ * Generates a random guess for the currently active game row
+ * 
+ * @param {gameState} state - The current state of the game
+ * @returns {Colors} - the new random guess as Colors instance
+ */
+const generateRandomGuess = (state: gameState): Colors => {
+    const { numColumns } = state.settings;
+    const { paletteColorsDataString } = state.game;
+    const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
+    const {
+        colorsMinMax,
+        possibleSlotColorsDataStrings
+    } = state.hints;
+    // Start with a color array with all slots undefined
+    const guessColors: (Color | undefined)[] = Array(numColumns).fill(undefined);
+    // Implicit assumption: All colors have different hues!
+
+    // Step 1: Exclude disabled colors
+    // const enabledColors = new Colors((paletteColors as Color[])
+    //     .filter(color => !disabledColors.has(color)));
+
+    const colorMaxPairs: [Color, number][] = paletteColors.map((color, colorIndex) => {
+        const colorMax = colorsMinMax[colorIndex][1];
+        return [color, colorMax];
+    })
+
+    // Step 1: Fill all "certain" slots
+    for (let slotIndex = 0; slotIndex < numColumns; slotIndex++) {
+        const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[slotIndex]);
+        if (possibleSlotColors.length === 1) {
+            // if there is only one possible color, select that for this slot!
+            const colorToPlace = possibleSlotColors[0];
+            guessColors[slotIndex] = colorToPlace;
+
+            // decrement fitting colorMaxPair
+            colorMaxPairs.find((pair: [Color, number]) => pair[0].equals(colorToPlace))![1]--;
+        }
+    }
+
+    // Step 2: Fill slots until the colorsMinMax min numbers are satisfied
+    const colorMinPairs: [Color, number][] = paletteColors.map((color, colorIndex) => {
+        const colorMin = colorsMinMax[colorIndex][0];
+        return [color, colorMin];
+    })
+
+    // Fill random slots with necessary colors
+    let numNecessaryColors = colorMinPairs.reduce((acc, colorMinPair) => colorMinPair[1] + acc, 0);
+
+    // Get the indices of the slots yet to be filled
+    let remainingSlotIndices: number[] = [];
+    guessColors.forEach((color, index) => {
+        if (color === undefined) remainingSlotIndices.push(index);
+    })
+
+    while (numNecessaryColors > 0) {
+        // Pick necessary color
+        const necessaryColorPair = colorMinPairs.find((color, colorMin) => colorMin > 0)!;
+        // const necessaryColorPairIndex = colorMinPairs.indexOf(necessaryColorPair);
+        
+        let isColorPlaced = false;
+        let metaIndex = 0;
+        while (!isColorPlaced) {
+            // Select slot, in which the color is possible to add that color in
+            let remainingSlotIndex = remainingSlotIndices[metaIndex];
+            if (Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex])
+                .has(necessaryColorPair[0])) {
+                // color is possible in this slot, add it!
+                const colorToPlace = necessaryColorPair[0]; 
+                guessColors[remainingSlotIndex] = colorToPlace;
+
+                // decrement min of the selected Color-min-pair
+                colorMinPairs[remainingSlotIndex][1]--;
+
+                // decrement numNecessaryColors
+                numNecessaryColors--;
+
+                // decrement fitting colorMaxPair
+                colorMaxPairs.find((pair: [Color, number]) => pair[0].equals(colorToPlace))![1]--;
+
+                // flag the selected color as placed
+                isColorPlaced = true;
+
+                // remove slot from the remainingSlotIndices array
+                remainingSlotIndices.splice(metaIndex, 1);
+            } else {
+                // Color could not be placed, because it is not possible in that slot,
+                // go to the next remainingSlotIndex
+                metaIndex++;
+
+                // Check if the loop can still terminate, otherwise throw Error
+                if (metaIndex > remainingSlotIndices.length - 1) {
+                    throw new Error("Cannot complete random guess, because no slot for a necessary color can be found!");
+                }
+            }
+        }
+    }
+
+    // <DEBUG>
+    console.log('remainingSlotIndices', remainingSlotIndices);
+    // </DEBUG>
+
+    // Step 3: Fill the remaining slots randomly, respecting the colorsMinMax max numbers
+    while (remainingSlotIndices.length > 0) {
+        // Select the first remaining slot
+        const remainingSlotIndex = remainingSlotIndices[0];
+
+        // <DEBUG>
+        console.log('remainingSlotIndex', remainingSlotIndex);
+        // </DEBUG>
+
+        // fill it with the first colors that can still be placed
+        let isColorPlaced = false;
+        while (!isColorPlaced) {
+            const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex]);
+            
+            // <DEBUG>
+            console.log('possibleSlotColors', possibleSlotColors);
+            // </DEBUG>
+
+            // eslint-disable-next-line no-loop-func
+            possibleSlotColors.forEach(color => {
+                if (!isColorPlaced) {
+                    // Check whether the color can still be placed
+                    const possibleColorMaxPair = colorMaxPairs.find((pair: [Color, number]) => {
+                        if (pair[1] > 0) return color.equals(pair[0]);
+                        return false;
+                    })
+
+                    if (possibleColorMaxPair === undefined) {
+                        throw new Error(`Cannot fill slot with index ${remainingSlotIndex}, because no remaining color could be found`);
+                    }
+
+                    const colorToPlace = possibleColorMaxPair[0];
+
+                    // Place the color in the remaining slot
+                    guessColors[remainingSlotIndex] = colorToPlace;
+
+                    // decrement fitting colorMaxPair
+                    colorMaxPairs.find((pair: [Color, number]) => pair[0].equals(colorToPlace))![1]--;
+
+                    // flag the selected color as placed
+                    isColorPlaced = true;
+
+                    // remove slot from the remainingSlotIndices array
+                    const metaIndex = remainingSlotIndices.indexOf(remainingSlotIndex);
+                    remainingSlotIndices.splice(metaIndex, 1);
+                }
+            })
+        }
+    }
+
+    // <DEBUG>
+    console.log(guessColors);
+    // </DEBUG>
+
+    let areAllGuessColorsDefined = true;
+    guessColors.forEach((color) => {
+        if (color === undefined) areAllGuessColorsDefined = false;
+    })
+
+    if (!areAllGuessColorsDefined) throw new Error("Couldn't complete random guess");
+
+    return new Colors(guessColors as Color[]);
+}
+
 const resetHintsCallback = (set: Function, get: Function) => {
     const settings = get().settings;
     const { numColors, numColumns, maxIdenticalColorsInSolution } = settings;
@@ -270,6 +437,15 @@ const useGameStore = create<gameState & gameActions>()(
                 // generateSolution;
                 state.game.solutionColorsDataString = Colors.serialize(generateSolution(state));
             }, false, 'reset')
+        },
+        randomGuess: () => {
+            const state = get();
+            // Generate random guess
+            const randomGuess = generateRandomGuess(state);
+            // Place random guess in the currely active game row
+            set((state: gameState) => {
+                state.game.gameRows[state.game.activeRowIndex].rowColorsDataString = Colors.serialize(randomGuess);
+            }, false, 'randomGuess')
         },
         guess: () => {
             const state = get();

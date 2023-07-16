@@ -1,5 +1,6 @@
 .game-row {
     display: flex;
+    width: fit-content;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

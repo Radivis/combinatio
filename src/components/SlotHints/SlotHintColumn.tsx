@@ -81,6 +81,10 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         setPossibleColors(possibleSlotColors, columnIndex);
     }
 
+    const isHighlighted = (color: Color): boolean => {
+        return possibleSlotColors.length === 1 && possibleSlotColors.has(color);
+    }
+
     return (
         <div className='slot-hint-column'>
             {baseColors.map((color: Color) => {
@@ -91,6 +95,7 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
                         isDisabled={disabledColors.has(color)}
                         isOpaque={!possibleSlotColors.has(color)}
                         isOpacityToogleActive={true}
+                        isHighlighted={isHighlighted(color)}
                         opacityToogleCallback={opacityToogleCallback}
                     />
                 );

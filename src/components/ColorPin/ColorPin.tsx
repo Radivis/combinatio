@@ -8,6 +8,7 @@ interface ColorPinProps {
     colorIndex?: number;
     isDisabled?: boolean,
     isOpaque?: boolean,
+    isHighlighted?: boolean,
     isOpacityToogleActive?: boolean,
     isDisabledToggleActive?: boolean,
     opacityToogleCallback?: (color: Color) => void,
@@ -19,6 +20,7 @@ const ColorPin = (props: ColorPinProps) => {
         isOpacityToogleActive,
         isDisabledToggleActive,
         isDisabled,
+        isHighlighted,
         opacityToogleCallback,
     } = props;
 
@@ -30,7 +32,11 @@ const ColorPin = (props: ColorPinProps) => {
         return { toggleDisableColor };
     })
 
-    const className=`colorPin ${isOpaque ? 'opaque' : ''} ${isDisabled ? 'disabled' : ''}`.trim();
+    let className = 'colorPin ';
+    className += isOpaque ? 'opaque ' : '';
+    className += isDisabled ? 'disabled ' : '';
+    className += isHighlighted ? 'highlighted ' : '';
+    className.trim();
 
     const onClick = (ev: any) => {
         // enable color in any case by clicking, if it is disabled

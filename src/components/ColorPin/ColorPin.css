@@ -16,6 +16,12 @@
   cursor:alias
 }
 
+.highlighted {
+  border-width: 0px;
+  padding: 2px;
+  box-shadow: 0px 0px 10px 5px rgba(255,255,0,1);
+}
+
 .opaque {
-    opacity: 0.15;
+  opacity: 0.15;
 }

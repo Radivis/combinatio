@@ -41,6 +41,11 @@ type gameActions = {
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
 }
 
+// Doesn't seem to work!
+// const executeAction = (get: () => gameActions, action: keyof gameActions, params?: any[]) => {
+//     setTimeout(() => get()[action], 1);
+// }
+
 const defaultRowColorsDataString = (numColumns: number): colorsDataString => Colors.serialize(new Colors(
     {
         color: new Color(holeHue, holeSaturation, holeLightness),
@@ -86,6 +91,7 @@ const initialGameState = {
 		numColors: defaultNumColors,
 		numRows: defaultNumRows,
 		numColumns: defaultNumColumns,
+        numPrefilledRows: 0,
 		maxIdenticalColorsInSolution: defaultNumColumns,
 		paletteName: paletteNames[0],
 		areColorAmountHintsActive: true,
@@ -380,6 +386,7 @@ const useGameStore = create<gameState & gameActions>()(
                 const {
                     maxIdenticalColorsInSolution,
                     numColumns,
+                    numPrefilledRows,
                     numColors,
                     numRows
                 } = newSettings;
@@ -406,6 +413,12 @@ const useGameStore = create<gameState & gameActions>()(
                 // Regenerate solution
                 const solutionColors = generateSolution(state);
                 state.game.solutionColorsDataString = Colors.serialize(solutionColors);
+
+                // Prefill rows
+                for (let i = 1; i <= numPrefilledRows; i++) {
+                    state.game.gameRows[i].rowColorsDataString = Colors.serialize(generateRandomGuess(state));
+                    setTimeout(() => get().guess(), 1);
+                }
 
             }, false, 'changeSettings');
         },
@@ -458,6 +471,12 @@ const useGameStore = create<gameState & gameActions>()(
 
                 // generateSolution;
                 state.game.solutionColorsDataString = Colors.serialize(generateSolution(state));
+
+                // Prefill rows
+                for (let i = 1; i <= state.settings.numPrefilledRows; i++) {
+                    state.game.gameRows[i].rowColorsDataString = Colors.serialize(generateRandomGuess(state));
+                    setTimeout(() => get().guess(), 1);
+                }
             }, false, 'reset')
         },
         randomGuess: () => {

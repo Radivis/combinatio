@@ -31,6 +31,7 @@ export interface settings {
     numColors: number,
     numRows: number,
     numColumns: number,
+    numPrefilledRows: number,
     maxIdenticalColorsInSolution: number,
     paletteName: string,
     areColorAmountHintsActive: boolean,

@@ -16,6 +16,7 @@ const Settings = (props: settingsProps) => {
     const [settings, changeSettings] = useGameStore((state) => [state.settings, state.changeSettings]);
     const [numRows, setNumRows] = useState<number>(settings.numRows);
     const [numColumns, setNumColumns] = useState<number>(settings.numColumns);
+    const [numPrefilledRows, setNumPrefilledRows] = useState<number>(settings.numRows);
     const [numColors, setNumColors] = useState<number>(settings.numColors);
     const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(settings.maxIdenticalColorsInSolution);
     const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
@@ -36,6 +37,10 @@ const Settings = (props: settingsProps) => {
 
     const onChangeNumColumns = (ev: any) => {
         setNumColumns(+ev.target.value!);
+    }
+
+    const onChangeNumPrefilledRows = (ev: any) => {
+        setNumPrefilledRows(+ev.target.value!);
     }
 
     const onChangeNumColors = (ev: any) => {
@@ -74,6 +79,7 @@ const Settings = (props: settingsProps) => {
         changeSettings({
             numRows,
             numColumns,
+            numPrefilledRows,
             numColors,
             maxIdenticalColorsInSolution,
             paletteName: selectedPaletteName,
@@ -114,6 +120,16 @@ const Settings = (props: settingsProps) => {
                         max={20}
                         defaultValue={numColumns}
                         onChange={onChangeNumColumns}
+                    />
+                </div>
+                <div className="settings-row">
+                    <label htmlFor="numPrefilledRow">Number of already filled rows: </label>
+                    <IntegerSelect
+                        name={'numColumns'} 
+                        min={0}
+                        max={19}
+                        defaultValue={numColumns}
+                        onChange={onChangeNumPrefilledRows}
                     />
                 </div>
                 <div className="settings-row">

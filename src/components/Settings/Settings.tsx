@@ -16,7 +16,7 @@ const Settings = (props: settingsProps) => {
     const [settings, changeSettings] = useGameStore((state) => [state.settings, state.changeSettings]);
     const [numRows, setNumRows] = useState<number>(settings.numRows);
     const [numColumns, setNumColumns] = useState<number>(settings.numColumns);
-    const [numPrefilledRows, setNumPrefilledRows] = useState<number>(settings.numRows);
+    const [numPrefilledRows, setNumPrefilledRows] = useState<number>(settings.numPrefilledRows);
     const [numColors, setNumColors] = useState<number>(settings.numColors);
     const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(settings.maxIdenticalColorsInSolution);
     const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
@@ -128,7 +128,7 @@ const Settings = (props: settingsProps) => {
                         name={'numColumns'} 
                         min={0}
                         max={19}
-                        defaultValue={numColumns}
+                        defaultValue={numPrefilledRows}
                         onChange={onChangeNumPrefilledRows}
                     />
                 </div>

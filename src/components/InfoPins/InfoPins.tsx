@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDice, faQuestion } from '@fortawesome/free-solid-svg-icons';
+
 import useGameStore from '../../store/gameStore';
 
 import './InfoPins.css';
@@ -49,10 +52,10 @@ const InfoPins = (props: infoPinsProps) => {
                 (isActiveRow === true) ? (
                     <div className="game-row-buttons">
                         <button key={`${rowKey} random-button`} className="random-button" type="button" onClick={randomGuess}>
-                            ::
+                            <FontAwesomeIcon icon={faDice} />
                         </button>
                         <button key={`${rowKey} submit-button`} className="submit-button" type="button" onClick={guess}>
-                            ?
+                            <FontAwesomeIcon icon={faQuestion} />
                         </button>
                     </div>
                 ) : (

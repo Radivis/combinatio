@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+
 import './IntegerControl.css';
 
 interface integerControlProps {
@@ -37,9 +40,13 @@ const IntegerControl = (props: integerControlProps) => {
     }
 
     return <div className='integer-control'>
-        <button className='crement-button' onClick={onDecrement}>-</button>
+        <button className='crement-button' onClick={onDecrement}>
+            <FontAwesomeIcon icon={faMinus} />
+        </button>
         {integer}
-        <button className='crement-button' onClick={onIncrement}>+</button>
+        <button className='crement-button' onClick={onIncrement}>
+            <FontAwesomeIcon icon={faPlus} />
+        </button>
     </div>
 }
 

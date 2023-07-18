@@ -182,10 +182,6 @@ const generateRandomGuess = (state: gameState): Colors => {
     const guessColors: (Color | undefined)[] = Array(numColumns).fill(undefined);
     // Implicit assumption: All colors have different hues!
 
-    // Step 1: Exclude disabled colors
-    // const enabledColors = new Colors((paletteColors as Color[])
-    //     .filter(color => !disabledColors.has(color)));
-
     const colorMaxPairs: [Color, number][] = paletteColors.map((color, colorIndex) => {
         const colorMax = colorsMinMax[colorIndex][1];
         return [color, colorMax];
@@ -218,9 +214,6 @@ const generateRandomGuess = (state: gameState): Colors => {
                 if (color !== undefined && colorMinPair[0].equals(color)) {
                     // decrement colorMax
                     colorMinPair[1]--;
-                    // DEBUG
-                    console.log(`decremented colorMinPair of ${color.hue} to ${colorMinPair[1]}`);
-                    // DEBUG END
                 }
             })
         }
@@ -228,7 +221,6 @@ const generateRandomGuess = (state: gameState): Colors => {
 
     // Fill random slots with necessary colors
     let numNecessaryColors = colorMinPairs.reduce((acc, colorMinPair) => colorMinPair[1] + acc, 0);
-
     
     // Get the indices of the slots yet to be filled
     let remainingSlotIndices: number[] = [];
@@ -242,23 +234,12 @@ const generateRandomGuess = (state: gameState): Colors => {
     }
 
     while (numNecessaryColors > 0) {
-        // DEBUG
-        console.log('numNecessaryColors', numNecessaryColors);
-        // DEBUG END
-
         // Pick necessary color
         const necessaryColorPair = colorMinPairs.find((colorPair) => colorPair[1] > 0)!;
-        
-        // DEBUG
-        console.log('necessary color to place:', necessaryColorPair[0]);
-        // DEBUG END
 
         let isColorPlaced = false;
         let metaIndex = 0;
         while (!isColorPlaced && remainingSlotIndices.length > 0) {
-            // DEBUG
-            console.log('remainingSlotIndices.length', remainingSlotIndices.length);
-            // DEBUG END
             // Select slot, in which the color is possible to add that color in
             let remainingSlotIndex = remainingSlotIndices[metaIndex];
 
@@ -266,10 +247,6 @@ const generateRandomGuess = (state: gameState): Colors => {
                 .has(necessaryColorPair[0])) {
                 // color is possible in this slot, add it!
                 const colorToPlace = necessaryColorPair[0];
-
-                // DEBUG
-                console.log('colorToPlace', colorToPlace);
-                // DEBUG END
                 
                 guessColors[remainingSlotIndex] = colorToPlace;
 
@@ -281,9 +258,6 @@ const generateRandomGuess = (state: gameState): Colors => {
                     if (colorMinPair[0].equals(colorToPlace)){
                         colorMinPair[1]--;
                         isDecremented = true;
-                        // DEBUG
-                        console.log(`colorMinPair with index ${pairIndex} is ${colorMinPairs[pairIndex]}`);
-                        // DEBUG END
                     } else {
                         pairIndex++;
                     }

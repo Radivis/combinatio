@@ -7,8 +7,6 @@ import {
     defaultNumColors,
     defaultNumColumns,
     defaultNumRows,
-    defaultBaseSaturation,
-    defaultBaseLightness,
     gameStates,
     holeHue,
     holeLightness,
@@ -19,8 +17,11 @@ import Colors from '../util/Colors';
 import Color from '../util/Color';
 import { colorsDataString } from '../interfaces/types';
 import { range } from '../util/range';
+import generateRandomGuess from './functions/generateRandomGuess';
+import generatePalette, { generateRegularPalette } from './functions/generatePalette';
+import generateSolution from './functions/generateSolution';
 
-type gameState = {
+export type gameState = {
     settings: settings,
     game: game,
     hints: hints
@@ -52,30 +53,6 @@ const defaultRowColorsDataString = (numColumns: number): colorsDataString => Col
         length: numColumns
     }
 ));
-
-const generateRegularPalette = (numColors: number): Colors => {
-    return new Colors([...Array(numColors).keys()].map(i => {
-		return Color.makeHsl(i * 360/numColors, defaultBaseSaturation, defaultBaseLightness);
-    }))
-};
-
-const zanthiaPalette: Colors = new Colors([
-    Color.makeHsl(204, 72, 53),
-    Color.makeHsl(52, 94, 51),
-    Color.makeHsl(131, 74, 38),
-    Color.makeHsl(343, 88, 41),
-    Color.makeHsl(264, 67, 63),
-    Color.makeHsl(32, 59, 48)
-]);
-
-const generatePalette = (numberColors: number, paletteName: string): Colors => {
-    switch (paletteName) {
-        case paletteNames[1]:
-            return zanthiaPalette;
-        default:
-            return generateRegularPalette(numberColors);
-    }
- }
 
 const initializeGameRows = (numRows: number, numColumns: number): gameRow[] => range(numRows + 1)
 .map((_rowIndex: number) => {
@@ -113,281 +90,7 @@ const initialGameState = {
     }
 }
 
-/**
- * Generates a solution for the current game
- * 
- * @param {gameState} state - The current state of the game
- * @returns {Colors} - the new solution as Colors instance
- */
-const generateSolution = (state: gameState): Colors => {
-    const { maxIdenticalColorsInSolution, numColumns } = state.settings;
-    const { paletteColorsDataString } = state.game;
-    const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
-    const solutionColors: Color[] = [];
-    // Implicit assumption: All colors have different hues!
 
-    // Create an array of pairs that counts the number of remaining legal occurences of each color
-    const colorHueCountPairs = paletteColors
-        .map((color: Color) => [color.hue, maxIdenticalColorsInSolution]);
-
-    let slotsLeft = numColumns;
-    while (slotsLeft > 0) {
-        // Check whether a solution can be generated at all given the circumstances
-        if (colorHueCountPairs.length === 0) {
-            // Generate informative error message
-            let message = 'Cannot generate solution due to insufficient possible colors!';
-            message += `\nNumber of slots: ${numColumns}`;
-            message += `\nNumber of colors: ${paletteColors.length}`;
-            message += `\nMax number of identical colors in solution: ${maxIdenticalColorsInSolution}`;
-            message += `\nArithmetic constraint: `
-            message += `${paletteColors.length} * ${maxIdenticalColorsInSolution} >= ${numColumns}`;
-            message += ` is ${paletteColors.length * maxIdenticalColorsInSolution >= numColumns}`;
-            throw new Error(message);
-        }
-
-        // Pick a random color from the array, by picking a random index
-        const randomColorHueCountPair = colorHueCountPairs[~~(Math.random()*(colorHueCountPairs.length))];
-        // Decrement the count of the chosen color
-        randomColorHueCountPair[1] -= 1;
-        // If the count has reached zero, remove the pair from the array
-        if (randomColorHueCountPair[1] === 0) {
-            const pairIndex = colorHueCountPairs.indexOf(randomColorHueCountPair);
-            colorHueCountPairs.splice(pairIndex, 1);
-        }
-        // Add the chosen color to the solution and decrement the slot counter
-        const solutionColor = paletteColors.find((color: Color) => color.hue === randomColorHueCountPair[0]);
-        if (solutionColor !== undefined) {
-            solutionColors.push(solutionColor);
-            slotsLeft--;
-        }
-    }
-    return new Colors(solutionColors);
-}
-
-/**
- * Generates a random guess for the currently active game row
- * 
- * @param {gameState} state - The current state of the game
- * @returns {Colors} - the new random guess as Colors instance
- */
-const generateRandomGuess = (state: gameState): Colors => {
-    const { numColumns } = state.settings;
-    const { paletteColorsDataString, activeRowIndex, gameRows } = state.game;
-    const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
-    const {
-        colorsMinMax,
-        possibleSlotColorsDataStrings
-    } = state.hints;
-    // Start with a color array with all slots undefined
-    const guessColors: (Color | undefined)[] = Array(numColumns).fill(undefined);
-    // Implicit assumption: All colors have different hues!
-
-    const colorMaxPairs: [Color, number][] = paletteColors.map((color, colorIndex) => {
-        const colorMax = colorsMinMax[colorIndex][1];
-        return [color, colorMax];
-    })
-
-    // Step 1: Fill all "certain" slots
-    for (let slotIndex = 0; slotIndex < numColumns; slotIndex++) {
-        const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[slotIndex]);
-        if (possibleSlotColors.length === 1) {
-            // if there is only one possible color, select that for this slot!
-            const colorToPlace = possibleSlotColors[0];
-            guessColors[slotIndex] = colorToPlace;
-
-            // decrement fitting colorMaxPair
-            colorMaxPairs.find((pair: [Color, number]) => pair[0].equals(colorToPlace))![1]--;
-        }
-    }
-
-    // Step 2: Fill slots until the colorsMinMax min numbers are satisfied
-    const colorMinPairs: [Color, number][] = paletteColors.map((color, colorIndex) => {
-        const colorMin = colorsMinMax[colorIndex][0];
-        return [color, colorMin];
-    })
-
-    // Check whether necessary colors have already been placed in step 1
-    colorMinPairs.forEach((colorMinPair: [Color, number]) => {
-        if (colorMinPair[1] > 0) {
-            // Check each slot, whether the color already has been placed there
-            guessColors.forEach((color, slotIndex) => {
-                if (color !== undefined && colorMinPair[0].equals(color)) {
-                    // decrement colorMax
-                    colorMinPair[1]--;
-                }
-            })
-        }
-    })
-
-    // Fill random slots with necessary colors
-    let numNecessaryColors = colorMinPairs.reduce((acc, colorMinPair) => colorMinPair[1] + acc, 0);
-    
-    // Get the indices of the slots yet to be filled
-    let remainingSlotIndices: number[] = [];
-    guessColors.forEach((color, index) => {
-        if (color === undefined) remainingSlotIndices.push(index);
-    })
-
-    // Throw an error, if the number of necessary colors exceeds the number of columns!
-    if (numNecessaryColors > remainingSlotIndices.length) {
-        throw new Error(`Cannot place more colors than there are free slots! Check your min numbers!`)
-    }
-
-    while (numNecessaryColors > 0) {
-        // Filter the pairs to the colors that need to be placed
-        const necessaryColorPairs = colorMinPairs.filter((colorPair) => colorPair[1] > 0);
-        
-        // Pick a necessary color
-
-        // Compute the number of possible slots for each color
-        const necessaryColorPossibleSlotPairs = necessaryColorPairs.map((pair): [Color, number] => {
-            const color = pair[0];
-            let possibleSlotsForColor = 0;
-            for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
-                if (Colors.deserialize(possibleSlotColorsDataStrings[columnIndex])
-                .has(pair[0]) && guessColors[columnIndex] === undefined) {
-                    possibleSlotsForColor++;
-                }
-            }
-            return [color, possibleSlotsForColor];
-        })
-        
-        // Start with the color with the lowest number of possible slots
-        necessaryColorPossibleSlotPairs.sort((a: [Color, number], b: [Color, number]) => {
-            return a[1]-b[1];
-        });
-
-        const necessaryColor = necessaryColorPossibleSlotPairs[0][0];
-
-        const necessaryColorPair = necessaryColorPairs.find((pair: [Color, number]) => {
-            return pair[0].equals(necessaryColor);
-        })!;
-
-        let isColorPlaced = false;
-        const checkedSlotIndices = [];
-        while (!isColorPlaced && remainingSlotIndices.length > 0) {
-            // Select a random slot, in which the color is possible to add that color in
-            const randomIndex = Math.floor(Math.random() * remainingSlotIndices.length);
-            let remainingSlotIndex = remainingSlotIndices[randomIndex];
-
-            if (Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex])
-                .has(necessaryColorPair[0])) {
-                // color is possible in this slot, add it!
-                const colorToPlace = necessaryColorPair[0];
-                
-                guessColors[remainingSlotIndex] = colorToPlace;
-
-                // decrement min of the selected Color-min-pair
-                let isDecremented = false;
-                let pairIndex = 0;
-                while (!isDecremented) {
-                    const colorMinPair = colorMinPairs[pairIndex];
-                    if (colorMinPair[0].equals(colorToPlace)){
-                        colorMinPair[1]--;
-                        isDecremented = true;
-                    } else {
-                        pairIndex++;
-                    }
-                }
-
-                // decrement numNecessaryColors
-                numNecessaryColors--;
-
-                // decrement fitting colorMaxPair
-                colorMaxPairs.find((pair: [Color, number]) => pair[0].equals(colorToPlace))![1]--;
-
-                // flag the selected color as placed
-                isColorPlaced = true;
-
-                // remove slot from the remainingSlotIndices array
-                remainingSlotIndices.splice(randomIndex, 1);
-            } 
-
-            // Add the current randomIndex to the checkedSlotIndices to force this loop to terminate
-            checkedSlotIndices.push(randomIndex);
-        }
-        if (numNecessaryColors > remainingSlotIndices.length) {
-            // Necessary colors could not be placed!
-            throw new Error("Cannot complete random guess, because there are no available slots left for the necessary colors! Check your min numbers!");
-        }
-    }
-
-    // Step 3: Fill the remaining slots randomly, respecting the colorsMinMax max numbers
-    while (remainingSlotIndices.length > 0) {
-        // Select the first remaining slot
-        const remainingSlotIndex = remainingSlotIndices[0];
-
-        // fill it with a random color that can still be placed
-        let isColorPlaced = false;
-        while (!isColorPlaced) {
-            const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex]);
-            
-            // eslint-disable-next-line no-loop-func
-            possibleSlotColors.forEach(color => {
-                if (!isColorPlaced) {
-                    // Check which the colors can still be placed
-                    const possibleColorMaxPairs = colorMaxPairs.filter((pair: [Color, number]) => {
-                        if (pair[1] > 0 && possibleSlotColors.has(pair[0])) return true;
-                        return false;
-                    })
-
-                    if (possibleColorMaxPairs.length === 0) {
-                        throw new Error(`Cannot fill slot with index ${remainingSlotIndex}, because no remaining color could be found`);
-                    }
-
-                    // Select a random index to get a random possible color
-                    const randomIndex = Math.floor(Math.random() * possibleColorMaxPairs.length);
-
-                    const colorToPlace = possibleColorMaxPairs[randomIndex][0];
-
-                    // Place the color in the remaining slot
-                    guessColors[remainingSlotIndex] = colorToPlace;
-
-                    // decrement fitting colorMaxPair
-                    colorMaxPairs.find((pair: [Color, number]) => pair[0].equals(colorToPlace))![1]--;
-
-                    // flag the selected color as placed
-                    isColorPlaced = true;
-
-                    // remove slot from the remainingSlotIndices array
-                    const metaIndex = remainingSlotIndices.indexOf(remainingSlotIndex);
-                    remainingSlotIndices.splice(metaIndex, 1);
-                }
-            })
-        }
-    }
-
-    let areAllGuessColorsDefined = true;
-    guessColors.forEach((color) => {
-        if (color === undefined) areAllGuessColorsDefined = false;
-    })
-
-    if (!areAllGuessColorsDefined) throw new Error("Couldn't complete random guess");
-
-    // Check is this guess has already been placed
-    let isAlreadyPlaced = false;
-
-    for (let rowIndex = 1; rowIndex < activeRowIndex; rowIndex++) {
-        const placedColorRow = Colors.deserialize(gameRows[rowIndex].rowColorsDataString);
-        if (new Colors(guessColors as Color[]).equals(placedColorRow)) isAlreadyPlaced = true;
-    }
-
-    if (isAlreadyPlaced === true) {
-        console.log("Guess already placed!");
-    }
-
-    // if already placed, get a new guess
-    try {
-        if (isAlreadyPlaced === true) return generateRandomGuess(state);
-    } catch (error: unknown) {
-        if (error instanceof Error && error.message === "too much recursion") {
-            throw new Error("No possible remaining guess differs from any of the previous guesses!");
-        }
-        throw error;
-    }
-
-    return new Colors(guessColors as Color[]);
-}
 
 const resetHintsCallback = (set: Function, get: Function) => {
     const settings = get().settings;

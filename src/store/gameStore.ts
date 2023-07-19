@@ -234,8 +234,34 @@ const generateRandomGuess = (state: gameState): Colors => {
     }
 
     while (numNecessaryColors > 0) {
-        // Pick necessary color
-        const necessaryColorPair = colorMinPairs.find((colorPair) => colorPair[1] > 0)!;
+        // Filter the pairs to the colors that need to be placed
+        const necessaryColorPairs = colorMinPairs.filter((colorPair) => colorPair[1] > 0);
+        
+        // Pick a necessary color
+
+        // Compute the number of possible slots for each color
+        const necessaryColorPossibleSlotPairs = necessaryColorPairs.map((pair): [Color, number] => {
+            const color = pair[0];
+            let possibleSlotsForColor = 0;
+            for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+                if (Colors.deserialize(possibleSlotColorsDataStrings[columnIndex])
+                .has(pair[0]) && guessColors[columnIndex] === undefined) {
+                    possibleSlotsForColor++;
+                }
+            }
+            return [color, possibleSlotsForColor];
+        })
+        
+        // Start with the color with the lowest number of possible slots
+        necessaryColorPossibleSlotPairs.sort((a: [Color, number], b: [Color, number]) => {
+            return a[1]-b[1];
+        });
+
+        const necessaryColor = necessaryColorPossibleSlotPairs[0][0];
+
+        const necessaryColorPair = necessaryColorPairs.find((pair: [Color, number]) => {
+            return pair[0].equals(necessaryColor);
+        })!;
 
         let isColorPlaced = false;
         const checkedSlotIndices = [];

@@ -327,7 +327,7 @@ const generateRandomGuess = (state: gameState): Colors => {
                 if (!isColorPlaced) {
                     // Check which the colors can still be placed
                     const possibleColorMaxPairs = colorMaxPairs.filter((pair: [Color, number]) => {
-                        if (pair[1] > 0) return true;
+                        if (pair[1] > 0 && possibleSlotColors.has(pair[0])) return true;
                         return false;
                     })
 

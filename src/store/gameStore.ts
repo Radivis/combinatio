@@ -238,10 +238,11 @@ const generateRandomGuess = (state: gameState): Colors => {
         const necessaryColorPair = colorMinPairs.find((colorPair) => colorPair[1] > 0)!;
 
         let isColorPlaced = false;
-        let metaIndex = 0;
+        const checkedSlotIndices = [];
         while (!isColorPlaced && remainingSlotIndices.length > 0) {
-            // Select slot, in which the color is possible to add that color in
-            let remainingSlotIndex = remainingSlotIndices[metaIndex];
+            // Select a random slot, in which the color is possible to add that color in
+            const randomIndex = Math.floor(Math.random() * remainingSlotIndices.length);
+            let remainingSlotIndex = remainingSlotIndices[randomIndex];
 
             if (Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex])
                 .has(necessaryColorPair[0])) {
@@ -273,17 +274,11 @@ const generateRandomGuess = (state: gameState): Colors => {
                 isColorPlaced = true;
 
                 // remove slot from the remainingSlotIndices array
-                remainingSlotIndices.splice(metaIndex, 1);
-            } else {
-                // Color could not be placed, because it is not possible in that slot,
-                // go to the next remainingSlotIndex
-                metaIndex++;
+                remainingSlotIndices.splice(randomIndex, 1);
+            } 
 
-                // Check if the loop can still terminate, otherwise throw Error
-                if (metaIndex > remainingSlotIndices.length - 1) {
-                    throw new Error("Cannot complete random guess, because no slot for a necessary color can be found!");
-                }
-            }
+            // Add the current randomIndex to the checkedSlotIndices to force this loop to terminate
+            checkedSlotIndices.push(randomIndex);
         }
         if (numNecessaryColors > remainingSlotIndices.length) {
             // Necessary colors could not be placed!

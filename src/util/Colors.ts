@@ -41,6 +41,15 @@ class Colors extends Array<Color> {
         }
     }
 
+    public readonly equals = (colors: Colors): boolean => {
+        let i = 0;
+        while (i < colors.length) {
+            if (!this[i].equals(colors[i])) return false;
+            i++;
+        }
+        return true;
+    }
+
     public readonly remove = (color: Color) => {
         for (let i = 0; i < this.length; i++) {
             if (color.equals(this[i])) this.splice(i, 1);

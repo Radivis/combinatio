@@ -172,7 +172,7 @@ const generateSolution = (state: gameState): Colors => {
  */
 const generateRandomGuess = (state: gameState): Colors => {
     const { numColumns } = state.settings;
-    const { paletteColorsDataString } = state.game;
+    const { paletteColorsDataString, activeRowIndex, gameRows } = state.game;
     const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
     const {
         colorsMinMax,
@@ -363,6 +363,28 @@ const generateRandomGuess = (state: gameState): Colors => {
     })
 
     if (!areAllGuessColorsDefined) throw new Error("Couldn't complete random guess");
+
+    // Check is this guess has already been placed
+    let isAlreadyPlaced = false;
+
+    for (let rowIndex = 1; rowIndex < activeRowIndex; rowIndex++) {
+        const placedColorRow = Colors.deserialize(gameRows[rowIndex].rowColorsDataString);
+        if (new Colors(guessColors as Color[]).equals(placedColorRow)) isAlreadyPlaced = true;
+    }
+
+    if (isAlreadyPlaced === true) {
+        console.log("Guess already placed!");
+    }
+
+    // if already placed, get a new guess
+    try {
+        if (isAlreadyPlaced === true) return generateRandomGuess(state);
+    } catch (error: unknown) {
+        if (error instanceof Error && error.message === "too much recursion") {
+            throw new Error("No possible remaining guess differs from any of the previous guesses!");
+        }
+        throw error;
+    }
 
     return new Colors(guessColors as Color[]);
 }

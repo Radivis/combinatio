@@ -47,7 +47,7 @@ type gameActions = {
 //     setTimeout(() => get()[action], 1);
 // }
 
-const defaultRowColorsDataString = (numColumns: number): colorsDataString => Colors.serialize(new Colors(
+export const defaultRowColorsDataString = (numColumns: number): colorsDataString => Colors.serialize(new Colors(
     {
         color: new Color(holeHue, holeSaturation, holeLightness),
         length: numColumns

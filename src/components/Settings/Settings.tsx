@@ -22,6 +22,7 @@ const Settings = (props: settingsProps) => {
     const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
     const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(settings.areColorAmountHintsActive);
     const [areSlotHintsActive, setAreSlotHintsActive] = useState<boolean>(settings.areSlotHintsActive);
+    const [isRandomGuessButtonDisplayed, setIsRandomGuessButtonDisplayed] = useState<boolean>(settings.isRandomGuessButtonDisplayed);
 
     const validPaletteNames = paletteNames.filter(paletteName => {
         switch (paletteName) {
@@ -70,6 +71,10 @@ const Settings = (props: settingsProps) => {
         setAreSlotHintsActive(ev.target.value === 'true' ? true : false);
     }
 
+    const onChangeIsRandomGuessButtonDisplayed = (ev: any) => {
+        setIsRandomGuessButtonDisplayed(ev.target.value === 'true' ? true : false);
+    }
+
     const onSubmit = (ev: any) => {
         ev.preventDefault();
         // explicitly choose the currently selected palette value to prevent setting an invalid palette
@@ -85,6 +90,7 @@ const Settings = (props: settingsProps) => {
             paletteName: selectedPaletteName,
             areColorAmountHintsActive,
             areSlotHintsActive,
+            isRandomGuessButtonDisplayed,
         })
         setActivePage('game');
     }
@@ -197,6 +203,23 @@ const Settings = (props: settingsProps) => {
                         value="false"
                         checked={areSlotHintsActive === false}
                         onChange={onChangeAreSlotHintsActive}
+                    />
+                </div>
+                <div className="settings-row">
+                    <label htmlFor="isRandomGuessButtonDisplayed">Show random guess button: </label>
+                    Yes: <input
+                        name='isRandomGuessButtonDisplayed'
+                        type="radio"
+                        value="true"
+                        checked={isRandomGuessButtonDisplayed === true}
+                        onChange={onChangeIsRandomGuessButtonDisplayed}
+                    />
+                    No: <input
+                        name='isRandomGuessButtonDisplayed'
+                        type="radio"
+                        value="false"
+                        checked={isRandomGuessButtonDisplayed === false}
+                        onChange={onChangeIsRandomGuessButtonDisplayed}
                     />
                 </div>
             </div>

@@ -73,6 +73,7 @@ const initialGameState = {
 		paletteName: paletteNames[0],
 		areColorAmountHintsActive: true,
 		areSlotHintsActive: true,
+        isRandomGuessButtonDisplayed: true,
     },
     game: {
         paletteColorsDataString: Colors.serialize(generateRegularPalette(defaultNumColors)),

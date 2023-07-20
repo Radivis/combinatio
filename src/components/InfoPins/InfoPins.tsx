@@ -5,6 +5,9 @@ import useGameStore from '../../store/gameStore';
 
 import './InfoPins.css';
 
+const INFO_PIN_WIDTH = 18;
+const BUTTON_WIDTH = 36;
+const BUTTON_DISTANCE = 5;
 
 interface infoPinsProps {
     rowKey: number;
@@ -17,11 +20,25 @@ const InfoPins = (props: infoPinsProps) => {
         isActiveRow,
     } = props;
 
-    const { numColumns, numCorrectColor, numFullyCorrect, guess, randomGuess } = useGameStore((state) => {
+    const {
+        numColumns,
+        isRandomGuessButtonDisplayed,
+        numCorrectColor,
+        numFullyCorrect,
+        guess,
+        randomGuess,
+    } = useGameStore((state) => {
         const { guess, randomGuess } = state;
-        const { numColumns }= state.settings;
+        const { numColumns, isRandomGuessButtonDisplayed }= state.settings;
         const { numCorrectColor, numFullyCorrect } = state.game.gameRows[rowKey];
-        return { numColumns, numCorrectColor, numFullyCorrect, guess, randomGuess };
+        return {
+            numColumns,
+            isRandomGuessButtonDisplayed,
+            numCorrectColor,
+            numFullyCorrect,
+            guess,
+            randomGuess,
+        };
     })
 
     const pinClasses: string[] = new Array(numColumns).fill('info-pin');
@@ -37,12 +54,14 @@ const InfoPins = (props: infoPinsProps) => {
     // The width of the into pin container is natively determined by the width of the row submit-button
     // Instead, compute it according to numColumns / 2
 
-    const infoPinBlockWidth = 18;
+    const infoPinBlockWidth = INFO_PIN_WIDTH;
 
     const infoPinContainerWidth = Math.max(Math.ceil(numColumns / 2) * infoPinBlockWidth, infoPinBlockWidth * 2);
 
     // Two buttons and the space between those
-    const buttonContainerWidth = 2 * 36 + 5;
+    let buttonContainerWidth = BUTTON_DISTANCE;
+    buttonContainerWidth += BUTTON_WIDTH;
+    buttonContainerWidth += (isRandomGuessButtonDisplayed ? BUTTON_WIDTH : 0);
 
     const actualInfoPinContainerWidth = Math.max(infoPinContainerWidth, buttonContainerWidth);
 
@@ -51,9 +70,9 @@ const InfoPins = (props: infoPinsProps) => {
             {
                 (isActiveRow === true) ? (
                     <div className="game-row-buttons">
-                        <button key={`${rowKey} random-button`} className="random-button" type="button" onClick={randomGuess}>
+                        {isRandomGuessButtonDisplayed && <button key={`${rowKey} random-button`} className="random-button" type="button" onClick={randomGuess}>
                             <FontAwesomeIcon icon={faDice} />
-                        </button>
+                        </button>}
                         <button key={`${rowKey} submit-button`} className="submit-button" type="button" onClick={guess}>
                             <FontAwesomeIcon icon={faQuestion} />
                         </button>

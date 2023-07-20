@@ -5,6 +5,7 @@ import { paletteNames } from "../../constants";
 import useGameStore from "../../store/gameStore";
 
 import './Settings.css';
+import BooleanSetting from "./BooleanSetting";
 
 interface settingsProps {
     setActivePage: Function,
@@ -171,57 +172,24 @@ const Settings = (props: settingsProps) => {
                         )}
                     </select>
                 </div>
-                <div className="settings-row">
-                    <label htmlFor="areColorAmountHintsActive">Use color amount hints: </label>
-                    Yes: <input
-                        name='areColorAmountHintsActive'
-                        type="radio"
-                        value="true"
-                        checked={areColorAmountHintsActive === true}
-                        onChange={onChangeAreColorAmountHintsActive}
-                    />
-                    No: <input
-                        name='areColorAmountHintsActive'
-                        type="radio"
-                        value="false"
-                        checked={areColorAmountHintsActive === false}
-                        onChange={onChangeAreColorAmountHintsActive}
-                    />
-                </div>
-                <div className="settings-row">
-                    <label htmlFor="areSlotHintsActive">Use slot hints: </label>
-                    Yes: <input
-                        name='areSlotHintsActive'
-                        type="radio"
-                        value="true"
-                        checked={areSlotHintsActive === true}
-                        onChange={onChangeAreSlotHintsActive}
-                    />
-                    No: <input
-                        name='areSlotHintsActive'
-                        type="radio"
-                        value="false"
-                        checked={areSlotHintsActive === false}
-                        onChange={onChangeAreSlotHintsActive}
-                    />
-                </div>
-                <div className="settings-row">
-                    <label htmlFor="isRandomGuessButtonDisplayed">Show random guess button: </label>
-                    Yes: <input
-                        name='isRandomGuessButtonDisplayed'
-                        type="radio"
-                        value="true"
-                        checked={isRandomGuessButtonDisplayed === true}
-                        onChange={onChangeIsRandomGuessButtonDisplayed}
-                    />
-                    No: <input
-                        name='isRandomGuessButtonDisplayed'
-                        type="radio"
-                        value="false"
-                        checked={isRandomGuessButtonDisplayed === false}
-                        onChange={onChangeIsRandomGuessButtonDisplayed}
-                    />
-                </div>
+                <BooleanSetting
+                    setting={areColorAmountHintsActive}
+                    settingName={"areColorAmountHintsActive"}
+                    settingLabel="Use color amount hints"
+                    onChangeHandler={onChangeAreColorAmountHintsActive}
+                />
+                <BooleanSetting
+                    setting={areSlotHintsActive}
+                    settingName={"areSlotHintsActive"}
+                    settingLabel="Use slot hints"
+                    onChangeHandler={onChangeAreSlotHintsActive}
+                />
+                <BooleanSetting
+                    setting={isRandomGuessButtonDisplayed}
+                    settingName={"isRandomGuessButtonDisplayed"}
+                    settingLabel="Show random guess button"
+                    onChangeHandler={onChangeIsRandomGuessButtonDisplayed}
+                />
             </div>
             <button type="submit">Save settings and start new game</button>
         </form>

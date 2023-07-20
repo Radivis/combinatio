@@ -38,3 +38,10 @@ export interface settings {
     areSlotHintsActive: boolean,
     isRandomGuessButtonDisplayed: boolean,
 }
+
+export interface modal {
+    type?: string,
+    messageHeader: string,
+    messageBody: string,
+    isVisible: boolean,
+}

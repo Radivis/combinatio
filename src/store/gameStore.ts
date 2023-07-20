@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-import { game, gameRow, hints, settings } from '../interfaces/interfaces';
+import { game, gameRow, hints, modal, settings } from '../interfaces/interfaces';
 import {
     defaultNumColors,
     defaultNumColumns,
@@ -24,10 +24,11 @@ import generateSolution from './functions/generateSolution';
 export type gameState = {
     settings: settings,
     game: game,
-    hints: hints
+    hints: hints,
+    modal: modal,
 }
 
-type gameActions = {
+export type gameActions = {
     changeSettings: (newSettings: settings) => void,
     placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => void,
     start: () => void,
@@ -40,6 +41,7 @@ type gameActions = {
     toggleDisableColor: (color: Color) => void,
     setPossibleColors: (colors: Colors, columnIndex: number) => void,
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
+    setModal: (modal: modal) => void,
 }
 
 // Doesn't seem to work!
@@ -88,10 +90,14 @@ const initialGameState = {
         possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
         disabledColorsDataString: '[]',
+    },
+    modal: {
+        type: 'none',
+        messageHeader: '',
+        messageBody: '',
+        isVisible: false,
     }
 }
-
-
 
 const resetHintsCallback = (set: Function, get: Function) => {
     const settings = get().settings;
@@ -113,6 +119,7 @@ const useGameStore = create<gameState & gameActions>()(
         settings: initialGameState.settings,
         game: initialGameState.game,
         hints: initialGameState.hints,
+        modal: initialGameState.modal,
         changeSettings: (newSettings: settings): void => {
             const oldState = get();
 
@@ -123,7 +130,7 @@ const useGameStore = create<gameState & gameActions>()(
                 gamePaletteDataString = Colors.serialize(generatePalette(newSettings.numColors, newSettings.paletteName));
             }
             
-            set((state: gameState) => {
+            set((state: gameState & gameActions) => {
                 const {
                     maxIdenticalColorsInSolution,
                     numColumns,
@@ -189,7 +196,7 @@ const useGameStore = create<gameState & gameActions>()(
         },
         reset: () => {
             // const { generateSolution } = get();
-            set((state: gameState) => {
+            set((state: gameState & gameActions) => {
                 const { numRows, numColors, numColumns, maxIdenticalColorsInSolution } = state.settings;
 
                 // reset game state
@@ -371,6 +378,11 @@ const useGameStore = create<gameState & gameActions>()(
                     }
                 }
             }, false, 'setColorMinMax');
+        },
+        setModal: (modal: modal) => {
+            set((state: gameState) => {
+                state.modal = modal;
+            }, false, 'setModal')
         },
     })))
 );

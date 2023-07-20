@@ -1,6 +1,6 @@
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
-import { gameState } from "../gameStore";
+import { gameActions, gameState, } from "../gameStore";
 import { defaultRowColorsDataString } from '../gameStore';
 
 /**
@@ -9,8 +9,9 @@ import { defaultRowColorsDataString } from '../gameStore';
  * @param {gameState} state - The current state of the game
  * @returns {Colors} - the new random guess as Colors instance
  */
-const generateRandomGuess = (state: gameState): Colors => {
+const generateRandomGuess = (state: gameState & gameActions): Colors => {
 
+    const { setModal } = state;
     const { numColumns } = state.settings;
     const { paletteColorsDataString, activeRowIndex, gameRows } = state.game;
     const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
@@ -235,7 +236,11 @@ const generateRandomGuess = (state: gameState): Colors => {
 
     } catch (error: unknown) {
         if (error instanceof Error) {
-            alert(error.message);
+            setModal({
+                messageHeader: 'Could not make random guess',
+                messageBody: error.message,
+                isVisible: true,
+            })
         }
         return Colors.deserialize(defaultRowColorsDataString(numColumns));
     }

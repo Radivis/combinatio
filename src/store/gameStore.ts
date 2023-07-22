@@ -41,6 +41,7 @@ export type gameActions = {
     toggleDisableColor: (color: Color) => void,
     setPossibleColors: (colors: Colors, columnIndex: number) => void,
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
+    placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => void,
     addColorTuple: () => void,
     setModal: (modal: modal) => void,
 }
@@ -382,6 +383,14 @@ const useGameStore = create<gameState & gameActions>()(
                     }
                 }
             }, false, 'setColorMinMax');
+        },
+        placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => {
+            const { colorTuplesDataStrings } = get().hints;
+            const colorTuple = Colors.deserialize(colorTuplesDataStrings[rowIndex]);
+            colorTuple[columnIndex] = color;
+            set((state: gameState) => {
+                state.hints.colorTuplesDataStrings[rowIndex] = Colors.serialize(colorTuple);
+            }, false, 'placeTupleColor');
         },
         addColorTuple: () => {
             set((state: gameState) => {

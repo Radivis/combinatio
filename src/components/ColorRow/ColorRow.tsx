@@ -41,9 +41,6 @@ const ColorRow = (props: colorRowProps) => {
             row: rowKey,
             column: columnIndex
         })
-        // const newColors = [...colors];
-        // newColors[index] = Color.makeFromHslObject(colorObject);
-        // setColors(newColors);
     }
 
     return <div className='colorRow'>

@@ -43,6 +43,7 @@ export type gameActions = {
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
     placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => void,
     addColorTuple: () => void,
+    addColorTupleSlot: (rowIndex: number) => void,
     setModal: (modal: modal) => void,
 }
 
@@ -396,6 +397,13 @@ const useGameStore = create<gameState & gameActions>()(
             set((state: gameState) => {
                 state.hints.colorTuplesDataStrings
                 .push(defaultRowColorsDataString(2));
+            }, false, 'addColorTuple')
+        },
+        addColorTupleSlot: (rowIndex: number) => {
+            set((state: gameState) => {
+                const colorTuple = Colors.deserialize(state.hints.colorTuplesDataStrings[rowIndex]);
+                colorTuple.push(new Color(holeHue, holeSaturation, holeLightness));
+                state.hints.colorTuplesDataStrings[rowIndex] = Colors.serialize(colorTuple);
             }, false, 'addColorTuple')
         },
         setModal: (modal: modal) => {

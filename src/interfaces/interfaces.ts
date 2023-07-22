@@ -25,6 +25,7 @@ export interface hints {
     colorsMinMax: [number, number][];
     possibleSlotColorsDataStrings: colorsDataString[];
     disabledColorsDataString: colorsDataString;
+    colorTuplesDataStrings: colorsDataString[]; 
 }
 
 export interface settings {

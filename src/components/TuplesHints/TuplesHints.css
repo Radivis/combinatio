@@ -1,0 +1,14 @@
+.tuples-hints-container {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.add-color-tuple-button {
+    height: 36px;
+    width: 36px;
+    background-color: hsl(120, 100%, 60%);
+    margin: auto;
+}

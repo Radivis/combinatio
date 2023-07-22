@@ -1,0 +1,33 @@
+.background-shadow {
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    right: 0px;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background:
+    hsla(0, 0%, 0%, 0.5);
+  }
+  
+  .modal {
+    position: absolute;
+    width: 360px;
+    padding: 20px;
+    top: 40%;
+    left: 50%;
+    border-radius: 30px;
+    background: hsla(0, 0%, 0%, 0.8);
+    color:hsla(0, 100%, 100%, 1.0);
+    box-shadow: 4px 8px 12px 0 rgba(0,0,0,0.6);
+    text-align: center;
+    overflow: hidden; 
+}
+
+.title {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 15px 0 10px 0;
+}

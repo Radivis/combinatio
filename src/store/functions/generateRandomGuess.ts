@@ -19,8 +19,6 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
     // Define allowed maxmium number of loop cycles to exit endless loops gracefully
     let cycles = 100000;
 
-// TODO: Add timeout in case this function runs into an endless loop
-
     const { setModal } = state;
     const { numColumns } = state.settings;
     const { paletteColorsDataString, activeRowIndex, gameRows } = state.game;
@@ -248,10 +246,6 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
         for (let rowIndex = 1; rowIndex < activeRowIndex; rowIndex++) {
             const placedColorRow = Colors.deserialize(gameRows[rowIndex].rowColorsDataString);
             if (new Colors(guessColors as Color[]).equals(placedColorRow)) isAlreadyPlaced = true;
-        }
-
-        if (isAlreadyPlaced === true) {
-            console.log("Guess already placed!");
         }
 
         // if already placed, get a new guess

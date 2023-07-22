@@ -12,6 +12,7 @@ import { range } from "../../util/range";
 import useGameStore from "../../store/gameStore";
 
 import './Game.css';
+import TuplesHints from "../TuplesHints/TuplesHints";
 
 interface gameProps {
 }
@@ -115,6 +116,7 @@ const Game = (props: gameProps) => {
                         baseColorsDataString={paletteColorsDataString}
                         areColorAmountHintsActive={areColorAmountHintsActive}
                     />
+                    <TuplesHints />
                 </div>
             </div>
 

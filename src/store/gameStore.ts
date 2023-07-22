@@ -41,6 +41,7 @@ export type gameActions = {
     toggleDisableColor: (color: Color) => void,
     setPossibleColors: (colors: Colors, columnIndex: number) => void,
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
+    addColorTuple: () => void,
     setModal: (modal: modal) => void,
 }
 
@@ -90,6 +91,7 @@ const initialGameState = {
         possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
         disabledColorsDataString: '[]',
+        colorTuplesDataStrings: Array(2).fill(defaultRowColorsDataString(2)),
     },
     modal: {
         type: 'none',
@@ -108,6 +110,7 @@ const resetHintsCallback = (set: Function, get: Function) => {
             possibleSlotColorsDataStrings: Array(numColumns)
             .fill(state.game.paletteColorsDataString),
             disabledColorsDataString: '[]',
+            colorTuplesDataStrings: Array(2).fill(defaultRowColorsDataString(2)),
         }
         state.hints = blankHints;
         state.hints.colorsMinMax = blankHints.colorsMinMax;
@@ -213,6 +216,7 @@ const useGameStore = create<gameState & gameActions>()(
                     possibleSlotColorsDataStrings: Array(numColumns)
                     .fill(state.game.paletteColorsDataString),
                     disabledColorsDataString: '[]',
+                    colorTuplesDataStrings: Array(2).fill(defaultRowColorsDataString(2)),
                 }
                 state.hints = blankHints;
                 state.hints.colorsMinMax = blankHints.colorsMinMax;
@@ -378,6 +382,12 @@ const useGameStore = create<gameState & gameActions>()(
                     }
                 }
             }, false, 'setColorMinMax');
+        },
+        addColorTuple: () => {
+            set((state: gameState) => {
+                state.hints.colorTuplesDataStrings
+                .push(defaultRowColorsDataString(2));
+            }, false, 'addColorTuple')
         },
         setModal: (modal: modal) => {
             set((state: gameState) => {

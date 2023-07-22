@@ -1,0 +1,4 @@
+.tuples-hints-row{
+    display: flex;
+    flex-direction: row;
+}

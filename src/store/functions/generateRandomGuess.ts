@@ -3,6 +3,11 @@ import Colors from "../../util/Colors";
 import { gameActions, gameState, } from "../gameStore";
 import { defaultRowColorsDataString } from '../gameStore';
 
+const checkCycles = (cycles: number): boolean => {
+    if (cycles <= 0) throw new Error('Oops, this action seems to have caused an enless loop!');
+    return true;
+};
+
 /**
  * Generates a random guess for the currently active game row
  * 
@@ -10,6 +15,11 @@ import { defaultRowColorsDataString } from '../gameStore';
  * @returns {Colors} - the new random guess as Colors instance
  */
 const generateRandomGuess = (state: gameState & gameActions): Colors => {
+
+    // Define allowed maxmium number of loop cycles to exit endless loops gracefully
+    let cycles = 100000;
+
+// TODO: Add timeout in case this function runs into an endless loop
 
     const { setModal } = state;
     const { numColumns } = state.settings;
@@ -82,6 +92,10 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
         }
 
         while (numNecessaryColors > 0) {
+            // Endless loop prevention
+            cycles -= 1;
+            checkCycles(cycles);
+
             // Filter the pairs to the colors that need to be placed
             const necessaryColorPairs = colorMinPairs.filter((colorPair) => colorPair[1] > 0);
             
@@ -114,6 +128,10 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
             let isColorPlaced = false;
             const checkedSlotIndices = [];
             while (!isColorPlaced && remainingSlotIndices.length > 0) {
+                // Endless loop prevention
+                cycles -= 1;
+                checkCycles(cycles);
+
                 // Select a random slot, in which the color is possible to add that color in
                 const randomIndex = Math.floor(Math.random() * remainingSlotIndices.length);
                 let remainingSlotIndex = remainingSlotIndices[randomIndex];
@@ -129,6 +147,10 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
                     let isDecremented = false;
                     let pairIndex = 0;
                     while (!isDecremented) {
+                        // Endless loop prevention
+                        cycles -= 1;
+                        checkCycles(cycles);
+
                         const colorMinPair = colorMinPairs[pairIndex];
                         if (colorMinPair[0].equals(colorToPlace)){
                             colorMinPair[1]--;
@@ -162,12 +184,20 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
 
         // Step 3: Fill the remaining slots randomly, respecting the colorsMinMax max numbers
         while (remainingSlotIndices.length > 0) {
+            // Endless loop prevention
+            cycles -= 1;
+            checkCycles(cycles);
+
             // Select the first remaining slot
             const remainingSlotIndex = remainingSlotIndices[0];
 
             // fill it with a random color that can still be placed
             let isColorPlaced = false;
             while (!isColorPlaced) {
+                // Endless loop prevention
+                cycles -= 1;
+                checkCycles(cycles);
+
                 const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex]);
                 
                 // eslint-disable-next-line no-loop-func

@@ -5,13 +5,20 @@ import { gameState } from "../../interfaces/types";
 const setColorMinMax = (set: zustandSetter, get: zustandGetter) =>
     ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => {
     set((state: gameState) => {
-        const { numColors } = state.settings;
+        const { numColors, maxIdenticalColorsInSolution } = state.settings;
         if (min !== undefined) {
             const step = min - state.hints.colorsMinMax[colorIndex][0];
             state.hints.colorsMinMax[colorIndex][0] = min;
             // decrement the max values of all other colors
             for (let i = 0; i < numColors; i++) {
-                if (i !== colorIndex) {
+                const newMax = state.hints.colorsMinMax[i][1] - step;
+                if (i !== colorIndex &&
+                    // new max must respect boundaries
+                    newMax > 0 &&
+                    newMax <= maxIdenticalColorsInSolution &&
+                    // the new max must not fall below the min!
+                    newMax >= state.hints.colorsMinMax[i][0]
+                    ) {
                     state.hints.colorsMinMax[i][1] -= step;
                 }
             }

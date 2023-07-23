@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-import { gameRow, modal } from '../interfaces/interfaces';
+import { modal } from '../interfaces/interfaces';
 import {
     gameStates,
     holeHue,
@@ -11,8 +11,7 @@ import {
 } from '../constants';
 import Colors from '../util/Colors';
 import Color from '../util/Color';
-import { colorsDataString, gameState, gameStore } from '../interfaces/types';
-import { range } from '../util/range';
+import { gameState, gameStore } from '../interfaces/types';
 // HELPER FUNCTIONS
 import generateRandomGuess from './functions/generateRandomGuess';
 // ACTIONS

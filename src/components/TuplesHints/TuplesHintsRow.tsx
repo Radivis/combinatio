@@ -73,6 +73,8 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
             <button className='add-tuple-slot-button' onClick={onClickAddTupleSlotButton}>
                 <FontAwesomeIcon icon={faPlus} size="sm"/>
             </button>
+            <input type="text" className='tuple-row-note'>
+            </input>
             <button className='delete-tuple-row-button' onClick={onClickDeleteTupleRowButton}>
                 <FontAwesomeIcon icon={faTrashCan} size="sm"/>
             </button>

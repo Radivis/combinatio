@@ -5,6 +5,10 @@
     padding: 5px;
 }
 
+.tuple-row-note {
+    background-color: hsl(34, 57%, 70%);
+}
+
 .add-tuple-slot-button {
     display: inline-flex;
     height: 24px;

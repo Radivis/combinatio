@@ -6,6 +6,11 @@
     margin-top: 10px;
 }
 
+.tuples-hints-title {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
 .add-color-tuple-button {
     height: 36px;
     width: 36px;

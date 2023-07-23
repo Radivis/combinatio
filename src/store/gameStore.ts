@@ -79,6 +79,7 @@ const initialGameState = {
 		paletteName: paletteNames[0],
 		areColorAmountHintsActive: true,
 		areSlotHintsActive: true,
+        areCombinationNotesActive: true,
         isRandomGuessButtonDisplayed: true,
     },
     game: {
@@ -163,6 +164,9 @@ const useGameStore = create<gameState & gameActions>()(
                 // Regenerate colorsMinMax
                 state.hints.colorsMinMax = Array(numColors)
                     .fill([...[0, maxIdenticalColorsInSolution]]);
+
+                // Reset colorTuples
+                state.hints.colorTuplesDataStrings = Array(2).fill(defaultRowColorsDataString(2));
 
                 // Regenerate solution
                 const solutionColors = generateSolution(state);

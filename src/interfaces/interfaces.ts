@@ -37,6 +37,7 @@ export interface settings {
     paletteName: string,
     areColorAmountHintsActive: boolean,
     areSlotHintsActive: boolean,
+    areCombinationNotesActive: boolean,
     isRandomGuessButtonDisplayed: boolean,
 }
 

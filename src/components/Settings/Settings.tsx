@@ -23,6 +23,7 @@ const Settings = (props: settingsProps) => {
     const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
     const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(settings.areColorAmountHintsActive);
     const [areSlotHintsActive, setAreSlotHintsActive] = useState<boolean>(settings.areSlotHintsActive);
+    const [areCombinationNotesActive, setAreCombinationNotesActive] = useState<boolean>(settings.areCombinationNotesActive);
     const [isRandomGuessButtonDisplayed, setIsRandomGuessButtonDisplayed] = useState<boolean>(settings.isRandomGuessButtonDisplayed);
 
     const validPaletteNames = paletteNames.filter(paletteName => {
@@ -72,6 +73,10 @@ const Settings = (props: settingsProps) => {
         setAreSlotHintsActive(ev.target.value === 'true' ? true : false);
     }
 
+    const onChangeAreCombinationNotesActive = (ev: any) => {
+        setAreCombinationNotesActive(ev.target.value === 'true' ? true : false);
+    }
+
     const onChangeIsRandomGuessButtonDisplayed = (ev: any) => {
         setIsRandomGuessButtonDisplayed(ev.target.value === 'true' ? true : false);
     }
@@ -91,6 +96,7 @@ const Settings = (props: settingsProps) => {
             paletteName: selectedPaletteName,
             areColorAmountHintsActive,
             areSlotHintsActive,
+            areCombinationNotesActive,
             isRandomGuessButtonDisplayed,
         })
         setActivePage('game');
@@ -183,6 +189,12 @@ const Settings = (props: settingsProps) => {
                     settingName={"areSlotHintsActive"}
                     settingLabel="Use slot hints"
                     onChangeHandler={onChangeAreSlotHintsActive}
+                />
+                <BooleanSetting
+                    setting={areCombinationNotesActive}
+                    settingName={"areCombinationNotesActive"}
+                    settingLabel="Show combination notes"
+                    onChangeHandler={onChangeAreCombinationNotesActive}
                 />
                 <BooleanSetting
                     setting={isRandomGuessButtonDisplayed}

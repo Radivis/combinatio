@@ -32,6 +32,7 @@ const TuplesHints = () => {
                 {combinationNotes.map((combinationNote: [string, string], rowIndex: number) => {
                     return <TuplesHintsRow 
                         rowIndex={rowIndex}
+                        key={rowIndex}
                     />
                 })}
                 <button className='add-color-tuple-button' onClick={addColorTuple}>

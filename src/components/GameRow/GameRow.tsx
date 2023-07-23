@@ -17,7 +17,9 @@ const GameRow = (props: gameRowProps) => {
     } = props;
 
     return <div className="game-row">
-        {rowKey}
+        <div className="row-index-container">
+            {rowKey}
+        </div>
         <ColorRow
             rowKey = {rowKey}
             numColumns = {numColumns}

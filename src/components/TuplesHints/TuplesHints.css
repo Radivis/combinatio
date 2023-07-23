@@ -11,4 +11,10 @@
     width: 36px;
     background-color: hsl(120, 100%, 60%);
     margin: auto;
+    margin-top: 5px;
+    opacity: 30%;
+}
+
+.add-color-tuple-button:hover {
+    opacity: 100%;;
 }

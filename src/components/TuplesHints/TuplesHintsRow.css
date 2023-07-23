@@ -1,6 +1,8 @@
 .tuples-hints-row{
     display: flex;
     flex-direction: row;
+    border: 1px solid black;
+    padding: 5px;
 }
 
 .add-tuple-slot-button {
@@ -8,5 +10,19 @@
     height: 24px;
     width: 24px;
     background-color: hsl(120, 100%, 60%);
-    margin: auto;
+    margin: 5px;
+    opacity: 30%;
+}
+
+.delete-tuple-row-button {
+    display: inline-flex;
+    height: 24px;
+    width: 24px;
+    background-color: hsl(0, 100%, 60%);
+    margin: 5px;
+    opacity: 30%;
+}
+
+.add-tuple-slot-button:hover, .delete-tuple-row-button:hover{
+    opacity: 100%;
 }

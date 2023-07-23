@@ -8,7 +8,7 @@ import ColorPin from "../ColorPin/ColorPin";
 import DropTarget from "../DropTarget/DropTarget";
 
 import './TuplesHintsRow.css';
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 interface tuplesHintsRowProps {
     rowIndex: number
@@ -17,12 +17,26 @@ interface tuplesHintsRowProps {
 const TuplesHintsRow = (props: tuplesHintsRowProps) => {
     const { rowIndex } = props;
 
-    const { colorTuple, addColorTupleSlot, placeTupleColor } = useGameStore((state) => {
-        const { hints, addColorTupleSlot, placeTupleColor } = state;
-        const { colorTuplesDataStrings } = hints;
+    const {
+        colorTuple,
+        disabledColorsDataString,
+        addColorTupleSlot,
+        deleteColorTupleRow,
+        placeTupleColor,
+    } = useGameStore((state) => {
+        const { hints, addColorTupleSlot, placeTupleColor, deleteColorTupleRow } = state;
+        const { colorTuplesDataStrings, disabledColorsDataString } = hints;
         const colorTuple = Colors.deserialize(colorTuplesDataStrings[rowIndex]);
-        return { colorTuple, addColorTupleSlot, placeTupleColor };
+        return {
+            colorTuple,
+            disabledColorsDataString,
+            addColorTupleSlot,
+            deleteColorTupleRow,
+            placeTupleColor,
+        };
     })
+
+    const disabledColors = Colors.deserialize(disabledColorsDataString);
 
     const onColorDropped = (colorObject: hslColorObject, columnIndex: number) => {
         placeTupleColor({
@@ -36,6 +50,10 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
         addColorTupleSlot(rowIndex);
     }
 
+    const onClickDeleteTupleRowButton = () => {
+        deleteColorTupleRow(rowIndex);
+    }
+
     return (
         <div className="tuples-hints-row">
             {colorTuple.map((color: Color, columnIndex: number) => {
@@ -47,12 +65,16 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
                     <ColorPin
                         color={color}
                         key={columnIndex}
+                        isDisabled={disabledColors.has(color)}
                     />
                 </DropTarget>
 
             })}
             <button className='add-tuple-slot-button' onClick={onClickAddTupleSlotButton}>
                 <FontAwesomeIcon icon={faPlus} size="sm"/>
+            </button>
+            <button className='delete-tuple-row-button' onClick={onClickDeleteTupleRowButton}>
+                <FontAwesomeIcon icon={faTrashCan} size="sm"/>
             </button>
         </div>
     );

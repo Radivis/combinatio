@@ -9,7 +9,7 @@ import { gameState } from "../../interfaces/types";
  * @returns {Colors} - the new solution as Colors instance
  */
 const generateSolution = (state: gameState): Colors => {
-    const { maxIdenticalColorsInSolution, numColumns } = state.settings;
+    const { maxIdenticalColorsInSolution, numColumns } = state.gameSettings;
     const { paletteColorsDataString } = state.game;
     const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
     const solutionColors: Color[] = [];

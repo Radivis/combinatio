@@ -29,10 +29,12 @@ const Game = (props: gameProps) => {
         const {
             areColorAmountHintsActive,
             areSlotHintsActive,
+        } = state.displaySettings;
+        const {
             maxIdenticalColorsInSolution,
             numColumns,
             numRows,
-        } = state.settings;
+        } = state.gameSettings;
         const { paletteColorsDataString } = state.game;
         return [
             areColorAmountHintsActive,

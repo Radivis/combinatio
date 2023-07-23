@@ -1,6 +1,6 @@
 import Color from "../util/Color";
 import Colors from "../util/Colors";
-import { game, hints, modal, settings } from "./interfaces";
+import { game, hints, modal, gameSettings, displaySettings } from "./interfaces";
 
 // ZUSTAND TYPES
 // Defining types from Zustand, because they are not exported! 
@@ -37,14 +37,19 @@ export type colorDataString = string;
 export type colorsDataString = string;
 
 export type gameState = {
-    settings: settings,
+    displaySettings: displaySettings,
+    gameSettings: gameSettings,
     game: game,
     hints: hints,
     modal: modal,
 }
 
 export type gameActions = {
-    changeSettings: (newSettings: settings) => void,
+    changeGameSettings: (newSettings: gameSettings) => void,
+    setAreColorAmountHintsActive: (value: boolean) => void,
+    setAreSlotHintsActive: (value: boolean) => void,
+    setAreCombinationNotesActive: (value: boolean) => void,
+    setIsRandomGuessButtonDisplayed: (value: boolean) => void,
     placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => void,
     start: () => void,
     win: () => void,

@@ -27,7 +27,7 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         const { colorsMinMax, disabledColorsDataString, possibleSlotColorsDataStrings } = state.hints;
         const possibleSlotColorsDataString = state.hints.possibleSlotColorsDataStrings[columnIndex];
         const { paletteColorsDataString } = state.game;
-        const { maxIdenticalColorsInSolution } = state.settings;
+        const { maxIdenticalColorsInSolution } = state.gameSettings;
         const { setPossibleColors, setColorMinMax } = state;
         return {
             colorsMinMax,

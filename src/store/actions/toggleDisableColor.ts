@@ -14,7 +14,7 @@ const toggleDisableColor = (set: zustandSetter, get: zustandGetter) => (color: C
             // Enable color
             disabledColors.remove(color);
             // set max of this color to absolute max
-            state.hints.colorsMinMax[colorIndex][1] = state.settings.maxIdenticalColorsInSolution;
+            state.hints.colorsMinMax[colorIndex][1] = state.gameSettings.maxIdenticalColorsInSolution;
         } else {
             // disable color
             disabledColors.add(color);

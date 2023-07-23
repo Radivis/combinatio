@@ -2,7 +2,7 @@
 import generateDefaultRowColorsDataString from "../functions/generateDefaultRowColorsDataString";
 import initializeGameRows from "../functions/initializeGameRows";
 import Colors from "../../util/Colors";
-import { settings } from "../../interfaces/interfaces";
+import { gameSettings } from "../../interfaces/interfaces";
 import generatePalette from "../functions/generatePalette";
 import { gameStates } from "../../constants";
 import generateSolution from "../functions/generateSolution";
@@ -10,13 +10,13 @@ import generateRandomGuess from "../functions/generateRandomGuess";
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import { gameState, gameActions } from "../../interfaces/types";
 
-const changeSettings = (set: zustandSetter, get: zustandGetter) => (newSettings: settings): void => {
+const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSettings: gameSettings): void => {
     const oldState = get();
 
     // Generate new colors palette, if necessary
     let gamePaletteDataString = oldState.game.paletteColorsDataString;
-    if (oldState.settings.numColors !== newSettings.numColors
-    || oldState.settings.paletteName !== newSettings.paletteName) {
+    if (oldState.gameSettings.numColors !== newSettings.numColors
+    || oldState.gameSettings.paletteName !== newSettings.paletteName) {
         gamePaletteDataString = Colors.serialize(generatePalette(newSettings.numColors, newSettings.paletteName));
     }
     
@@ -29,7 +29,7 @@ const changeSettings = (set: zustandSetter, get: zustandGetter) => (newSettings:
             numRows
         } = newSettings;
 
-        state.settings = newSettings;
+        state.gameSettings = newSettings;
         
         // reset game state
         state.game.gameState = gameStates[0];
@@ -64,7 +64,7 @@ const changeSettings = (set: zustandSetter, get: zustandGetter) => (newSettings:
             setTimeout(() => get().guess(), 1);
         }
 
-    }, false, 'changeSettings');
+    }, false, 'changeGameSettings');
 }
 
-export default changeSettings;
+export default changeGameSettings;

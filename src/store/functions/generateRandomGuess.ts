@@ -20,7 +20,7 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
     let cycles = 100000;
 
     const { setModal } = state;
-    const { numColumns } = state.settings;
+    const { numColumns } = state.gameSettings;
     const { paletteColorsDataString, activeRowIndex, gameRows } = state.game;
     const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
     const {

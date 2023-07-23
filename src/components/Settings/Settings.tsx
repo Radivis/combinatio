@@ -14,17 +14,26 @@ interface settingsProps {
 const Settings = (props: settingsProps) => {
     const { setActivePage } = props;
 
-    const [settings, changeSettings] = useGameStore((state) => [state.settings, state.changeSettings]);
+    const [settings, changeSettings] = useGameStore((state) => [state.gameSettings, state.changeGameSettings]);
+    const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useGameStore((state) => {
+        return [state.displaySettings.areColorAmountHintsActive, state.setAreColorAmountHintsActive];
+    })
+    const [areSlotHintsActive, setAreSlotHintsActive] = useGameStore((state) => {
+        return [state.displaySettings.areSlotHintsActive, state.setAreSlotHintsActive];
+    })
+    const [areCombinationNotesActive, setAreCombinationNotesActive] = useGameStore((state) => {
+        return [state.displaySettings.areCombinationNotesActive, state.setAreCombinationNotesActive];
+    })
+    const [isRandomGuessButtonDisplayed, setIsRandomGuessButtonDisplayed] = useGameStore((state) => {
+        return [state.displaySettings.isRandomGuessButtonDisplayed, state.setIsRandomGuessButtonDisplayed];
+    })
+
     const [numRows, setNumRows] = useState<number>(settings.numRows);
     const [numColumns, setNumColumns] = useState<number>(settings.numColumns);
     const [numPrefilledRows, setNumPrefilledRows] = useState<number>(settings.numPrefilledRows);
     const [numColors, setNumColors] = useState<number>(settings.numColors);
     const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(settings.maxIdenticalColorsInSolution);
     const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
-    const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useState<boolean>(settings.areColorAmountHintsActive);
-    const [areSlotHintsActive, setAreSlotHintsActive] = useState<boolean>(settings.areSlotHintsActive);
-    const [areCombinationNotesActive, setAreCombinationNotesActive] = useState<boolean>(settings.areCombinationNotesActive);
-    const [isRandomGuessButtonDisplayed, setIsRandomGuessButtonDisplayed] = useState<boolean>(settings.isRandomGuessButtonDisplayed);
 
     const validPaletteNames = paletteNames.filter(paletteName => {
         switch (paletteName) {
@@ -94,10 +103,6 @@ const Settings = (props: settingsProps) => {
             numColors,
             maxIdenticalColorsInSolution,
             paletteName: selectedPaletteName,
-            areColorAmountHintsActive,
-            areSlotHintsActive,
-            areCombinationNotesActive,
-            isRandomGuessButtonDisplayed,
         })
         setActivePage('game');
     }
@@ -115,6 +120,7 @@ const Settings = (props: settingsProps) => {
     return (
         <form onSubmit={onSubmit}>
             <div className="settings-table">
+                <h2>Game Settings</h2>
                 <div className="settings-row">
                     <label htmlFor="numRows">Number of rows: </label>
                     <IntegerSelect 
@@ -178,6 +184,8 @@ const Settings = (props: settingsProps) => {
                         )}
                     </select>
                 </div>
+                <button type="submit">Save settings and start new game</button>
+                <h2>Display Settings</h2>
                 <BooleanSetting
                     setting={areColorAmountHintsActive}
                     settingName={"areColorAmountHintsActive"}
@@ -203,7 +211,7 @@ const Settings = (props: settingsProps) => {
                     onChangeHandler={onChangeIsRandomGuessButtonDisplayed}
                 />
             </div>
-            <button type="submit">Save settings and start new game</button>
+            
         </form>
     )
 }

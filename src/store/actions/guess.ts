@@ -10,7 +10,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     const gamePalette = Colors.deserialize(state.game.paletteColorsDataString);
     let solutionColors = Colors.deserialize(state.game.solutionColorsDataString);
     const rowIndex = state.game.activeRowIndex;
-    const { numColumns } = state.settings;
+    const { numColumns } = state.gameSettings;
     let { solutionColorsDataString } = state.game;
     const currentRowColors = Colors.deserialize(state.game.gameRows[rowIndex].rowColorsDataString);
 
@@ -56,11 +56,11 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     if (state.game.activeRowIndex === 1) newGameState = gameStates[1];
 
     // Check for victory condition
-    if (_numFullyCorrect === state.settings.numColumns) {
+    if (_numFullyCorrect === state.gameSettings.numColumns) {
         newGameState = gameStates[2];
         newActiveRowIndex = -1;
         // Check for running out of rows -> loss
-    } else if (state.game.activeRowIndex === state.settings.numRows) {
+    } else if (state.game.activeRowIndex === state.gameSettings.numRows) {
         newGameState = gameStates[3];
         newActiveRowIndex = -1;
     }

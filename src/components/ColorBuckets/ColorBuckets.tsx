@@ -33,9 +33,9 @@ const ColorBuckets = (props: colorBucketsProps) => {
     const baseColors = Colors.deserialize(baseColorsDataString);
 
     return <div className="color-buckets">
-        <h3 className="color-occurences-title">
+        {areColorAmountHintsActive && <h3 className="color-occurences-title">
             Color Occurences
-        </h3>
+        </h3>}
         {baseColors.map((color: Color, colorIndex: number) => {
             return (
                 <div key={color.hue - 1440} className='color-bucket'>

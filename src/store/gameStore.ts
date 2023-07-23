@@ -15,7 +15,7 @@ import { gameState, gameStore } from '../interfaces/types';
 // HELPER FUNCTIONS
 import generateRandomGuess from './functions/generateRandomGuess';
 // ACTIONS
-import changeSettings from './actions/changeSettings';
+import changeGameSettings from './actions/changeGameSettings';
 import reset from './actions/reset';
 import guess from './actions/guess';
 import toggleDisableColor from './actions/toggleDisableColor';
@@ -36,11 +36,32 @@ import generateDefaultRowColorsDataString from './functions/generateDefaultRowCo
 
 const useGameStore = create<gameStore>()(
     devtools(immer((set, get) => ({
-        settings: initialGameState.settings,
+        displaySettings: initialGameState.displaySettings,
+        gameSettings: initialGameState.gameSettings,
         game: initialGameState.game,
         hints: initialGameState.hints,
         modal: initialGameState.modal,
-        changeSettings: changeSettings(set, get),
+        changeGameSettings: changeGameSettings(set, get),
+        setAreColorAmountHintsActive: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.areColorAmountHintsActive = value;
+            }, false, 'setAreColorAmountHintsActive')
+        },
+        setAreSlotHintsActive: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.areSlotHintsActive = value;
+            }, false, 'setAreSlotHintsActive')
+        },
+        setAreCombinationNotesActive: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.areCombinationNotesActive = value;
+            }, false, 'setAreCombinationNotesActive')
+        },
+        setIsRandomGuessButtonDisplayed: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.isRandomGuessButtonDisplayed = value;
+            }, false, 'setIsRandomGuessButtonDisplayed')
+        },
         placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => {
             const rowColors: Colors = Colors.deserialize(get().game.gameRows[row].rowColorsDataString);
             rowColors[column] = color;

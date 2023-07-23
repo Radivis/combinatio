@@ -13,7 +13,7 @@ const TuplesHints = () => {
         addColorTuple
     } = useGameStore((state) => {
         const { hints, addColorTuple } = state;
-        const { areCombinationNotesActive } = state.settings;
+        const { areCombinationNotesActive } = state.displaySettings;
         const { combinationNotes } = hints;
         return {
             areCombinationNotesActive,

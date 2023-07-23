@@ -29,7 +29,8 @@ const InfoPins = (props: infoPinsProps) => {
         randomGuess,
     } = useGameStore((state) => {
         const { guess, randomGuess } = state;
-        const { numColumns, isRandomGuessButtonDisplayed }= state.settings;
+        const { isRandomGuessButtonDisplayed } = state.displaySettings;
+        const { numColumns }= state.gameSettings;
         const { numCorrectColor, numFullyCorrect } = state.game.gameRows[rowKey];
         return {
             numColumns,

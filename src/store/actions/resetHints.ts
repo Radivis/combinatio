@@ -3,7 +3,7 @@ import generateDefaultRowColorsDataString from "../functions/generateDefaultRowC
 import { gameState } from "../../interfaces/types";
 
 const resetHints = (set: zustandSetter, get: zustandGetter) => () => {
-    const settings = get().settings;
+    const settings = get().gameSettings;
     const { numColors, numColumns, maxIdenticalColorsInSolution } = settings;
     set((state: gameState) => {
         const blankHints = {

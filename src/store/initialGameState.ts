@@ -5,17 +5,19 @@ import generateDefaultRowColorsDataString from "./functions/generateDefaultRowCo
 import initializeGameRows from "./functions/initializeGameRows";
 
 const initialGameState = {
-    settings: {
+    displaySettings: {
+		areColorAmountHintsActive: true,
+		areSlotHintsActive: true,
+        areCombinationNotesActive: true,
+        isRandomGuessButtonDisplayed: true,
+    },
+    gameSettings: {
 		numColors: defaultNumColors,
 		numRows: defaultNumRows,
 		numColumns: defaultNumColumns,
         numPrefilledRows: 0,
 		maxIdenticalColorsInSolution: defaultNumColumns,
 		paletteName: paletteNames[0],
-		areColorAmountHintsActive: true,
-		areSlotHintsActive: true,
-        areCombinationNotesActive: true,
-        isRandomGuessButtonDisplayed: true,
     },
     game: {
         paletteColorsDataString: Colors.serialize(generateRegularPalette(defaultNumColors)),

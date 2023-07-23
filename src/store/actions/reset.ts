@@ -10,7 +10,7 @@ import { gameState, gameActions } from "../../interfaces/types";
 const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
     // const { generateSolution } = get();
     set((state: gameState & gameActions) => {
-        const { numRows, numColors, numColumns, maxIdenticalColorsInSolution } = state.settings;
+        const { numRows, numColors, numColumns, maxIdenticalColorsInSolution } = state.gameSettings;
 
         // reset game state
         state.game.gameState = gameStates[0];
@@ -35,7 +35,7 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
         state.game.solutionColorsDataString = Colors.serialize(generateSolution(state));
 
         // Prefill rows
-        for (let i = 1; i <= state.settings.numPrefilledRows; i++) {
+        for (let i = 1; i <= state.gameSettings.numPrefilledRows; i++) {
             state.game.gameRows[i].rowColorsDataString = Colors.serialize(generateRandomGuess(state));
             setTimeout(() => get().guess(), 1);
         }

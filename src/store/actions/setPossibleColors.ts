@@ -7,7 +7,7 @@ const setPossibleColors = (set: zustandSetter, get: zustandGetter) => (colors: C
     set((state: gameState) => {
         const paletteColors = Colors.deserialize(state.game.paletteColorsDataString);
         const { colorsMinMax } = state.hints;
-        const { numColors, maxIdenticalColorsInSolution } = state.settings;
+        const { numColors, maxIdenticalColorsInSolution } = state.gameSettings;
 
         // Set the possible colors to the provided Colors instance
         state.hints.possibleSlotColorsDataStrings[columnIndex] = Colors.serialize(colors);
@@ -20,7 +20,7 @@ const setPossibleColors = (set: zustandSetter, get: zustandGetter) => (colors: C
                 return [color, 0];
             })
         const { possibleSlotColorsDataStrings } = state.hints;
-        const { numColumns } = state.settings;
+        const { numColumns } = state.gameSettings;
         for (let _columnIndex = 0; _columnIndex < numColumns; _columnIndex++) {
             const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[_columnIndex]);
             if (possibleSlotColors.length === 1) {

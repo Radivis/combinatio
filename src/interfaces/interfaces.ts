@@ -28,17 +28,20 @@ export interface hints {
     combinationNotes: [colorsDataString, string][]; 
 }
 
-export interface settings {
+export interface displaySettings {
+    areColorAmountHintsActive: boolean,
+    areSlotHintsActive: boolean,
+    areCombinationNotesActive: boolean,
+    isRandomGuessButtonDisplayed: boolean,
+}
+
+export interface gameSettings {
     numColors: number,
     numRows: number,
     numColumns: number,
     numPrefilledRows: number,
     maxIdenticalColorsInSolution: number,
     paletteName: string,
-    areColorAmountHintsActive: boolean,
-    areSlotHintsActive: boolean,
-    areCombinationNotesActive: boolean,
-    isRandomGuessButtonDisplayed: boolean,
 }
 
 export interface modal {

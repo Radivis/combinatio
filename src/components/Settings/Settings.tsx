@@ -120,7 +120,7 @@ const Settings = (props: settingsProps) => {
     return (
         <form onSubmit={onSubmit}>
             <div className="settings-table">
-                <h2>Game Settings</h2>
+                <h2 className="settings-title">Game Settings</h2>
                 <div className="settings-row">
                     <label htmlFor="numRows">Number of rows: </label>
                     <IntegerSelect 
@@ -185,7 +185,8 @@ const Settings = (props: settingsProps) => {
                     </select>
                 </div>
                 <button type="submit">Save settings and start new game</button>
-                <h2>Display Settings</h2>
+                <h3 className="settings-title">Display Settings</h3>
+                <p className="settings-paragraph">Changing these settings has an immediate effect and doesn't require restarting the game.</p>
                 <BooleanSetting
                     setting={areColorAmountHintsActive}
                     settingName={"areColorAmountHintsActive"}

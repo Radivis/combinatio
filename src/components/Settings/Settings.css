@@ -14,6 +14,17 @@
     margin-bottom: 5px;
 }
 
+.settings-title {
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
+
+.settings-paragraph {
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
 input, select, option {
     background-color: hsl(34, 40%, 75%);
     border-radius: 5px;

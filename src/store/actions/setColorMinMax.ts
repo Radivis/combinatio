@@ -1,6 +1,6 @@
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import Colors from "../../util/Colors";
-import { gameState } from "../gameStore";
+import { gameState } from "../../interfaces/types";
 
 const setColorMinMax = (set: zustandSetter, get: zustandGetter) =>
     ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => {

@@ -1,4 +1,6 @@
-import { gameActions, gameState } from "../store/gameStore";
+import Color from "../util/Color";
+import Colors from "../util/Colors";
+import { game, hints, modal, settings } from "./interfaces";
 
 // ZUSTAND TYPES
 // Defining types from Zustand, because they are not exported! 
@@ -33,6 +35,35 @@ export declare type Draft<T> = T extends PrimitiveType ? T : T extends AtomicObj
 
 export type colorDataString = string;
 export type colorsDataString = string;
+
+export type gameState = {
+    settings: settings,
+    game: game,
+    hints: hints,
+    modal: modal,
+}
+
+export type gameActions = {
+    changeSettings: (newSettings: settings) => void,
+    placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => void,
+    start: () => void,
+    win: () => void,
+    lose: () => void,
+    reset: () => void,
+    randomGuess: () => void,
+    guess: () => void,
+    resetHints: () => void,
+    toggleDisableColor: (color: Color) => void,
+    setPossibleColors: (colors: Colors, columnIndex: number) => void,
+    setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
+    placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => void,
+    addColorTuple: () => void,
+    addColorTupleSlot: (rowIndex: number) => void,
+    deleteColorTupleRow: (rowIndex: number) => void,
+    changeCombinationNote: (rowIndex: number, newNote: string) => void,
+    setModal: (modal: modal) => void,
+}
+
 export type gameStore = gameState & gameActions;
 export type zustandGetter = () => gameStore;
 export type zustandSetter = (

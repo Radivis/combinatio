@@ -2,7 +2,8 @@ import { gameStates } from "../../constants";
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import Colors from "../../util/Colors";
 import generateSolution from "../functions/generateSolution";
-import { defaultRowColorsDataString, gameState } from "../gameStore";
+import { defaultRowColorsDataString } from "../gameStore";
+import { gameState } from "../../interfaces/types";
 
 const guess = (set: zustandSetter, get: zustandGetter) => () => {
     const state = get();

@@ -1,6 +1,6 @@
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
-import { gameState } from "../gameStore";
+import { gameState } from "../../interfaces/types";
 
 /**
  * Generates a solution for the current game

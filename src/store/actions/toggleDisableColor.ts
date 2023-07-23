@@ -1,7 +1,7 @@
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
-import { gameState } from "../gameStore";
+import { gameState } from "../../interfaces/types";
 
 const toggleDisableColor = (set: zustandSetter, get: zustandGetter) => (color: Color) => {
     const state = get();

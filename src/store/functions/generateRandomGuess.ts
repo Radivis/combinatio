@@ -1,6 +1,6 @@
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
-import { gameActions, gameState, } from "../gameStore";
+import { gameState, gameActions } from "../../interfaces/types";
 import { defaultRowColorsDataString } from '../gameStore';
 
 const checkCycles = (cycles: number): boolean => {

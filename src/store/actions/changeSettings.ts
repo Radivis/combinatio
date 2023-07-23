@@ -1,5 +1,5 @@
 
-import { gameState, gameActions, defaultRowColorsDataString, initializeGameRows } from "../gameStore";
+import { defaultRowColorsDataString, initializeGameRows } from "../gameStore";
 import Colors from "../../util/Colors";
 import { settings } from "../../interfaces/interfaces";
 import generatePalette from "../functions/generatePalette";
@@ -7,6 +7,7 @@ import { gameStates } from "../../constants";
 import generateSolution from "../functions/generateSolution";
 import generateRandomGuess from "../functions/generateRandomGuess";
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
+import { gameState, gameActions } from "../../interfaces/types";
 
 const changeSettings = (set: zustandSetter, get: zustandGetter) => (newSettings: settings): void => {
     const oldState = get();

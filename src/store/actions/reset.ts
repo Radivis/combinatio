@@ -3,7 +3,8 @@ import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import Colors from "../../util/Colors";
 import generateRandomGuess from "../functions/generateRandomGuess";
 import generateSolution from "../functions/generateSolution";
-import { defaultRowColorsDataString, gameActions, gameState, initializeGameRows } from "../gameStore";
+import { defaultRowColorsDataString, initializeGameRows } from "../gameStore";
+import { gameState, gameActions } from "../../interfaces/types";
 
 const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
     // const { generateSolution } = get();

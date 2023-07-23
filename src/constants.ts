@@ -1,3 +1,4 @@
+export const gameVersionNumber = '0.5.1';
 export const defaultNumColumns = 4;
 export const defaultNumRows = 8;
 export const defaultNumColors = 6;

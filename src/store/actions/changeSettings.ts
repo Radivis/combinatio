@@ -6,8 +6,9 @@ import generatePalette from "../functions/generatePalette";
 import { gameStates } from "../../constants";
 import generateSolution from "../functions/generateSolution";
 import generateRandomGuess from "../functions/generateRandomGuess";
+import { zustandGetter, zustandSetter } from "../../interfaces/types";
 
-const changeSettings = (set: Function, get: Function) => (newSettings: settings): void => {
+const changeSettings = (set: zustandSetter, get: zustandGetter) => (newSettings: settings): void => {
     const oldState = get();
 
     // Generate new colors palette, if necessary

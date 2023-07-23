@@ -45,6 +45,7 @@ export type gameActions = {
     addColorTuple: () => void,
     addColorTupleSlot: (rowIndex: number) => void,
     deleteColorTupleRow: (rowIndex: number) => void,
+    changeCombinationNote: (rowIndex: number, newNote: string) => void,
     setModal: (modal: modal) => void,
 }
 
@@ -95,7 +96,7 @@ const initialGameState = {
         possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
         disabledColorsDataString: '[]',
-        colorTuplesDataStrings: Array(2).fill(defaultRowColorsDataString(2)),
+        combinationNotes: Array(2).fill([defaultRowColorsDataString(2),'']),
     },
     modal: {
         type: 'none',
@@ -114,7 +115,7 @@ const resetHintsCallback = (set: Function, get: Function) => {
             possibleSlotColorsDataStrings: Array(numColumns)
             .fill(state.game.paletteColorsDataString),
             disabledColorsDataString: '[]',
-            colorTuplesDataStrings: Array(2).fill(defaultRowColorsDataString(2)),
+            combinationNotes: Array(2).fill([defaultRowColorsDataString(2), '']),
         }
         state.hints = blankHints;
         state.hints.colorsMinMax = blankHints.colorsMinMax;
@@ -166,7 +167,7 @@ const useGameStore = create<gameState & gameActions>()(
                     .fill([...[0, maxIdenticalColorsInSolution]]);
 
                 // Reset colorTuples
-                state.hints.colorTuplesDataStrings = Array(2).fill(defaultRowColorsDataString(2));
+                state.hints.combinationNotes = Array(2).fill(defaultRowColorsDataString(2));
 
                 // Regenerate solution
                 const solutionColors = generateSolution(state);
@@ -223,7 +224,7 @@ const useGameStore = create<gameState & gameActions>()(
                     possibleSlotColorsDataStrings: Array(numColumns)
                     .fill(state.game.paletteColorsDataString),
                     disabledColorsDataString: '[]',
-                    colorTuplesDataStrings: Array(2).fill(defaultRowColorsDataString(2)),
+                    combinationNotes: Array(2).fill([defaultRowColorsDataString(2), '']),
                 }
                 state.hints = blankHints;
                 state.hints.colorsMinMax = blankHints.colorsMinMax;
@@ -430,33 +431,38 @@ const useGameStore = create<gameState & gameActions>()(
             }, false, 'setColorMinMax');
         },
         placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => {
-            const { colorTuplesDataStrings } = get().hints;
-            const colorTuple = Colors.deserialize(colorTuplesDataStrings[rowIndex]);
+            const { combinationNotes } = get().hints;
+            const colorTuple = Colors.deserialize(combinationNotes[rowIndex][0]);
             colorTuple[columnIndex] = color;
             set((state: gameState) => {
-                state.hints.colorTuplesDataStrings[rowIndex] = Colors.serialize(colorTuple);
+                state.hints.combinationNotes[rowIndex][0] = Colors.serialize(colorTuple);
             }, false, 'placeTupleColor');
         },
         addColorTuple: () => {
             set((state: gameState) => {
-                state.hints.colorTuplesDataStrings
-                .push(defaultRowColorsDataString(2));
+                state.hints.combinationNotes
+                .push([defaultRowColorsDataString(2),'']);
             }, false, 'addColorTuple')
         },
         addColorTupleSlot: (rowIndex: number) => {
             set((state: gameState) => {
-                const colorTuple = Colors.deserialize(state.hints.colorTuplesDataStrings[rowIndex]);
+                const colorTuple = Colors.deserialize(state.hints.combinationNotes[rowIndex][0]);
                 colorTuple.push(new Color(holeHue, holeSaturation, holeLightness));
-                state.hints.colorTuplesDataStrings[rowIndex] = Colors.serialize(colorTuple);
+                state.hints.combinationNotes[rowIndex][0] = Colors.serialize(colorTuple);
             }, false, 'addColorTuple')
         },
         deleteColorTupleRow: (rowIndex: number) => {
             set((state: gameState) => {
-                state.hints.colorTuplesDataStrings = state.hints.colorTuplesDataStrings
-                    .filter((colorTuplesDataString: string, _rowIndex:number) => {
+                state.hints.combinationNotes = state.hints.combinationNotes
+                    .filter((combinationNote: [string, string], _rowIndex:number) => {
                         return rowIndex !== _rowIndex;
                     });
             }, false, 'deleteColorTupleRow')
+        },
+        changeCombinationNote: (rowIndex: number, newNote: string) => {
+            set((state: gameState) => {
+                state.hints.combinationNotes[rowIndex][1] = newNote;
+            }, false, 'changeCombinationNote')
         },
         setModal: (modal: modal) => {
             set((state: gameState) => {

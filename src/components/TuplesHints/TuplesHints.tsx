@@ -9,15 +9,15 @@ const TuplesHints = () => {
 
     const {
         areCombinationNotesActive,
-        colorTuplesDataStrings,
+        combinationNotes,
         addColorTuple
     } = useGameStore((state) => {
         const { hints, addColorTuple } = state;
         const { areCombinationNotesActive } = state.settings;
-        const { colorTuplesDataStrings } = hints;
+        const { combinationNotes } = hints;
         return {
             areCombinationNotesActive,
-            colorTuplesDataStrings,
+            combinationNotes,
             addColorTuple
         };
     })
@@ -29,7 +29,7 @@ const TuplesHints = () => {
                 <h3 className='tuples-hints-title'>
                     Combination Notes
                 </h3>
-                {colorTuplesDataStrings.map((colorTuplesDataString: string, rowIndex: number) => {
+                {combinationNotes.map((combinationNote: [string, string], rowIndex: number) => {
                     return <TuplesHintsRow 
                         rowIndex={rowIndex}
                     />

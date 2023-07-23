@@ -18,23 +18,32 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
     const { rowIndex } = props;
 
     const {
-        colorTuple,
+        combinationNotes,
         disabledColorsDataString,
         addColorTupleSlot,
+        changeCombinationNote,
         deleteColorTupleRow,
         placeTupleColor,
     } = useGameStore((state) => {
-        const { hints, addColorTupleSlot, placeTupleColor, deleteColorTupleRow } = state;
-        const { colorTuplesDataStrings, disabledColorsDataString } = hints;
-        const colorTuple = Colors.deserialize(colorTuplesDataStrings[rowIndex]);
+        const {
+            hints,
+            addColorTupleSlot,
+            changeCombinationNote,
+            placeTupleColor,
+            deleteColorTupleRow
+        } = state;
+        const { combinationNotes, disabledColorsDataString } = hints;
         return {
-            colorTuple,
+            combinationNotes,
             disabledColorsDataString,
             addColorTupleSlot,
+            changeCombinationNote,
             deleteColorTupleRow,
             placeTupleColor,
         };
     })
+
+    const colorTuple = Colors.deserialize(combinationNotes[rowIndex][0]);
 
     const disabledColors = Colors.deserialize(disabledColorsDataString);
 
@@ -53,6 +62,10 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
     const onClickDeleteTupleRowButton = () => {
         deleteColorTupleRow(rowIndex);
     }
+
+    const onChangeNote = (ev: any) => {
+        changeCombinationNote(rowIndex, ev.target.value)
+    } 
 
     return (
         <div className="tuples-hints-row">
@@ -73,8 +86,12 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
             <button className='add-tuple-slot-button' onClick={onClickAddTupleSlotButton}>
                 <FontAwesomeIcon icon={faPlus} size="sm"/>
             </button>
-            <input type="text" className='tuple-row-note'>
-            </input>
+            <input
+                type="text"
+                className='tuple-row-note'
+                value={combinationNotes[rowIndex][1]}
+                onChange={onChangeNote}
+            />
             <button className='delete-tuple-row-button' onClick={onClickDeleteTupleRowButton}>
                 <FontAwesomeIcon icon={faTrashCan} size="sm"/>
             </button>

@@ -1,7 +1,8 @@
 import { defaultNumColors, defaultNumColumns, defaultNumRows, gameStates, paletteNames } from "../constants";
 import Colors from "../util/Colors";
 import { generateRegularPalette } from "./functions/generatePalette";
-import { defaultRowColorsDataString, initializeGameRows } from "./gameStore";
+import generateDefaultRowColorsDataString from "./functions/generateDefaultRowColorsDataString";
+import initializeGameRows from "./functions/initializeGameRows";
 
 const initialGameState = {
     settings: {
@@ -19,7 +20,7 @@ const initialGameState = {
     game: {
         paletteColorsDataString: Colors.serialize(generateRegularPalette(defaultNumColors)),
         activeRowIndex: 1,
-        solutionColorsDataString: defaultRowColorsDataString(defaultNumColumns),
+        solutionColorsDataString: generateDefaultRowColorsDataString(defaultNumColumns),
         gameRows: initializeGameRows(defaultNumRows, defaultNumColumns),
         gameState: gameStates[0],
         timerSeconds: 0,
@@ -29,7 +30,7 @@ const initialGameState = {
         possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
         disabledColorsDataString: '[]',
-        combinationNotes: Array(2).fill([defaultRowColorsDataString(2),'']),
+        combinationNotes: Array(2).fill([generateDefaultRowColorsDataString(2),'']),
     },
     modal: {
         type: 'none',

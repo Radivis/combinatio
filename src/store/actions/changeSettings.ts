@@ -1,5 +1,6 @@
 
-import { defaultRowColorsDataString, initializeGameRows } from "../gameStore";
+import generateDefaultRowColorsDataString from "../functions/generateDefaultRowColorsDataString";
+import initializeGameRows from "../functions/initializeGameRows";
 import Colors from "../../util/Colors";
 import { settings } from "../../interfaces/interfaces";
 import generatePalette from "../functions/generatePalette";
@@ -51,7 +52,7 @@ const changeSettings = (set: zustandSetter, get: zustandGetter) => (newSettings:
         state.hints.disabledColorsDataString = '[]';
 
         // Reset colorTuples
-        state.hints.combinationNotes = Array(2).fill([defaultRowColorsDataString(2), '']);
+        state.hints.combinationNotes = Array(2).fill([generateDefaultRowColorsDataString(2), '']);
 
         // Regenerate solution
         const solutionColors = generateSolution(state);

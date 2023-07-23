@@ -3,7 +3,8 @@ import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import Colors from "../../util/Colors";
 import generateRandomGuess from "../functions/generateRandomGuess";
 import generateSolution from "../functions/generateSolution";
-import { defaultRowColorsDataString, initializeGameRows } from "../gameStore";
+import generateDefaultRowColorsDataString from "../functions/generateDefaultRowColorsDataString";
+import initializeGameRows from "../functions/initializeGameRows";
 import { gameState, gameActions } from "../../interfaces/types";
 
 const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
@@ -25,7 +26,7 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
             possibleSlotColorsDataStrings: Array(numColumns)
             .fill(state.game.paletteColorsDataString),
             disabledColorsDataString: '[]',
-            combinationNotes: Array(2).fill([defaultRowColorsDataString(2), '']),
+            combinationNotes: Array(2).fill([generateDefaultRowColorsDataString(2), '']),
         }
         state.hints = blankHints;
         state.hints.colorsMinMax = blankHints.colorsMinMax;

@@ -25,6 +25,7 @@ import setColorMinMax from './actions/setColorMinMax';
 import resetHints from './actions/resetHints';
 
 import initialGameState from './initialGameState';
+import generateDefaultRowColorsDataString from './functions/generateDefaultRowColorsDataString';
 
 
 
@@ -33,21 +34,6 @@ import initialGameState from './initialGameState';
 //     setTimeout(() => get()[action], 1);
 // }
 
-export const defaultRowColorsDataString = (numColumns: number): colorsDataString => Colors.serialize(new Colors(
-    {
-        color: new Color(holeHue, holeSaturation, holeLightness),
-        length: numColumns
-    }
-));
-
-export const initializeGameRows = (numRows: number, numColumns: number): gameRow[] => range(numRows + 1)
-.map((_rowIndex: number) => {
-    return {
-        rowColorsDataString: defaultRowColorsDataString(numColumns),
-        numCorrectColor: 0,
-        numFullyCorrect: 0,
-    }
-})
 
 const useGameStore = create<gameStore>()(
     devtools(immer((set, get) => ({
@@ -106,7 +92,7 @@ const useGameStore = create<gameStore>()(
         addColorTuple: () => {
             set((state: gameState) => {
                 state.hints.combinationNotes
-                .push([defaultRowColorsDataString(2),'']);
+                .push([generateDefaultRowColorsDataString(2),'']);
             }, false, 'addColorTuple')
         },
         addColorTupleSlot: (rowIndex: number) => {

@@ -1,5 +1,5 @@
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
-import { defaultRowColorsDataString } from "../gameStore";
+import generateDefaultRowColorsDataString from "../functions/generateDefaultRowColorsDataString";
 import { gameState } from "../../interfaces/types";
 
 const resetHints = (set: zustandSetter, get: zustandGetter) => () => {
@@ -11,7 +11,7 @@ const resetHints = (set: zustandSetter, get: zustandGetter) => () => {
             possibleSlotColorsDataStrings: Array(numColumns)
             .fill(state.game.paletteColorsDataString),
             disabledColorsDataString: '[]',
-            combinationNotes: Array(2).fill([defaultRowColorsDataString(2), '']),
+            combinationNotes: Array(2).fill([generateDefaultRowColorsDataString(2), '']),
         }
         state.hints = blankHints;
         state.hints.colorsMinMax = blankHints.colorsMinMax;

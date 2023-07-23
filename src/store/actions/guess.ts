@@ -2,7 +2,7 @@ import { gameStates } from "../../constants";
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import Colors from "../../util/Colors";
 import generateSolution from "../functions/generateSolution";
-import { defaultRowColorsDataString } from "../gameStore";
+import generateDefaultRowColorsDataString from "../functions/generateDefaultRowColorsDataString";
 import { gameState } from "../../interfaces/types";
 
 const guess = (set: zustandSetter, get: zustandGetter) => () => {
@@ -15,7 +15,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     const currentRowColors = Colors.deserialize(state.game.gameRows[rowIndex].rowColorsDataString);
 
     // Generate solution colors on the fly, if they haven't been set, yet
-    if (solutionColorsDataString === defaultRowColorsDataString(numColumns)) {
+    if (solutionColorsDataString === generateDefaultRowColorsDataString(numColumns)) {
         solutionColors = generateSolution(state);
         solutionColorsDataString = Colors.serialize(solutionColors);
     }

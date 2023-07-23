@@ -1,7 +1,7 @@
 import Color from "../../util/Color";
 import Colors from "../../util/Colors";
 import { gameState, gameActions } from "../../interfaces/types";
-import { defaultRowColorsDataString } from '../gameStore';
+import generateDefaultRowColorsDataString from "./generateDefaultRowColorsDataString";
 
 const checkCycles = (cycles: number): boolean => {
     if (cycles <= 0) throw new Error('Oops, this action seems to have caused an enless loop!');
@@ -266,7 +266,7 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
                 isVisible: true,
             })
         }
-        return Colors.deserialize(defaultRowColorsDataString(numColumns));
+        return Colors.deserialize(generateDefaultRowColorsDataString(numColumns));
     }
 
     return new Colors(guessColors as Color[]);

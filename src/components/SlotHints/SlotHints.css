@@ -1,6 +1,17 @@
+.slot-hints-outer-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 23px;
+}
+
 .slot-hints-container {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    padding-left: 15px;
+}
+
+.slot-hints-title {
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

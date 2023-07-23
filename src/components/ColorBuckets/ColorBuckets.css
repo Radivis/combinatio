@@ -3,3 +3,8 @@
     flex-direction: row;
     flex-wrap: nowrap;
 }
+
+.color-occurences-title {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}

@@ -15,14 +15,19 @@ const SlotHints = (props: slotHintsProps) => {
     const columnArray = range(numColumns);
 
     return (
-        <div className='slot-hints-container'>
-            {columnArray.map(columnIndex => {
-                return <SlotHintColumn
-                    key={columnIndex}
-                    columnIndex={columnIndex}
-                    baseColorsDataString={baseColorsDataString}
-                />
-            })}
+        <div className='slot-hints-outer-container'>
+            <h3 className='slot-hints-title'>
+                Possible Colors per Slot
+            </h3>
+            <div className='slot-hints-container'>
+                {columnArray.map(columnIndex => {
+                    return <SlotHintColumn
+                        key={columnIndex}
+                        columnIndex={columnIndex}
+                        baseColorsDataString={baseColorsDataString}
+                    />
+                })}
+            </div>
         </div>
     );
 }

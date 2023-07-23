@@ -166,8 +166,11 @@ const useGameStore = create<gameState & gameActions>()(
                 state.hints.colorsMinMax = Array(numColors)
                     .fill([...[0, maxIdenticalColorsInSolution]]);
 
+                // Reset disabled colors
+                state.hints.disabledColorsDataString = '[]';
+
                 // Reset colorTuples
-                state.hints.combinationNotes = Array(2).fill(defaultRowColorsDataString(2));
+                state.hints.combinationNotes = Array(2).fill([defaultRowColorsDataString(2), '']);
 
                 // Regenerate solution
                 const solutionColors = generateSolution(state);

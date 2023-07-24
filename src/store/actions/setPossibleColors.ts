@@ -46,21 +46,31 @@ const setPossibleColors = (set: zustandSetter, get: zustandGetter) => (colors: C
                 colorsMinMax[colorIndex][0] = numCertainSlots;
                 
                 // decrement the max values of all other colors
+
+                // How many color occurences are already fixed?
+                const minTotal = state.hints.colorsMinMax.reduce((prev: number,curr: [number, number]): number => {
+                    return prev + curr[0];
+                },0);
+                // How many slots can still be filled?
+                const numRemainingSlots = numColumns - minTotal;   
+
                 const step = numCertainSlots - state.hints.colorsMinMax[colorIndex][0];            
                 for (let i = 0; i < numColors; i++) {
-                    const newMax = state.hints.colorsMinMax[i][1] - step;
-                    if (i !== colorIndex &&
-                        // new max must respect boundaries
-                        newMax > 0 &&
-                        newMax <= maxIdenticalColorsInSolution &&
-                        // the new max must not fall below the min!
-                        newMax >= state.hints.colorsMinMax[i][0]
-                        ) {
-                        state.hints.colorsMinMax[i][1] -= step;
+                    const prevMax = state.hints.colorsMinMax[i][1];
+                    if (numRemainingSlots <= prevMax) {
+                        const newMax = prevMax - step;
+                        if (i !== colorIndex &&
+                            // new max must respect boundaries
+                            newMax > 0 &&
+                            newMax <= maxIdenticalColorsInSolution &&
+                            // the new max must not fall below the min!
+                            newMax >= state.hints.colorsMinMax[i][0]
+                            ) {
+                            state.hints.colorsMinMax[i][1] -= step;
+                        }
                     }
                 }
             }
-
         });
 
     }, false, 'setPossibleColors')

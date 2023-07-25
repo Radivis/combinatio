@@ -3,8 +3,21 @@ import Colors from "../../util/Colors";
 import { gameState, gameActions } from "../../interfaces/types";
 import generateDefaultRowColorsDataString from "./generateDefaultRowColorsDataString";
 
+const isDebugging = false;
+
+const CYCLE_BOUND = 100;
+const LOOP_BOUND = 100;
+
+class CycleLimitError extends Error {
+
+}
+
+class LoopFailureError extends Error {
+
+}
+
 const checkCycles = (cycles: number): boolean => {
-    if (cycles <= 0) throw new Error('Oops, this action seems to have caused an enless loop!');
+    if (cycles <= 0) throw new CycleLimitError('Oops, this action seems to have caused an enless loop!');
     return true;
 };
 
@@ -14,10 +27,14 @@ const checkCycles = (cycles: number): boolean => {
  * @param {gameState} state - The current state of the game
  * @returns {Colors} - the new random guess as Colors instance
  */
-const generateRandomGuess = (state: gameState & gameActions): Colors => {
+const generateRandomGuess = (state: gameState & gameActions, loops: number = LOOP_BOUND): Colors => {
 
     // Define allowed maxmium number of loop cycles to exit endless loops gracefully
-    let cycles = 100000;
+    let cycles = CYCLE_BOUND;
+
+    if (loops === 0) {
+        throw new Error('Oops, this action seems to have caused an infinite loop');
+    }
 
     const { setModal } = state;
     const { numColumns } = state.gameSettings;
@@ -39,17 +56,17 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
     try {
 
         // Step 1: Fill all "certain" slots
-        for (let slotIndex = 0; slotIndex < numColumns; slotIndex++) {
-            const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[slotIndex]);
+        for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+            const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[columnIndex]);
 
             if (possibleSlotColors.length === 0) {
-                throw new Error(`Cannot place random guess, because no colors are possible for slot number ${slotIndex}`);
+                throw new Error(`Cannot place random guess, because no colors are possible for slot number ${columnIndex}`);
             }
 
             if (possibleSlotColors.length === 1) {
                 // if there is only one possible color, select that for this slot!
                 const colorToPlace = possibleSlotColors[0];
-                guessColors[slotIndex] = colorToPlace;
+                guessColors[columnIndex] = colorToPlace;
 
                 // decrement fitting colorMaxPair
                 colorMaxPairs.find((pair: [Color, number]) => pair[0].equals(colorToPlace))![1]--;
@@ -89,6 +106,75 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
             throw new Error(`Cannot place more colors than there are free slots! Check your min numbers!`)
         }
 
+        /* Placing colors too randomly could result in an infinite loop,
+        * first reduce the possible colors by minimizing the slot hint rows,
+        * without actually eliminating them from the view
+        * (the player doesn't need to know how smart this algorithm really is)
+        */
+        const possibleSlotColorsArray = possibleSlotColorsDataStrings
+            .map((possibleSlotColorsDataString) => Colors.deserialize(possibleSlotColorsDataString));
+        
+        // Make a matrix of the rows of the color hints
+        const colorHintRows: (Color | null)[][] = [];
+        const numCertainColorsInHintRow: number[] = Array(paletteColors.length).fill(0);
+        paletteColors.forEach((color, colorIndex) => {
+            // Add a new row
+            const colorHintRow: (Color | null)[] = [];
+            colorHintRows.push(colorHintRow);
+            possibleSlotColorsArray.forEach((possibleSlotColors, columnIndex) => {
+
+                if (isDebugging) console.log(`colorIndex: ${colorIndex}, columnIndex: ${columnIndex}, possibleSlotColors: ${Colors.serialize(possibleSlotColors)}`);
+
+                if(possibleSlotColors.has(color)) {
+                    colorHintRow.push(color);
+                    if(guessColors[columnIndex] !== undefined) {
+                        numCertainColorsInHintRow[colorIndex]++;
+                    }
+                } else {
+                    colorHintRow.push(null);
+                }
+
+                if (isDebugging) console.log('numCertainColorsInHintRow', numCertainColorsInHintRow);
+            })
+
+            if (isDebugging) console.log(`colorHintRow before minimization: ${colorHintRow}`);
+
+            // Minimize the row by removing colors that are not certain and can't be correct
+            // due to the already placed colors and the max possible color occurrence limit
+            if(numCertainColorsInHintRow[colorIndex] === colorsMinMax[colorIndex][1]) {
+
+                if (isDebugging) console.log(`Row with colorIndex ${colorIndex} will be reduced!`);
+
+                colorHintRow.forEach((entry: Color | null, columnIndex: number) => {
+                    // Remove entries that are not already filled during step 1
+                    if(entry !== null && guessColors[columnIndex] === undefined) {
+                        colorHintRow[columnIndex] = null;
+                    }
+                })
+            }
+
+            if (isDebugging) console.log(`colorHintRow after minimization: ${colorHintRow}`);
+        })
+
+        if (isDebugging) console.log("colorHintRows", colorHintRows);
+        if (isDebugging) console.log("colorHintRowsCounts", numCertainColorsInHintRow);
+
+        // Now update the possibleSlotColorsArray to get minimized possibleSlotColors!
+        const reducedPossibleSlotColorsArray: Colors[] = [];
+        for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+            const reducedPossibleSlotColors: Colors = new Colors([]);
+            reducedPossibleSlotColorsArray.push(reducedPossibleSlotColors);
+            for (let colorIndex = 0; colorIndex < paletteColors.length; colorIndex++) {
+                const colorEntry: Color | null = colorHintRows[colorIndex][columnIndex];
+                if (colorEntry !== null) {
+                    reducedPossibleSlotColors.push(colorEntry);
+                }
+                if (isDebugging) console.log(`colorIndex: ${colorIndex}, columnIndex: ${columnIndex}, colorHintRows[colorIndex][columnIndex]: ${colorHintRows[colorIndex][columnIndex]}`);
+            }
+        }
+
+        if (isDebugging) console.log("reducedPossibleSlotColorsArray", reducedPossibleSlotColorsArray);
+
         while (numNecessaryColors > 0) {
             // Endless loop prevention
             cycles -= 1;
@@ -104,8 +190,8 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
                 const color = pair[0];
                 let possibleSlotsForColor = 0;
                 for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
-                    if (Colors.deserialize(possibleSlotColorsDataStrings[columnIndex])
-                    .has(pair[0]) && guessColors[columnIndex] === undefined) {
+                    if (reducedPossibleSlotColorsArray[columnIndex].has(color) &&
+                        guessColors[columnIndex] === undefined) {
                         possibleSlotsForColor++;
                     }
                 }
@@ -124,22 +210,32 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
             })!;
 
             let isColorPlaced = false;
-            const checkedSlotIndices = [];
+            const checkedSlotIndices: number[] = [];
             while (!isColorPlaced && remainingSlotIndices.length > 0) {
                 // Endless loop prevention
                 cycles -= 1;
                 checkCycles(cycles);
 
                 // Select a random slot, in which the color is possible to add that color in
-                const randomIndex = Math.floor(Math.random() * remainingSlotIndices.length);
-                let remainingSlotIndex = remainingSlotIndices[randomIndex];
+                const slotIndicesLeftToCheck = remainingSlotIndices.filter((slotIndex) => {
+                    return !checkedSlotIndices.includes(slotIndex);
+                })
 
-                if (Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex])
-                    .has(necessaryColorPair[0])) {
+                if (slotIndicesLeftToCheck.length === 0) {
+                    throw new Error(`Could not place one of the necessary colors, because there is no possible slot left for it!`);
+                }
+
+                const randomIndex = Math.floor(Math.random() * slotIndicesLeftToCheck.length);
+                let remainingSlotIndex = slotIndicesLeftToCheck[randomIndex];
+
+                if (reducedPossibleSlotColorsArray[remainingSlotIndex].has(necessaryColorPair[0])) {
                     // color is possible in this slot, add it!
                     const colorToPlace = necessaryColorPair[0];
                     
                     guessColors[remainingSlotIndex] = colorToPlace;
+
+                    if (isDebugging) console.log('guessColors: ...');
+                    if (isDebugging) console.log(guessColors);
 
                     // decrement min of the selected Color-min-pair
                     let isDecremented = false;
@@ -171,7 +267,7 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
                     remainingSlotIndices.splice(randomIndex, 1);
                 } 
 
-                // Add the current randomIndex to the checkedSlotIndices to force this loop to terminate
+                // Add the current randomIndex to the checkedSlotIndices
                 checkedSlotIndices.push(randomIndex);
             }
             if (numNecessaryColors > remainingSlotIndices.length) {
@@ -196,7 +292,7 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
                 cycles -= 1;
                 checkCycles(cycles);
 
-                const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataStrings[remainingSlotIndex]);
+                const possibleSlotColors = reducedPossibleSlotColorsArray[remainingSlotIndex];
                 
                 // eslint-disable-next-line no-loop-func
                 possibleSlotColors.forEach(color => {
@@ -238,7 +334,7 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
             if (color === undefined) areAllGuessColorsDefined = false;
         })
 
-        if (!areAllGuessColorsDefined) throw new Error("Couldn't complete random guess");
+        if (!areAllGuessColorsDefined) throw new LoopFailureError("Couldn't complete random guess");
 
         // Check is this guess has already been placed
         let isAlreadyPlaced = false;
@@ -259,14 +355,22 @@ const generateRandomGuess = (state: gameState & gameActions): Colors => {
         }
 
     } catch (error: unknown) {
-        if (error instanceof Error) {
-            setModal({
-                messageHeader: 'Could not make random guess',
-                messageBody: error.message,
-                isVisible: true,
-            })
+        if (error instanceof CycleLimitError || error instanceof LoopFailureError) {
+            // Could not generate a guess successfully within the given cycle bound, try again!
+
+            if (isDebugging) console.warn(`Unsuccesfull loop! Loops left: ${loops -1 }`);
+
+            return generateRandomGuess(state, loops - 1); 
+        } else {
+            if (error instanceof Error) {
+                setModal({
+                    messageHeader: 'Could not make random guess',
+                    messageBody: error.message,
+                    isVisible: true,
+                })
+            }
+            return Colors.deserialize(generateDefaultRowColorsDataString(numColumns));
         }
-        return Colors.deserialize(generateDefaultRowColorsDataString(numColumns));
     }
 
     return new Colors(guessColors as Color[]);

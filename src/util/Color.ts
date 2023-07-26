@@ -2,9 +2,9 @@ import { hslColorObject } from "../interfaces/interfaces";
 
 
 class Color {
-    private _hue: number;
-    private _saturation: number;
-    private _lightness: number;
+    protected _hue: number;
+    protected _saturation: number;
+    protected _lightness: number;
 
     constructor(hue: number, saturation: number, lightness: number) {
         this._hue = hue;

@@ -9,3 +9,9 @@ export const holeSaturation = 57;
 export const holeLightness = 20;
 export const gameStates = ['starting', 'running', 'won', 'lost'];
 export const paletteNames = ['regular', 'zanthia'];
+
+export enum pieceTypes {
+    color = 'color',
+    colorIcon = 'colorIcon',
+    icon = 'icon'
+}

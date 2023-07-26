@@ -42,6 +42,7 @@ export interface gameSettings {
     numPrefilledRows: number,
     maxIdenticalColorsInSolution: number,
     paletteName: string,
+    pieceType: string,
 }
 
 export interface modal {

@@ -1,4 +1,6 @@
 import Color from "../util/Color";
+import ColorIcon from "../util/ColorIcon";
+import ColorIcons from "../util/ColorIcons";
 import Colors from "../util/Colors";
 import { game, hints, modal, gameSettings, displaySettings } from "./interfaces";
 
@@ -75,3 +77,6 @@ export type zustandSetter = (
     nextStateOrUpdater: gameStore | Partial<gameStore> | ((state: Draft<gameStore>) => void),
     shouldReplace?: boolean | undefined,
     action?: string | { type: unknown } | undefined ) => void;
+
+export type Piece = Color | ColorIcon;
+export type Pieces = Colors | ColorIcons;

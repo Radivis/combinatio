@@ -1,4 +1,4 @@
-import { defaultNumColors, defaultNumColumns, defaultNumRows, gameStates, paletteNames } from "../constants";
+import { defaultNumColors, defaultNumColumns, defaultNumRows, gameStates, paletteNames, pieceTypes } from "../constants";
 import Colors from "../util/Colors";
 import { generateRegularPalette } from "./functions/generatePalette";
 import generateDefaultRowColorsDataString from "./functions/generateDefaultRowColorsDataString";
@@ -18,6 +18,7 @@ const initialGameState = {
         numPrefilledRows: 0,
 		maxIdenticalColorsInSolution: defaultNumColumns,
 		paletteName: paletteNames[0],
+        pieceType: pieceTypes.color
     },
     game: {
         paletteColorsDataString: Colors.serialize(generateRegularPalette(defaultNumColors)),

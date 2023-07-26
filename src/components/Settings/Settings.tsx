@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import IntegerSelect from "./IntegerSelect";
-import { paletteNames } from "../../constants";
+import { paletteNames, pieceTypes } from "../../constants";
 import useGameStore from "../../store/gameStore";
 
 import './Settings.css';
@@ -33,6 +33,7 @@ const Settings = (props: settingsProps) => {
     const [numPrefilledRows, setNumPrefilledRows] = useState<number>(settings.numPrefilledRows);
     const [numColors, setNumColors] = useState<number>(settings.numColors);
     const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(settings.maxIdenticalColorsInSolution);
+    const [pieceType, setPieceType] = useState<string>(settings.pieceType);
     const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
 
     const validPaletteNames = paletteNames.filter(paletteName => {
@@ -42,6 +43,11 @@ const Settings = (props: settingsProps) => {
             default: return false;
         }
     });
+
+    const validPieceTypes = [
+        pieceTypes.color,
+        pieceTypes.colorIcon,
+    ]
 
     const onChangeNumRows = (ev: any) => {
         setNumRows(+ev.target.value!);
@@ -68,6 +74,10 @@ const Settings = (props: settingsProps) => {
             newMaxIdenticalColorsInSolution = numColumns;
         }
         setMaxIdenticalColorsInSolution(newMaxIdenticalColorsInSolution);
+    }
+
+    const onChangePieceType = (ev: any) => {
+        setPieceType(ev.target.value);
     }
 
     const onChangePaletteName = (ev: any) => {
@@ -103,6 +113,7 @@ const Settings = (props: settingsProps) => {
             numColors,
             maxIdenticalColorsInSolution,
             paletteName: selectedPaletteName,
+            pieceType,
         })
         setActivePage('game');
     }
@@ -121,6 +132,19 @@ const Settings = (props: settingsProps) => {
         <form onSubmit={onSubmit}>
             <div className="settings-table">
                 <h2 className="settings-title">Game Settings</h2>
+                <div className="settings-row">
+                    <label htmlFor="paletteName">Piece type: </label>
+                    <select name='paletteName' onChange={onChangePieceType}>
+                        {validPieceTypes.map((pieceType: string) => <option
+                            key={pieceType}
+                            value={pieceType}
+                            selected={settings.pieceType === pieceType}
+                            >
+                                {pieceType}
+                            </option>
+                        )}
+                    </select>
+                </div>
                 <div className="settings-row">
                     <label htmlFor="numRows">Number of rows: </label>
                     <IntegerSelect 

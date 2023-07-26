@@ -26,7 +26,8 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
             numColumns,
             numPrefilledRows,
             numColors,
-            numRows
+            numRows,
+            pieceType,
         } = newSettings;
 
         state.gameSettings = newSettings;

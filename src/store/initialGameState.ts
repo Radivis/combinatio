@@ -1,4 +1,4 @@
-import { defaultNumColors, defaultNumColumns, defaultNumRows, gameStates, paletteNames, pieceTypes } from "../constants";
+import { defaultNumColors, defaultNumColumns, defaultNumIcons, defaultNumRows, gameStates, paletteNames, pieceTypes } from "../constants";
 import Colors from "../util/Colors";
 import { generateRegularPalette } from "./functions/generatePalette";
 import generateDefaultRowColorsDataString from "./functions/generateDefaultRowColorsDataString";
@@ -13,6 +13,7 @@ const initialGameState = {
     },
     gameSettings: {
 		numColors: defaultNumColors,
+        numIcons: defaultNumIcons,
 		numRows: defaultNumRows,
 		numColumns: defaultNumColumns,
         numPrefilledRows: 0,

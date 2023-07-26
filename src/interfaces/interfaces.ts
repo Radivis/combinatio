@@ -37,6 +37,7 @@ export interface displaySettings {
 
 export interface gameSettings {
     numColors: number,
+    numIcons: number,
     numRows: number,
     numColumns: number,
     numPrefilledRows: number,

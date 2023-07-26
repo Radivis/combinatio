@@ -32,6 +32,7 @@ const Settings = (props: settingsProps) => {
     const [numColumns, setNumColumns] = useState<number>(settings.numColumns);
     const [numPrefilledRows, setNumPrefilledRows] = useState<number>(settings.numPrefilledRows);
     const [numColors, setNumColors] = useState<number>(settings.numColors);
+    const [numIcons, setNumIcons] = useState<number>(settings.numIcons);
     const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(settings.maxIdenticalColorsInSolution);
     const [pieceType, setPieceType] = useState<string>(settings.pieceType);
     const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
@@ -63,6 +64,10 @@ const Settings = (props: settingsProps) => {
 
     const onChangeNumColors = (ev: any) => {
         setNumColors(+ev.target.value!);
+    }
+
+    const onChangeNumIcons = (ev: any) => {
+        setNumIcons(+ev.target.value!);
     }
 
     const onChangeMaxIdenticalColorsInSolution = (ev: any) => {
@@ -111,6 +116,7 @@ const Settings = (props: settingsProps) => {
             numColumns,
             numPrefilledRows,
             numColors,
+            numIcons,
             maxIdenticalColorsInSolution,
             paletteName: selectedPaletteName,
             pieceType,
@@ -185,6 +191,17 @@ const Settings = (props: settingsProps) => {
                         onChange={onChangeNumColors}
                     />
                 </div>
+                {pieceType === pieceTypes.colorIcon &&
+                    <div className="settings-row">
+                    <label htmlFor="numIcons">Number of icons: </label>
+                    <IntegerSelect
+                        name={'numIcons'}  
+                        min={2}
+                        max={20}
+                        defaultValue={numIcons}
+                        onChange={onChangeNumIcons}
+                    />
+                </div>}
                 <div className="settings-row">
                     <label htmlFor="maxIdenticalColorsInSolutions">Max. number of same colors: </label>
                     <IntegerSelect

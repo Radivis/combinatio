@@ -53,11 +53,14 @@ const Icon = (props: IconProps) => {
     // const style = iconName !== undefined ? {backgroundColor: color.hsl} : {};
 
     return (
+        <>
         <FontAwesomeIcon
-            className={className}
+            className='icon'
             icon={iconName as IconName}
+            size="lg"
             onClick={onClick}
         />
+        </>
     );
 };
 

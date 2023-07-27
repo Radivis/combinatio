@@ -1,5 +1,5 @@
 import { useState, useEffect, } from "react";
-import { gameStates, holeHue, holeLightness, holeSaturation } from "../../constants";
+import { gameStates, holeHue, holeLightness, holeSaturation, pieceTypes } from "../../constants";
 
 import GameRow from "../GameRow/GameRow";
 import SolutionRow from "../SolutionRow/SolutionRow";
@@ -13,6 +13,7 @@ import useGameStore from "../../store/gameStore";
 
 import './Game.css';
 import TuplesHints from "../TuplesHints/TuplesHints";
+import IconBuckets from "../IconBuckets/IconBuckets";
 
 interface gameProps {
 }
@@ -52,10 +53,11 @@ const Game = (props: gameProps) => {
         return holeColor;
     })
 
-    const { activeRowIndex, solutionColorsDataString, gameState, reset } = useGameStore((state) => {
+    const { activeRowIndex, solutionColorsDataString, gameState, pieceType, reset } = useGameStore((state) => {
+        const { pieceType } = state.gameSettings;
         const { activeRowIndex, solutionColorsDataString, gameState } = state.game;
         const { reset } = state;
-        return { activeRowIndex, solutionColorsDataString, gameState, reset };
+        return { activeRowIndex, solutionColorsDataString, gameState, pieceType, reset };
     })
 
     const solutionColors = Colors.deserialize(solutionColorsDataString);
@@ -118,6 +120,9 @@ const Game = (props: gameProps) => {
                         baseColorsDataString={paletteColorsDataString}
                         areColorAmountHintsActive={areColorAmountHintsActive}
                     />
+                    {pieceType === pieceTypes.colorIcon && 
+                        <IconBuckets />
+                    }
                     <TuplesHints />
                 </div>
             </div>

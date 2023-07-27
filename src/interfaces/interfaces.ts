@@ -27,6 +27,7 @@ export interface hints {
     colorsMinMax: [number, number][];
     possibleSlotColorsDataStrings: colorsDataString[];
     disabledColorsDataString: colorsDataString;
+    disabledIcons?: string[];
     combinationNotes: [colorsDataString, string][]; 
 }
 

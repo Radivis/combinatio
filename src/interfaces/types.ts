@@ -61,6 +61,7 @@ export type gameActions = {
     guess: () => void,
     resetHints: () => void,
     toggleDisableColor: (color: Color) => void,
+    toggleDisableIcon: (iconName: string) => void,
     setPossibleColors: (colors: Colors, columnIndex: number) => void,
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
     placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => void,

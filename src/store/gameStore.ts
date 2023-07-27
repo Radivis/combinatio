@@ -25,6 +25,7 @@ import resetHints from './actions/resetHints';
 
 import initialGameState from './initialGameState';
 import generateDefaultRowColorsDataString from './functions/generateDefaultRowColorsDataString';
+import toggleDisableIcon from './actions/toggleDisableIcon';
 
 
 
@@ -98,6 +99,7 @@ const useGameStore = create<gameStore>()(
         },
         guess: guess(set, get),
         toggleDisableColor: toggleDisableColor(set, get),
+        toggleDisableIcon: toggleDisableIcon(set, get),
         setPossibleColors: setPossibleColors(set, get),
         resetHints: resetHints(set, get),
         setColorMinMax: setColorMinMax(set, get),

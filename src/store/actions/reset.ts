@@ -2,7 +2,7 @@ import { gameStates } from "../../constants";
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import Colors from "../../util/Colors";
 import generateRandomGuess from "../functions/generateRandomGuess";
-import generateSolution from "../functions/generateSolution";
+import generateSolutionColors from "../functions/generateSolutionColors";
 import generateDefaultRowColorsDataString from "../functions/generateDefaultRowColorsDataString";
 import initializeGameRows from "../functions/initializeGameRows";
 import { gameState, gameActions } from "../../interfaces/types";
@@ -32,7 +32,7 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
         state.hints.colorsMinMax = blankHints.colorsMinMax;
 
         // generateSolution;
-        state.game.solutionColorsDataString = Colors.serialize(generateSolution(state));
+        state.game.solutionColorsDataString = Colors.serialize(generateSolutionColors(state));
 
         // Prefill rows
         for (let i = 1; i <= state.gameSettings.numPrefilledRows; i++) {

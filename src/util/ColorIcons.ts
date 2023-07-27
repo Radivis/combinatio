@@ -1,4 +1,5 @@
 import ColorIcon from "./ColorIcon";
+import Colors from "./Colors";
 
 class ColorIcons extends Array<ColorIcon> {
     // constructor suppors making ColorIcons from a single colorIcon or an array or colorIcons (serialized or not)
@@ -18,6 +19,20 @@ class ColorIcons extends Array<ColorIcon> {
                 else this[i] = colorIcon;
             }
         }
+    }
+
+    public static readonly fuse = (colors: Colors, iconNames: string[]): ColorIcons => {
+        if (colors.length !== iconNames.length) {
+            throw new Error(`Cannot fuse colors and icons with different lengths! Colors length: ${colors.length}, icons length: ${iconNames.length}`);
+        }
+        const colorIcons: ColorIcon[] = [];
+
+        for (let i = 0; i < colors.length; i++) {
+            colorIcons.push(ColorIcon.fuse(colors[i], iconNames[i]));
+        }
+
+        return new ColorIcons(colorIcons);
+
     }
 
     public readonly has = (colorIcon: ColorIcon): boolean => {

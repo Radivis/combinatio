@@ -8,7 +8,7 @@ class ColorIcon extends Color {
         this._iconName = iconName;
     }
 
-    public static makeColorIcon(color: Color, iconName: string): ColorIcon {
+    public static fuse(color: Color, iconName: string): ColorIcon {
         return new ColorIcon(color.hue, color.saturation, color.lightness, iconName);
     }
 

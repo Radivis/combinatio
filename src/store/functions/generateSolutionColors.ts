@@ -3,12 +3,12 @@ import Colors from "../../util/Colors";
 import { gameState } from "../../interfaces/types";
 
 /**
- * Generates a solution for the current game
+ * Generates solution colors for the current game
  * 
  * @param {gameState} state - The current state of the game
- * @returns {Colors} - the new solution as Colors instance
+ * @returns {Colors} - the new solution colors as Colors instance
  */
-const generateSolution = (state: gameState): Colors => {
+const generateSolutionColors = (state: gameState): Colors => {
     const { maxIdenticalColorsInSolution, numColumns } = state.gameSettings;
     const { paletteColorsDataString } = state.game;
     const paletteColors: Colors = Colors.deserialize(paletteColorsDataString);
@@ -53,4 +53,4 @@ const generateSolution = (state: gameState): Colors => {
     return new Colors(solutionColors);
 }
 
-export default generateSolution;
+export default generateSolutionColors;

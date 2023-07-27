@@ -5,10 +5,13 @@ import Colors from "../../util/Colors";
 import { gameSettings } from "../../interfaces/interfaces";
 import generatePalette from "../functions/generatePalette";
 import { gameStates } from "../../constants";
-import generateSolution from "../functions/generateSolution";
+import generateSolutionColors from "../functions/generateSolutionColors";
 import generateRandomGuess from "../functions/generateRandomGuess";
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import { gameState, gameActions } from "../../interfaces/types";
+import { pieceTypes } from "../../constants";
+import pickIconCollection from "../functions/pickIconCollection";
+import generateSolutionIcons from "../functions/generateSolutionIcons";
 
 const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSettings: gameSettings): void => {
     const oldState = get();
@@ -26,6 +29,7 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
             numColumns,
             numPrefilledRows,
             numColors,
+            numIcons,
             numRows,
             pieceType,
         } = newSettings;
@@ -39,6 +43,9 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
 
         // Regenerate game
         state.game.paletteColorsDataString = gamePaletteDataString;
+        if (pieceType === pieceTypes.colorIcon) {
+            state.game.iconCollectionNames = pickIconCollection(numIcons);
+        }
         state.game.gameRows = initializeGameRows(numRows, numColumns);
 
         // Regenerate possibleSlotColorsDataStrings
@@ -56,7 +63,10 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
         state.hints.combinationNotes = Array(2).fill([generateDefaultRowColorsDataString(2), '']);
 
         // Regenerate solution
-        const solutionColors = generateSolution(state);
+        const solutionColors = generateSolutionColors(state);
+        if (pieceType === pieceTypes.colorIcon) {
+            state.game.solutionIconNames = generateSolutionIcons(state);
+        }
         state.game.solutionColorsDataString = Colors.serialize(solutionColors);
 
         // Prefill rows

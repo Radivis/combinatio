@@ -42,6 +42,7 @@ export interface gameSettings {
     numColumns: number,
     numPrefilledRows: number,
     maxIdenticalColorsInSolution: number,
+    maxIdenticalIconsInSolution: number,
     paletteName: string,
     pieceType: string,
 }

@@ -34,6 +34,7 @@ const Settings = (props: settingsProps) => {
     const [numColors, setNumColors] = useState<number>(settings.numColors);
     const [numIcons, setNumIcons] = useState<number>(settings.numIcons);
     const [maxIdenticalColorsInSolution, setMaxIdenticalColorsInSolution] = useState<number>(settings.maxIdenticalColorsInSolution);
+    const [maxIdenticalIconsInSolution, setMaxIdenticalIconsInSolution] = useState<number>(settings.maxIdenticalIconsInSolution);
     const [pieceType, setPieceType] = useState<string>(settings.pieceType);
     const [_paletteName, setPaletteName] = useState<string>(settings.paletteName);
 
@@ -81,6 +82,17 @@ const Settings = (props: settingsProps) => {
         setMaxIdenticalColorsInSolution(newMaxIdenticalColorsInSolution);
     }
 
+    const onChangeMaxIdenticalIconsInSolution = (ev: any) => {
+        let newMaxIdenticalIconsInSolution = +ev.target.value!;
+        // Clamp the value between 0 and numColumns
+        if (newMaxIdenticalIconsInSolution <= 0) {
+            newMaxIdenticalIconsInSolution = 1;
+        } else if (newMaxIdenticalIconsInSolution > numColumns) {
+            newMaxIdenticalIconsInSolution = numColumns;
+        }
+        setMaxIdenticalIconsInSolution(newMaxIdenticalIconsInSolution);
+    }
+
     const onChangePieceType = (ev: any) => {
         setPieceType(ev.target.value);
     }
@@ -118,6 +130,7 @@ const Settings = (props: settingsProps) => {
             numColors,
             numIcons,
             maxIdenticalColorsInSolution,
+            maxIdenticalIconsInSolution,
             paletteName: selectedPaletteName,
             pieceType,
         })
@@ -212,6 +225,17 @@ const Settings = (props: settingsProps) => {
                         onChange={onChangeMaxIdenticalColorsInSolution}
                     />
                 </div>
+                {pieceType === pieceTypes.colorIcon &&
+                    <div className="settings-row">
+                    <label htmlFor="maxIdenticalIconsInSolutions">Max. number of same icons: </label>
+                    <IntegerSelect
+                        name={'maxIdenticalIconsInSolutions'}   
+                        min={Math.ceil(numColumns / numIcons) /** Any less is not possible! */}
+                        max={numColumns}
+                        defaultValue={maxIdenticalIconsInSolution}
+                        onChange={onChangeMaxIdenticalIconsInSolution}
+                    />
+                </div>}
                 <div className="settings-row">
                     <label htmlFor="paletteName">Color Palette: </label>
                     <select name='paletteName' onChange={onChangePaletteName}>

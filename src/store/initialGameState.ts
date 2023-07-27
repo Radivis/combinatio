@@ -18,6 +18,7 @@ const initialGameState = {
 		numColumns: defaultNumColumns,
         numPrefilledRows: 0,
 		maxIdenticalColorsInSolution: defaultNumColumns,
+        maxIdenticalIconsInSolution: defaultNumColumns,
 		paletteName: paletteNames[0],
         pieceType: pieceTypes.color
     },

@@ -70,6 +70,11 @@ const useGameStore = create<gameStore>()(
                 state.game.gameRows[row].rowColorsDataString = Colors.serialize(rowColors);
             }, false, 'placeColor');
         },
+        placeIcon: ({iconName, row, column}: {iconName: string, row: number, column: number}) => {
+            set((state: gameState) => {
+                state.game.gameRows[row].rowIconNames[column] = iconName;
+            }, false, 'placeIcon');
+        },
         start: () => {
             set((state: gameState) => {
                 state.game.gameState = gameStates[1];

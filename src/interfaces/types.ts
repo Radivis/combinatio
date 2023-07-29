@@ -53,6 +53,7 @@ export type gameActions = {
     setAreCombinationNotesActive: (value: boolean) => void,
     setIsRandomGuessButtonDisplayed: (value: boolean) => void,
     placeColor: ({color, row, column}: {color: Color, row: number, column: number}) => void,
+    placeIcon: ({iconName, row, column}: {iconName: string, row: number, column: number}) => void,
     start: () => void,
     win: () => void,
     lose: () => void,

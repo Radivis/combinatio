@@ -8,6 +8,7 @@ export interface hslColorObject {
 
 export interface gameRow {
     rowColorsDataString: colorsDataString,
+    rowIconNames: string[],
     numCorrectColor: number,
     numFullyCorrect: number,
 }

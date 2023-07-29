@@ -21,12 +21,13 @@ const ColorRow = (props: colorRowProps) => {
         gameState,
         rowColorsDataString,
         solutionColorsDataString,
-        placeColor
+        placeColor,
+        placeIcon,
     } = useGameStore((state) => {
-        const { placeColor } = state;
+        const { placeColor, placeIcon } = state;
         const { gameState, solutionColorsDataString } = state.game;
         const { rowColorsDataString } = state.game.gameRows[rowKey];
-        return { gameState, rowColorsDataString, solutionColorsDataString, placeColor };
+        return { gameState, rowColorsDataString, solutionColorsDataString, placeColor, placeIcon };
     })
 
     let rowColors = Colors.deserialize(rowColorsDataString);
@@ -35,12 +36,25 @@ const ColorRow = (props: colorRowProps) => {
             rowColors = Colors.deserialize(solutionColorsDataString);
         }
 
-    const onColorDropped = (colorObject: hslColorObject, columnIndex: number) => {
-        placeColor({
-            color: Color.makeFromHslObject(colorObject),
-            row: rowKey,
-            column: columnIndex
-        })
+    const onPieceDropped = (payload: object, columnIndex: number) => {
+        console.log('onPieceDropped', 'payload', payload);
+        if ('iconName' in payload && typeof payload['iconName'] === 'string') {
+            // Icon is encoded via iconName
+            const { iconName } = payload;
+            placeIcon({
+                iconName,
+                row: rowKey,
+                column: columnIndex
+            })
+        } else {
+            // Color is encoded via hslColorObject
+            placeColor({
+                color: Color.makeFromHslObject(payload as hslColorObject),
+                row: rowKey,
+                column: columnIndex
+            })
+        }
+
     }
 
     return <div className='colorRow'>
@@ -49,7 +63,7 @@ const ColorRow = (props: colorRowProps) => {
             <DropTarget
                 key = {`${rowKey}: ${i}`}
                 onItemDropped={(color: Color) => {
-                    if (isActiveRow) onColorDropped(color, i)
+                    if (isActiveRow) onPieceDropped(color, i)
                 }}>
                 <ColorPin
                     key = {`${rowKey}: ${i}`}

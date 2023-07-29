@@ -6,6 +6,7 @@ const initializeGameRows = (numRows: number, numColumns: number): gameRow[] => r
 .map((_rowIndex: number) => {
     return {
         rowColorsDataString: generateDefaultRowColorsDataString(numColumns),
+        rowIconNames: new Array(numColumns).fill(''),
         numCorrectColor: 0,
         numFullyCorrect: 0,
     }

@@ -2,10 +2,12 @@ import Color from "../../util/Color";
 
 import './ColorPin.css';
 import useGameStore from "../../store/gameStore";
+import Icon from "../Icon/Icon";
 
 interface ColorPinProps {
     color: Color;
     colorIndex?: number;
+    iconName?: string;
     isDisabled?: boolean,
     isOpaque?: boolean,
     isHighlighted?: boolean,
@@ -17,6 +19,7 @@ interface ColorPinProps {
 const ColorPin = (props: ColorPinProps) => {
     const {
         color,
+        iconName,
         isOpacityToogleActive,
         isDisabledToggleActive,
         isDisabled,
@@ -53,7 +56,15 @@ const ColorPin = (props: ColorPinProps) => {
     // This case shouldn't happen, it's just for error handling
     const style = color !== undefined ? {backgroundColor: color.hsl} : {};
 
-    return <div className={className} style={style} onClick={onClick}></div>;
+    return (
+        <div className={className} style={style} onClick={onClick}>
+            {iconName !== undefined && iconName !== '' &&
+                <Icon
+                    iconName={iconName}
+                />
+            }
+        </div>
+    );
 };
 
 export default ColorPin;

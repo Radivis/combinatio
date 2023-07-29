@@ -18,7 +18,7 @@ const SolutionRow = (props: solutionRowProps) => {
 
     return <div className="solution-row">
         <ColorRow
-            rowKey = {0}
+            rowIndex = {0}
             numColumns={numColumns}
             isActiveRow = {false}
         />

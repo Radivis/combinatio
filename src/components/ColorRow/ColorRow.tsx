@@ -9,29 +9,37 @@ import './ColorRow.css';
 import useGameStore from "../../store/gameStore";
 
 interface colorRowProps {
-    rowKey: number;
+    rowIndex: number;
     numColumns: number;
     isActiveRow: boolean;
 }
 
 const ColorRow = (props: colorRowProps) => {
-    const { rowKey, numColumns, isActiveRow } = props;
+    const { rowIndex, numColumns, isActiveRow } = props;
 
     const {
         gameState,
         rowColorsDataString,
+        rowIconNames,
         solutionColorsDataString,
         placeColor,
-        placeIcon,
+        placeIcon
     } = useGameStore((state) => {
         const { placeColor, placeIcon } = state;
         const { gameState, solutionColorsDataString } = state.game;
-        const { rowColorsDataString } = state.game.gameRows[rowKey];
-        return { gameState, rowColorsDataString, solutionColorsDataString, placeColor, placeIcon };
+        const { rowColorsDataString, rowIconNames } = state.game.gameRows[rowIndex];
+        return {
+            gameState,
+            rowColorsDataString,
+            rowIconNames,
+            solutionColorsDataString,
+            placeColor,
+            placeIcon
+        };
     })
 
     let rowColors = Colors.deserialize(rowColorsDataString);
-    if (rowKey === 0
+    if (rowIndex === 0
         && gameStates.slice(2,4).includes(gameState)) {
             rowColors = Colors.deserialize(solutionColorsDataString);
         }
@@ -43,14 +51,14 @@ const ColorRow = (props: colorRowProps) => {
             const { iconName } = payload;
             placeIcon({
                 iconName,
-                row: rowKey,
+                row: rowIndex,
                 column: columnIndex
             })
         } else {
             // Color is encoded via hslColorObject
             placeColor({
                 color: Color.makeFromHslObject(payload as hslColorObject),
-                row: rowKey,
+                row: rowIndex,
                 column: columnIndex
             })
         }
@@ -58,16 +66,17 @@ const ColorRow = (props: colorRowProps) => {
     }
 
     return <div className='colorRow'>
-        {[...Array(numColumns).keys()].map((i: number) =>
+        {[...Array(numColumns).keys()].map((columnIndex: number) =>
         { return (
             <DropTarget
-                key = {`${rowKey}: ${i}`}
+                key = {`${rowIndex}: ${columnIndex}`}
                 onItemDropped={(color: Color) => {
-                    if (isActiveRow) onPieceDropped(color, i)
+                    if (isActiveRow) onPieceDropped(color, columnIndex)
                 }}>
                 <ColorPin
-                    key = {`${rowKey}: ${i}`}
-                    color = {rowColors[i]}
+                    key = {`${rowIndex}: ${columnIndex}`}
+                    color = {rowColors[columnIndex]}
+                    iconName = {rowIconNames[columnIndex]}
                 />
             </DropTarget>
         )})

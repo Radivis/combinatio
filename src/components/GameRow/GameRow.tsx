@@ -4,30 +4,30 @@ import InfoPins from "../InfoPins/InfoPins";
 import './GameRow.css';
 
 interface gameRowProps {
-    rowKey: number;
+    rowIndex: number;
     numColumns: number;
     activeRowIndex: number;
 }
 
 const GameRow = (props: gameRowProps) => {
     const {
-        rowKey,
+        rowIndex,
         numColumns,
         activeRowIndex,
     } = props;
 
     return <div className="game-row">
         <div className="row-index-container">
-            {rowKey}
+            {rowIndex}
         </div>
         <ColorRow
-            rowKey = {rowKey}
+            rowIndex = {rowIndex}
             numColumns = {numColumns}
-            isActiveRow = {activeRowIndex === rowKey}
+            isActiveRow = {activeRowIndex === rowIndex}
         />
         <InfoPins
-            rowKey = {rowKey}
-            isActiveRow = {activeRowIndex === rowKey}
+            rowKey = {rowIndex}
+            isActiveRow = {activeRowIndex === rowIndex}
         />
     </div>
 }

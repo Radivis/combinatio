@@ -100,7 +100,7 @@ const Game = (props: gameProps) => {
                 />
                 {rowKeys.reverse().map(rowKey => <GameRow
                     key={rowKey}
-                    rowKey={rowKey}
+                    rowIndex={rowKey}
                     numColumns={numColumns}
                     activeRowIndex = {activeRowIndex}
                 />)}

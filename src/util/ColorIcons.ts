@@ -75,6 +75,15 @@ class ColorIcons extends Array<ColorIcon> {
         return new ColorIcons(this as Array<ColorIcon>);
     }
 
+    // Counts the amount of times a colorIcon appears in the colorIcons array
+    public count(colorIcon: ColorIcon): number {
+        let colorIconCount = 0;
+        this.forEach((_colorIcon: ColorIcon) => {
+            if (colorIcon.equals(_colorIcon)) colorIconCount++;
+        })
+        return colorIconCount;
+    }
+
     public static readonly serialize = (colorIcons: ColorIcons): string => {
         if (!Array.isArray(colorIcons)) throw new TypeError('Could not serialize colorIcons, because the passed value is not an array');
         return JSON.stringify((colorIcons as Array<ColorIcon>)

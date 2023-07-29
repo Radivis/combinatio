@@ -3,6 +3,7 @@ import Colors from "../util/Colors";
 import { generateRegularPalette } from "./functions/generatePalette";
 import generateDefaultRowColorsDataString from "./functions/generateDefaultRowColorsDataString";
 import initializeGameRows from "./functions/initializeGameRows";
+import generateSolutionIcons from "./functions/generateSolutionIcons";
 
 const initialGameState = {
     displaySettings: {
@@ -24,8 +25,10 @@ const initialGameState = {
     },
     game: {
         paletteColorsDataString: Colors.serialize(generateRegularPalette(defaultNumColors)),
+        iconCollectionNames: [],
         activeRowIndex: 1,
         solutionColorsDataString: generateDefaultRowColorsDataString(defaultNumColumns),
+        solutionIconNames: new Array(defaultNumColumns).fill(''),
         gameRows: initializeGameRows(defaultNumRows, defaultNumColumns),
         gameState: gameStates[0],
         timerSeconds: 0,

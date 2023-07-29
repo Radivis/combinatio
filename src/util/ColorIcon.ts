@@ -28,7 +28,7 @@ class ColorIcon extends Color {
         this.iconName === otherColorIcon.iconName;
     }
 
-    public hasSameIcon(otherColorIcon: ColorIcon): boolean {
+    public hasSameIcon(otherColorIcon: ColorIcon | undefined): boolean {
         if (otherColorIcon === undefined) return false;
         return this.iconName === otherColorIcon.iconName;
     }

@@ -15,10 +15,10 @@ export interface gameRow {
 
 export interface game {
     paletteColorsDataString: colorsDataString;
-    iconCollectionNames?: string[];
+    iconCollectionNames: string[];
     activeRowIndex: number,
     solutionColorsDataString: colorsDataString;
-    solutionIconNames?: string[];
+    solutionIconNames: string[];
     gameRows: gameRow[];
     gameState: string;
     timerSeconds: number;

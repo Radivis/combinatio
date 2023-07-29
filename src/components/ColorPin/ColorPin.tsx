@@ -61,6 +61,7 @@ const ColorPin = (props: ColorPinProps) => {
             {iconName !== undefined && iconName !== '' &&
                 <Icon
                     iconName={iconName}
+                    isTransparent={true}
                 />
             }
         </div>

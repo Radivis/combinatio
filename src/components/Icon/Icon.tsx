@@ -5,6 +5,7 @@ import { IconName } from '@fortawesome/fontawesome-svg-core';
 
 interface IconProps {
     iconName: string;
+    isTransparent?: boolean,
     isDisabled?: boolean,
     isOpaque?: boolean,
     isHighlighted?: boolean,
@@ -18,6 +19,7 @@ const Icon = (props: IconProps) => {
         iconName,
         isOpacityToogleActive,
         isDisabledToggleActive,
+        isTransparent,
         isDisabled,
         isHighlighted,
         opacityToogleCallback,
@@ -32,6 +34,7 @@ const Icon = (props: IconProps) => {
     })
 
     let className = 'iconPin ';
+    className += isTransparent ? 'transparent ' : '';
     className += isOpaque ? 'opaque ' : '';
     className += isDisabled ? 'disabled-icon ' : '';
     className += isHighlighted ? 'highlighted ' : '';

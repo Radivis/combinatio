@@ -33,7 +33,7 @@ const Icon = (props: IconProps) => {
 
     let className = 'iconPin ';
     className += isOpaque ? 'opaque ' : '';
-    className += isDisabled ? 'disabled ' : '';
+    className += isDisabled ? 'disabled-icon ' : '';
     className += isHighlighted ? 'highlighted ' : '';
     className.trim();
 
@@ -55,7 +55,7 @@ const Icon = (props: IconProps) => {
     return (
         <>
         <FontAwesomeIcon
-            className='icon'
+            className={className}
             icon={iconName as IconName}
             size="lg"
             onClick={onClick}

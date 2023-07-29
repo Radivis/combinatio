@@ -31,13 +31,13 @@ const IconBuckets = (props: colorBucketsProps) => {
     })
 
     return <div className="icon-buckets">
-        {/* {areColorAmountHintsActive && <h3 className="color-occurences-title">
-            Color Occurences
+        {/* {areColorAmountHintsActive && <h3 className="icon-occurences-title">
+            Icon Occurences
         </h3>} */}
         {iconCollectionNames !== undefined && iconCollectionNames
             .map((iconName: string, iconIndex: number) => {
             return (
-                <div key={iconName} className='color-bucket'>
+                <div key={iconName} className='icon-bucket'>
                     <Drag
                         key={`${iconName}-drag`}
                         isActive={disabledIcons !== undefined && !disabledIcons.includes(iconName)}

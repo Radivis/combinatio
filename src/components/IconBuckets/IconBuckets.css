@@ -1,0 +1,10 @@
+.icon-bucket {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.icon-occurences-title {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}

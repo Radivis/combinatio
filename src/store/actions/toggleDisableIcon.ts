@@ -7,6 +7,7 @@ const toggleDisableIcon = (set: zustandSetter, get: zustandGetter) => (iconName:
     if(disabledIcons === undefined) {
         throw new Error('Cannot disable icon, because disabled icons hints were not initialized!');
     }
+    let newDisabledIcons = [...disabledIcons];
     // get icon index
     const { iconCollectionNames } = state.game;
     if(iconCollectionNames === undefined) {
@@ -16,12 +17,12 @@ const toggleDisableIcon = (set: zustandSetter, get: zustandGetter) => (iconName:
     set((state: gameState) => {
         if (disabledIcons.includes(iconName)) {
             // Enable color
-            disabledIcons.splice(iconIndex, 1);
+            newDisabledIcons = disabledIcons.filter(disabledIcon => disabledIcon !== iconName)
             // set max of this color to absolute max
             state.hints.colorsMinMax[iconIndex][1] = state.gameSettings.maxIdenticalColorsInSolution;
         } else {
             // disable color
-            disabledIcons.push(iconName);
+            newDisabledIcons = [...disabledIcons, iconName];
             // TODO: Adapt this to icons
             /*
             // set min and max of this color to 0
@@ -35,6 +36,7 @@ const toggleDisableIcon = (set: zustandSetter, get: zustandGetter) => (iconName:
             })
             */
         }
+        state.hints.disabledIcons = newDisabledIcons;
     }, false, 'toggleDisableIcon');
 }
 

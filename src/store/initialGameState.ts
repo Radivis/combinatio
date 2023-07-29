@@ -35,6 +35,7 @@ const initialGameState = {
         possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
         disabledColorsDataString: '[]',
+        disabledIcons: [],
         combinationNotes: Array(2).fill([generateDefaultRowColorsDataString(2),'']),
     },
     modal: {

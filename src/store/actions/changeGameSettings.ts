@@ -56,8 +56,9 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
         state.hints.colorsMinMax = Array(numColors)
             .fill([...[0, maxIdenticalColorsInSolution]]);
 
-        // Reset disabled colors
+        // Reset disabled colors and icons
         state.hints.disabledColorsDataString = '[]';
+        state.hints.disabledIcons = [];
 
         // Reset colorTuples
         state.hints.combinationNotes = Array(2).fill([generateDefaultRowColorsDataString(2), '']);

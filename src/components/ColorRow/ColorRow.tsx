@@ -17,22 +17,24 @@ interface colorRowProps {
 const ColorRow = (props: colorRowProps) => {
     const { rowIndex, numColumns, isActiveRow } = props;
 
-    const {
+    let {
         gameState,
         rowColorsDataString,
         rowIconNames,
         solutionColorsDataString,
+        solutionIconNames,
         placeColor,
         placeIcon
     } = useGameStore((state) => {
         const { placeColor, placeIcon } = state;
-        const { gameState, solutionColorsDataString } = state.game;
+        const { gameState, solutionColorsDataString, solutionIconNames } = state.game;
         const { rowColorsDataString, rowIconNames } = state.game.gameRows[rowIndex];
         return {
             gameState,
             rowColorsDataString,
             rowIconNames,
             solutionColorsDataString,
+            solutionIconNames,
             placeColor,
             placeIcon
         };
@@ -42,6 +44,7 @@ const ColorRow = (props: colorRowProps) => {
     if (rowIndex === 0
         && gameStates.slice(2,4).includes(gameState)) {
             rowColors = Colors.deserialize(solutionColorsDataString);
+            rowIconNames = solutionIconNames;
         }
 
     const onPieceDropped = (payload: object, columnIndex: number) => {

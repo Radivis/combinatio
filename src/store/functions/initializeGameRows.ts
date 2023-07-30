@@ -7,6 +7,7 @@ const initializeGameRows = (numRows: number, numColumns: number): gameRow[] => r
     return {
         rowColorsDataString: generateDefaultRowColorsDataString(numColumns),
         rowIconNames: new Array(numColumns).fill(''),
+        infoPinStatusCounts: {},
         numCorrectColor: 0,
         numFullyCorrect: 0,
     }

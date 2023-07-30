@@ -9,6 +9,8 @@ export interface hslColorObject {
 export interface gameRow {
     rowColorsDataString: colorsDataString,
     rowIconNames: string[],
+    infoPinStatusCounts: {[key: string]: number},
+    // TODO: Replace useage of the following two properties with infoPinStatusCounts
     numCorrectColor: number,
     numFullyCorrect: number,
 }

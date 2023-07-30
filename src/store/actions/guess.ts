@@ -49,6 +49,8 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     let _numFullyCorrect = 0;
     // Either color or icon correct (color or icon appear in solution)
     let _numCorrectAspect = 0;
+    // Object for storing the many status counts
+    let _infoPinStatusCounts: {[key: string]: number} = {};
 
     if (pieceType === pieceTypes.colorIcon && solutionIconNames !== undefined) {
         const currentRowColorIcons: ColorIcons = ColorIcons.fuse(solutionColors, solutionIconNames);
@@ -214,6 +216,18 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
                 if (iconStatus === aspectStatus.present) _numIconPresentColorAmiss++;
                 if (iconStatus === aspectStatus.amiss) _numAllAmiss++;
             }
+
+            // Store the counters in the _infoPinStatusCounts object
+            _infoPinStatusCounts['numFullyCorrect'] = _numFullyCorrect;
+            _infoPinStatusCounts['numColorCorrectIconPresent'] = _numColorCorrectIconPresent;
+            _infoPinStatusCounts['numColorCorrectIconAmiss'] = _numColorCorrectIconAmiss;
+            _infoPinStatusCounts['numIconCorrectColorPresent'] = _numIconCorrectColorPresent;
+            _infoPinStatusCounts['numColorIconPresent'] = _numColorIconPresent;
+            _infoPinStatusCounts['numColorPresentIconPresent'] = _numColorPresentIconPresent;
+            _infoPinStatusCounts['numColorPresentIconAmiss'] = _numColorPresentIconAmiss;
+            _infoPinStatusCounts['numIconCorrectColorAmiss'] = _numIconCorrectColorAmiss;
+            _infoPinStatusCounts['numIconPresentColorAmiss'] = _numIconPresentColorAmiss;
+            _infoPinStatusCounts['numAllAmiss'] = _numAllAmiss;
         }
 
     } else if (pieceType === pieceTypes.color) {
@@ -245,7 +259,6 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         _numCorrectAspect = Object.values(correctHueCounts).reduce((acc, next) => acc+next, 0);
     }
 
-
     // ### PART 2: Check Game State ###
 
     // Compute new game state and activeRowIndex
@@ -269,6 +282,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     
     set((state: gameState) => {
         // Update row state
+        state.game.gameRows[rowIndex].infoPinStatusCounts = _infoPinStatusCounts;
         state.game.gameRows[rowIndex].numFullyCorrect = _numFullyCorrect;
         state.game.gameRows[rowIndex].numCorrectColor = _numCorrectAspect;
 

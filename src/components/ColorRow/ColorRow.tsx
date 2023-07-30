@@ -48,7 +48,6 @@ const ColorRow = (props: colorRowProps) => {
         }
 
     const onPieceDropped = (payload: object, columnIndex: number) => {
-        console.log('onPieceDropped', 'payload', payload);
         if ('iconName' in payload && typeof payload['iconName'] === 'string') {
             // Icon is encoded via iconName
             const { iconName } = payload;

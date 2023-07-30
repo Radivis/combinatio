@@ -154,7 +154,8 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         iconCollectionNames.forEach((iconName: string) => {
             // For each icon collect the number that it appears in the solutionIcons Array
             solutionIconCounts[iconName] = solutionIconNames
-                .reduce((sum, currIconName) => sum + currIconName === iconName ? 1 : 0, 0);
+                .reduce((sum, currIconName) => sum + (currIconName === iconName ? 1 : 0), 0);
+
             // Initialize the count of the icon in this row with 0, increment it later!
             rowIconCounts[iconName] = 0;
         })

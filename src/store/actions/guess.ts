@@ -9,6 +9,12 @@ import ColorIcons from "../../util/ColorIcons";
 import ColorIcon from "../../util/ColorIcon";
 import Color from "../../util/Color";
 
+enum aspectStatus {
+    'amiss',
+    'present',
+    'correct'
+};
+
 const guess = (set: zustandSetter, get: zustandGetter) => () => {
     const state = get();
     const gamePalette = Colors.deserialize(state.game.paletteColorsDataString);
@@ -19,6 +25,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     let { solutionColorsDataString } = state.game;
     const currentRowColors = Colors.deserialize(state.game.gameRows[rowIndex].rowColorsDataString);
     const currentRowIconNames = state.game.gameRows[rowIndex].rowIconNames;
+    const currentRowColorIcons = ColorIcons.fuse(currentRowColors, currentRowIconNames);
 
     // ### PART 0: Just-in-time generation of solution ###
 
@@ -84,6 +91,8 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             Count solutionColor occurrences
         For each icon:
             Count solutionIcon occurrences
+        The counts at each step are stored in an object in which
+        the key is serialization of the aspect and the value its count
 
         For each slot:
             Increment occurrence of colorIcon, color, and icon
@@ -96,24 +105,24 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             Increment the corresponding colorIconStatus counter
         */
 
-        // Part 1.1: Compute number of fully correct pins
-        currentRowColorIcons.forEach((colorIcon: ColorIcon, columnIndex: number) => {
-            if (colorIcon.equals(solutionColorIcons[columnIndex])){
-                _numFullyCorrect++;    
-            }
-        });
+        // Counts of the different status an evaluation pin can have
+        let _numFullyCorrect = 0;
+        let _numIconCorrectColorPresent = 0;
+        let _numColorCorrectIconPresent = 0;
+        let _numIconCorrectColorAmiss = 0;
+        let _numColorCorrectIconAmiss = 0;
+        let _numColorIconPresent = 0;
+        let _numColorPresentIconAmiss = 0;
+        let _numIconPresentColorAmiss = 0;
+        let _numAllAmiss = 0;
 
-        // Part 1.2: Compute pins not fully correct with exactly 1 correct aspect plus correct colorIcons
-        let _numPinsWithExactlyOneCorrectAspect = 0;
-        currentRowColorIcons.forEach((colorIcon: ColorIcon, columnIndex: number) => {
-            if (colorIcon.hasCommonAttribute(solutionColorIcons[columnIndex]) &&
-                !colorIcon.equals(solutionColorIcons[columnIndex])
-            ){
-                _numPinsWithExactlyOneCorrectAspect++;    
-            }
-        });
-
-        let _numCorrectColorIcons = 0;
+        // Objects storing the respective counts of the colorIcons, colors, and icons
+        const solutionColorIconCounts: {[key: string]: number} = {};
+        const solutionColorCounts: {[key: string]: number} = {};
+        const solutionIconCounts: {[key: string]: number} = {};
+        const rowColorIconCounts: {[key: string]: number} = {};
+        const rowColorCounts: {[key: string]: number} = {};
+        const rowIconCounts: {[key: string]: number} = {};
 
         // Create a set of all possible combinations of color and icon
         const colorIconSet: Set<ColorIcon> = new Set<ColorIcon>();
@@ -126,22 +135,72 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         })
 
         colorIconSet.forEach((colorIcon: ColorIcon) => {
-            // For each colorIcon collect the number that it appears in the currentRowColorIcons Array
-            const currentRowColorIconsCount = currentRowColorIcons.count(colorIcon);
             // For each colorIcon collect the number that it appears in the solutionColorIcons Array
-            const solutionColorIconsCount = solutionColorIcons.count(colorIcon);
-            // Always take the minimum of both numbers
-            const correctColorIconsCount = Math.min(currentRowColorIconsCount, solutionColorIconsCount);
-            _numCorrectColorIcons += correctColorIconsCount;
+            solutionColorIconCounts[colorIcon.serialize()] = solutionColorIcons.count(colorIcon);
+            // Initialize the count of the colorIcon in this row with 0, increment it later!
+            rowColorIconCounts[colorIcon.serialize()] = 0;
         });
 
-        // NOTE: This number already could be > numColumns, for example,
-        // if _numPinsWithExactlyOneCorrectAspect = numColumns
-        _numPartiallyCorrect = _numPinsWithExactlyOneCorrectAspect + _numCorrectColorIcons;
+        gamePalette.forEach((color: Color) => {
+            // For each color collect the number that it appears in the solutionColors Array
+            solutionColorCounts[color.serialize()] = solutionColors.count(color);
+            // Initialize the count of the color in this row with 0, increment it later!
+            rowColorCounts[color.serialize()] = 0;
+        })
 
-        // Part 1.3: Compute number of correct aspects
-        // Problem: If there are 4 slots and there are 3 correct colors and 3 correct icons, but no
-        // Correct colorIcon, how should that be displayed?
+        iconCollectionNames.forEach((iconName: string) => {
+            // For each icon collect the number that it appears in the solutionIcons Array
+            solutionIconCounts[iconName] = solutionIconNames
+                .reduce((sum, currIconName) => sum + currIconName === iconName ? 1 : 0, 0);
+            // Initialize the count of the icon in this row with 0, increment it later!
+            rowIconCounts[iconName] = 0;
+        })
+
+        for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+            // const colorIcon = currentRowColorIcons[columnIndex];
+            const color = currentRowColors[columnIndex];
+            const iconName = currentRowIconNames[columnIndex];
+            let colorStatus = aspectStatus.amiss;
+            let iconStatus = aspectStatus.amiss;
+
+            // Check if color is present
+            rowColorCounts[color.serialize()]++;
+            if (rowColorCounts[color.serialize()] <= solutionColorCounts[color.serialize()]) {
+                colorStatus = aspectStatus.present;
+            }
+
+            // Check if color is correct
+            if (color.equals(solutionColors[columnIndex])) {
+                colorStatus = aspectStatus.correct;
+            }
+
+            // Check if icon is present
+            rowIconCounts[iconName]++;
+            if (rowIconCounts[iconName] <= solutionIconCounts[iconName]) {
+                iconStatus = aspectStatus.present;
+            }
+
+            // Check if icon is correct
+            if (iconName === solutionIconNames[columnIndex]) {
+                iconStatus = aspectStatus.correct;
+            }
+
+            // Increment the corresponding evaluation pin counter
+            if (colorStatus === aspectStatus.correct) {
+                if (iconStatus === aspectStatus.correct) _numFullyCorrect++;
+                if (iconStatus === aspectStatus.present) _numColorCorrectIconPresent++;
+                if (iconStatus === aspectStatus.amiss) _numColorCorrectIconAmiss++;
+            } else if (colorStatus === aspectStatus.present) {
+                if (iconStatus === aspectStatus.correct) _numIconCorrectColorPresent++;
+                // Does this really work, or would an explicit check for the colorIcon be required?
+                if (iconStatus === aspectStatus.present) _numColorIconPresent++;
+                if (iconStatus === aspectStatus.amiss) _numColorPresentIconAmiss++;
+            } else if (colorStatus === aspectStatus.amiss) {
+                if (iconStatus === aspectStatus.correct) _numIconCorrectColorAmiss++;
+                if (iconStatus === aspectStatus.present) _numIconPresentColorAmiss++;
+                if (iconStatus === aspectStatus.amiss) _numAllAmiss++;
+            }
+        }
 
     } else if (pieceType === pieceTypes.color) {
         // Compute number of fully correct pins

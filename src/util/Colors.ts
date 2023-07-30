@@ -60,6 +60,15 @@ class Colors extends Array<Color> {
         return new Colors(this as Array<Color>);
     }
 
+    // Counts the amount of times a color appears in the color array
+    public count(color: Color): number {
+        let colorCount = 0;
+        this.forEach((_color: Color) => {
+            if (color.equals(_color)) colorCount++;
+        })
+        return colorCount;
+    }
+
     public static readonly serialize = (colors: Colors): string => {
         if (!Array.isArray(colors)) throw new TypeError('Could not serialize colors, because the passed value is not an array');
         return JSON.stringify((colors as Array<Color>).map((color) => color.serialize()));

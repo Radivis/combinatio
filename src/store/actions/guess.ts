@@ -49,6 +49,53 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     if (pieceType === pieceTypes.colorIcon && solutionIconNames !== undefined) {
         const currentRowColorIcons: ColorIcons = ColorIcons.fuse(solutionColors, solutionIconNames);
 
+        // In this case there are a lot of different pin states:
+        /* Everything correct
+        _numFullyCorrect: All black
+
+        icon at correct position, color does appear (n times)
+        _numIconCorrectColorPresent: Center black, rim white
+
+        color at correct position, icon does appear (n times)
+        _numColorCorrectIconPresent: Rim black, center white
+
+        icon at correct position, color does not appear (n times)
+        _numIconCorrectColorAmiss: Center black, rim neutral
+
+        color at correct position, icon does not appear (n times)
+        _numColorCorrectIconAmiss: Rim black, center neutral
+
+        Color and icon appear (n times)
+        _numColorIconPresent: All white
+
+        Color appears (n times), icon does not appear (n times)
+        _numColorPresentIconAmiss: Rim white, center neutral
+
+        Icon appears (n times), color does not appear (n times)
+        _numIconPresentColorAmiss: Center white, rim neutral
+
+        Neither icon nor color appear (n times)
+        _numAllAmiss: All neutral
+
+        Algorithmic strategy:
+        For each colorIcon:
+            Count solutionColorIcon occurences
+        For each color:
+            Count solutionColor occurrences
+        For each icon:
+            Count solutionIcon occurrences
+
+        For each slot:
+            Increment occurrence of colorIcon, color, and icon
+            If the counter is higher than the number of solutionOccurrences, the respective
+            aspect is amiss, otherwise it is present
+
+            Check for equality of color and icon
+
+            Compute colorStatus and iconStaus (correct | present | amiss) separately
+            Increment the corresponding colorIconStatus counter
+        */
+
         // Part 1.1: Compute number of fully correct pins
         currentRowColorIcons.forEach((colorIcon: ColorIcon, columnIndex: number) => {
             if (colorIcon.equals(solutionColorIcons[columnIndex])){
@@ -88,6 +135,8 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             _numCorrectColorIcons += correctColorIconsCount;
         });
 
+        // NOTE: This number already could be > numColumns, for example,
+        // if _numPinsWithExactlyOneCorrectAspect = numColumns
         _numPartiallyCorrect = _numPinsWithExactlyOneCorrectAspect + _numCorrectColorIcons;
 
         // Part 1.3: Compute number of correct aspects

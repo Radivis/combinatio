@@ -25,7 +25,6 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     let { solutionColorsDataString } = state.game;
     const currentRowColors = Colors.deserialize(state.game.gameRows[rowIndex].rowColorsDataString);
     const currentRowIconNames = state.game.gameRows[rowIndex].rowIconNames;
-    const currentRowColorIcons = ColorIcons.fuse(currentRowColors, currentRowIconNames);
 
     // ### PART 0: Just-in-time generation of solution ###
 
@@ -48,8 +47,6 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
 
     // All aspects correct
     let _numFullyCorrect = 0;
-    // Exactly 2 of the 3 aspects color, icon, and position correct
-    let _numPartiallyCorrect = 0;
     // Either color or icon correct (color or icon appear in solution)
     let _numCorrectAspect = 0;
 
@@ -72,8 +69,11 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         color at correct position, icon does not appear (n times)
         _numColorCorrectIconAmiss: Rim black, center neutral
 
-        Color and icon appear (n times)
-        _numColorIconPresent: All white
+        ColorIcon appears (n times)
+        _numColorIconPresent: All grey
+
+        Color and icon appear, but not simultaneously (n times)
+        _numColorPresentIconPresent: All white
 
         Color appears (n times), icon does not appear (n times)
         _numColorPresentIconAmiss: Rim white, center neutral
@@ -112,6 +112,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         let _numIconCorrectColorAmiss = 0;
         let _numColorCorrectIconAmiss = 0;
         let _numColorIconPresent = 0;
+        let _numColorPresentIconPresent = 0;
         let _numColorPresentIconAmiss = 0;
         let _numIconPresentColorAmiss = 0;
         let _numAllAmiss = 0;
@@ -160,8 +161,16 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             // const colorIcon = currentRowColorIcons[columnIndex];
             const color = currentRowColors[columnIndex];
             const iconName = currentRowIconNames[columnIndex];
+            const colorIcon = ColorIcon.fuse(color, iconName);
             let colorStatus = aspectStatus.amiss;
             let iconStatus = aspectStatus.amiss;
+            let colorIconStatus = aspectStatus.amiss;
+
+            // Check if colorIcon is present
+            rowColorIconCounts[colorIcon.serialize()]++;
+            if (rowColorIconCounts[colorIcon.serialize()] <= solutionColorIconCounts[colorIcon.serialize()]) {
+                colorIconStatus = aspectStatus.present;
+            }
 
             // Check if color is present
             rowColorCounts[color.serialize()]++;
@@ -192,8 +201,13 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
                 if (iconStatus === aspectStatus.amiss) _numColorCorrectIconAmiss++;
             } else if (colorStatus === aspectStatus.present) {
                 if (iconStatus === aspectStatus.correct) _numIconCorrectColorPresent++;
-                // Does this really work, or would an explicit check for the colorIcon be required?
-                if (iconStatus === aspectStatus.present) _numColorIconPresent++;
+                if (iconStatus === aspectStatus.present) {
+                    if (colorIconStatus === aspectStatus.present) {
+                        _numColorIconPresent++;
+                    } else {
+                        _numColorPresentIconPresent++;
+                    }
+                }
                 if (iconStatus === aspectStatus.amiss) _numColorPresentIconAmiss++;
             } else if (colorStatus === aspectStatus.amiss) {
                 if (iconStatus === aspectStatus.correct) _numIconCorrectColorAmiss++;

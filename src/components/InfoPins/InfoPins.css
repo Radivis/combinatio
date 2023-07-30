@@ -46,3 +46,54 @@
 .white {
     background-color: white;
 }
+.grey {
+    background-color: grey;
+}
+
+.black-white {
+    height: 6px;
+    width: 6px;
+    background-color: white;
+    border-width: 3px;
+    border-color: black;
+}
+
+.white-black {
+    height: 6px;
+    width: 6px;
+    background-color: black;
+    border-width: 3px;
+    border-color: white;
+}
+
+.white-core {
+    height: 6px;
+    width: 6px;
+    background-color: white;
+    border-width: 3px;
+    border-color: hsl(34, 57%, 50%);
+}
+
+.black-core {
+    height: 6px;
+    width: 6px;
+    background-color: black;
+    border-width: 3px;
+    border-color: hsl(34, 57%, 50%);
+}
+
+.white-rim {
+    height: 6px;
+    width: 6px;
+    background-color: hsl(34, 57%, 50%);
+    border-width: 3px;
+    border-color: white;
+}
+
+.black-rim {
+    height: 6px;
+    width: 6px;
+    background-color: hsl(34, 57%, 50%);
+    border-width: 3px;
+    border-color: black;
+}

@@ -4,6 +4,7 @@ import { faDice, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import useGameStore from '../../store/gameStore';
 
 import './InfoPins.css';
+import { pieceTypes } from '../../constants';
 
 const INFO_PIN_WIDTH = 18;
 const BUTTON_WIDTH = 36;
@@ -23,20 +24,24 @@ const InfoPins = (props: infoPinsProps) => {
     const {
         numColumns,
         isRandomGuessButtonDisplayed,
+        infoPinStatusCounts,
         numCorrectColor,
         numFullyCorrect,
+        pieceType,
         guess,
         randomGuess,
     } = useGameStore((state) => {
         const { guess, randomGuess } = state;
         const { isRandomGuessButtonDisplayed } = state.displaySettings;
-        const { numColumns }= state.gameSettings;
-        const { numCorrectColor, numFullyCorrect } = state.game.gameRows[rowKey];
+        const { numColumns, pieceType }= state.gameSettings;
+        const { numCorrectColor, numFullyCorrect, infoPinStatusCounts } = state.game.gameRows[rowKey];
         return {
             numColumns,
             isRandomGuessButtonDisplayed,
+            infoPinStatusCounts,
             numCorrectColor,
             numFullyCorrect,
+            pieceType,
             guess,
             randomGuess,
         };
@@ -44,13 +49,60 @@ const InfoPins = (props: infoPinsProps) => {
 
     const pinClasses: string[] = new Array(numColumns).fill('info-pin');
 
-    const numWhite = numCorrectColor - numFullyCorrect;
+    // Not-readonly copy of infoPinStatusCounts
+    const _infoPinStatusCounts = {...infoPinStatusCounts};
 
-    pinClasses.forEach((_pinClass: string, columnIndex: number) => {
-        if (numWhite > columnIndex) pinClasses[columnIndex] += ' white';
-        else if (numCorrectColor > columnIndex) pinClasses[columnIndex] += ' black';
-        else pinClasses[columnIndex] += ' hole';
-    });
+    // Consumes the counts from the infoPinStatusCounts object and returns the next pin class string
+    const nextPinClass = (): string => {
+        if (_infoPinStatusCounts['numFullyCorrect'] > 0) {
+            _infoPinStatusCounts['numFullyCorrect']--;
+            return ' black';
+        } else if (_infoPinStatusCounts['numColorCorrectIconPresent'] > 0) {
+            _infoPinStatusCounts['numColorCorrectIconPresent']--;
+            return ' black-white';
+        } else if (_infoPinStatusCounts['numIconCorrectColorPresent'] > 0) {
+            _infoPinStatusCounts['numIconCorrectColorPresent']--;
+            return ' white-black';
+        } else if (_infoPinStatusCounts['numColorCorrectIconAmiss'] > 0) {
+            _infoPinStatusCounts['numColorCorrectIconAmiss']--;
+            return ' black-rim';
+        } else if (_infoPinStatusCounts['numIconCorrectColorAmiss'] > 0) {
+            _infoPinStatusCounts['numIconCorrectColorAmiss']--;
+            return ' black-core';
+        } else if (_infoPinStatusCounts['numColorIconPresent'] > 0) {
+            _infoPinStatusCounts['numColorIconPresent']--;
+            return ' grey';
+        } else if (_infoPinStatusCounts['numColorPresentIconPresent'] > 0) {
+            _infoPinStatusCounts['numColorPresentIconPresent']--;
+            return ' white';
+        } else if (_infoPinStatusCounts['numColorPresentIconAmiss'] > 0) {
+            _infoPinStatusCounts['numColorPresentIconAmiss']--;
+            return ' white-rim';
+        } else if (_infoPinStatusCounts['numIconPresentColorAmiss'] > 0) {
+            _infoPinStatusCounts['numIconPresentColorAmiss']--;
+            return ' white-core';
+        } else if (_infoPinStatusCounts['numAllAmiss'] > 0) {
+            _infoPinStatusCounts['numAllAmiss']--;
+            return ' hole';
+        } else {
+            return ' hole';
+        }
+    }
+
+    if (pieceType === pieceTypes.color) {
+        const numWhite = numCorrectColor - numFullyCorrect;
+    
+        pinClasses.forEach((_pinClass: string, columnIndex: number) => {
+            if (numWhite > columnIndex) pinClasses[columnIndex] += ' white';
+            else if (numCorrectColor > columnIndex) pinClasses[columnIndex] += ' black';
+            else pinClasses[columnIndex] += ' hole';
+        });
+    } else if (pieceType === pieceTypes.colorIcon) {
+        pinClasses.forEach((_pinClass: string, columnIndex: number) => {
+            pinClasses[columnIndex] += nextPinClass();
+        });
+    }
+
 
     // The width of the into pin container is natively determined by the width of the row submit-button
     // Instead, compute it according to numColumns / 2

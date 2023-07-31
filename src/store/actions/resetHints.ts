@@ -10,8 +10,10 @@ const resetHints = (set: zustandSetter, get: zustandGetter) => () => {
             colorsMinMax: Array(numColors).fill([...[0, maxIdenticalColorsInSolution]]),
             possibleSlotColorsDataStrings: Array(numColumns)
             .fill(state.game.paletteColorsDataString),
+            possibleSlotIconNames: [],
             disabledColorsDataString: '[]',
             combinationNotes: Array(2).fill([...emptyCombinationNote]),
+            disabledIcons: [],
         }
         state.hints = blankHints;
         state.hints.colorsMinMax = blankHints.colorsMinMax;

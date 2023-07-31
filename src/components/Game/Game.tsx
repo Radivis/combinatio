@@ -22,6 +22,7 @@ const Game = (props: gameProps) => {
     const [
         areColorAmountHintsActive,
         areSlotHintsActive,
+        iconCollectionNames,
         numColumns,
         numRows,
         maxIdenticalColorsInSolution,
@@ -36,10 +37,11 @@ const Game = (props: gameProps) => {
             numColumns,
             numRows,
         } = state.gameSettings;
-        const { paletteColorsDataString } = state.game;
+        const { paletteColorsDataString, iconCollectionNames } = state.game;
         return [
             areColorAmountHintsActive,
             areSlotHintsActive,
+            iconCollectionNames,
             numColumns,
             numRows,
             maxIdenticalColorsInSolution,
@@ -107,6 +109,7 @@ const Game = (props: gameProps) => {
                 {areSlotHintsActive && <SlotHints
                     numColumns={numColumns}
                     baseColorsDataString={paletteColorsDataString}
+                    iconCollectionNames={iconCollectionNames}
                 />}
             </div>
             <div className="side-panel">

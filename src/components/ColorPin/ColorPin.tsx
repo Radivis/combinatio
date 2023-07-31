@@ -13,7 +13,7 @@ interface ColorPinProps {
     isHighlighted?: boolean,
     isOpacityToogleActive?: boolean,
     isDisabledToggleActive?: boolean,
-    opacityToogleCallback?: (color: Color) => void,
+    opacityToogleCallback?: (piece: Color | string) => void,
 }
 
 const ColorPin = (props: ColorPinProps) => {

@@ -1,4 +1,5 @@
 import generateDefaultRowColorsDataString from "./store/functions/generateDefaultRowColorsDataString";
+import Color from "./util/Color";
 import ColorIcons from "./util/ColorIcons";
 import Colors from "./util/Colors";
 
@@ -12,6 +13,7 @@ export const defaultBaseLightness = 50;
 export const holeHue = 34;
 export const holeSaturation = 57;
 export const holeLightness = 20;
+export const holeColor = new Color(holeHue, holeSaturation, holeLightness);
 export const gameStates = ['starting', 'running', 'won', 'lost'];
 export const paletteNames = ['regular', 'zanthia'];
 export const iconNames = [

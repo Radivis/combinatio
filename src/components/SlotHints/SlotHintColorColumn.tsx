@@ -3,7 +3,7 @@ import Colors from '../../util/Colors';
 import Color from '../../util/Color';
 import ColorPin from '../ColorPin/ColorPin';
 
-import './SlotHintColumn.css';
+import './SlotHintColorColumn.css';
 import useGameStore from '../../store/gameStore';
 
 interface slotHintColumnProps {
@@ -11,13 +11,12 @@ interface slotHintColumnProps {
     columnIndex: number,
 }
 
-const SlotHintColumn = (props: slotHintColumnProps) => {
+const SlotHintColorColumn = (props: slotHintColumnProps) => {
     const { baseColorsDataString, columnIndex } = props;
 
     const {
         colorsMinMax,
         disabledColorsDataString,
-        maxIdenticalColorsInSolution,
         paletteColorsDataString,
         possibleSlotColorsDataString,
         possibleSlotColorsDataStrings,
@@ -27,12 +26,10 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         const { colorsMinMax, disabledColorsDataString, possibleSlotColorsDataStrings } = state.hints;
         const possibleSlotColorsDataString = state.hints.possibleSlotColorsDataStrings[columnIndex];
         const { paletteColorsDataString } = state.game;
-        const { maxIdenticalColorsInSolution } = state.gameSettings;
         const { setPossibleColors, setColorMinMax } = state;
         return {
             colorsMinMax,
             disabledColorsDataString,
-            maxIdenticalColorsInSolution,
             paletteColorsDataString,
             possibleSlotColorsDataString,
             possibleSlotColorsDataStrings,
@@ -56,29 +53,31 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
         return numColorPossible;
     }
 
-    const opacityToogleCallback = (color: Color) => {
-        // compute number of slots in which this color is possible
-        const numColorPossible = computeNumColorPossible(color);
-
-        // get index of color in colorsPalette
-        const paletteColors = Colors.deserialize(paletteColorsDataString);
-        const colorIndex = paletteColors.indexOfColor(color);
-
-        if (possibleSlotColors.has(color)) {
-            // Color was possible, must now be removed from possible colors
-            possibleSlotColors.remove(color);
-            // Decrement max of this color, if max in sync
-            if (colorsMinMax[colorIndex][1] === numColorPossible) {
-                setColorMinMax({colorIndex, max: numColorPossible - 1});
+    const opacityToogleCallback = (color: Color | string) => {
+        if (typeof color !== 'string')  {
+            // compute number of slots in which this color is possible
+            const numColorPossible = computeNumColorPossible(color);
+    
+            // get index of color in colorsPalette
+            const paletteColors = Colors.deserialize(paletteColorsDataString);
+            const colorIndex = paletteColors.indexOfColor(color);
+    
+            if (possibleSlotColors.has(color)) {
+                // Color was possible, must now be removed from possible colors
+                possibleSlotColors.remove(color);
+                // Decrement max of this color, if max in sync
+                if (colorsMinMax[colorIndex][1] === numColorPossible) {
+                    setColorMinMax({colorIndex, max: numColorPossible - 1});
+                }
+            } else {
+                // Color was impossible, must now be added to possible colors
+                possibleSlotColors.add(color);
+                // Don't increment max of this color, because max might have been reduced on purpose!
+                // const newMax = Math.min(numColorPossible + 1, maxIdenticalColorsInSolution);
+                // setColorMinMax({colorIndex, max: newMax});
             }
-        } else {
-            // Color was impossible, must now be added to possible colors
-            possibleSlotColors.add(color);
-            // Don't increment max of this color, because max might have been reduced on purpose!
-            // const newMax = Math.min(numColorPossible + 1, maxIdenticalColorsInSolution);
-            // setColorMinMax({colorIndex, max: newMax});
+            setPossibleColors(possibleSlotColors, columnIndex);
         }
-        setPossibleColors(possibleSlotColors, columnIndex);
     }
 
     const isHighlighted = (color: Color): boolean => {
@@ -104,4 +103,4 @@ const SlotHintColumn = (props: slotHintColumnProps) => {
     );
 };
 
-export default SlotHintColumn;
+export default SlotHintColorColumn;

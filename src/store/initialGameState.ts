@@ -37,6 +37,7 @@ const initialGameState = {
         colorsMinMax: Array(defaultNumColors).fill([...[0, defaultNumColumns]]),
         possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
+        possibleSlotIconNames: [],
         disabledColorsDataString: '[]',
         disabledIcons: [],
         combinationNotes: Array(2).fill([...emptyCombinationNote]),

@@ -66,6 +66,7 @@ export type gameActions = {
     toggleDisableColor: (color: Color) => void,
     toggleDisableIcon: (iconName: string) => void,
     setPossibleColors: (colors: Colors, columnIndex: number) => void,
+    setPossibleIcons: (iconNames: string[], columnIndex: number) => void,
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
     placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => void,
     placeTupleIcon: ({iconName, rowIndex, columnIndex}: {iconName: string, rowIndex: number, columnIndex: number}) => void,

@@ -44,13 +44,20 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
         // Regenerate game
         state.game.paletteColorsDataString = gamePaletteDataString;
         if (pieceType === pieceTypes.colorIcon) {
-            state.game.iconCollectionNames = pickIconCollection(numIcons);
+            const iconCollectionNames = pickIconCollection(numIcons);
+            state.game.iconCollectionNames = iconCollectionNames;
+
+            // (Re)generate possibleIconNames
+            state.hints.possibleSlotIconNames = Array(numColumns)
+            .fill(iconCollectionNames)
         }
         state.game.gameRows = initializeGameRows(numRows, numColumns);
 
         // Regenerate possibleSlotColorsDataStrings
         state.hints.possibleSlotColorsDataStrings =  Array(numColumns)
             .fill(gamePaletteDataString);
+
+
 
         // Regenerate colorsMinMax
         state.hints.colorsMinMax = Array(numColors)

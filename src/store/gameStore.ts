@@ -28,6 +28,7 @@ import initialGameState from './initialGameState';
 import generateDefaultRowColorsDataString from './functions/generateDefaultRowColorsDataString';
 import toggleDisableIcon from './actions/toggleDisableIcon';
 import ColorIcons from '../util/ColorIcons';
+import setPossibleIcons from './actions/setPossibleIcons';
 
 
 
@@ -108,6 +109,7 @@ const useGameStore = create<gameStore>()(
         toggleDisableColor: toggleDisableColor(set, get),
         toggleDisableIcon: toggleDisableIcon(set, get),
         setPossibleColors: setPossibleColors(set, get),
+        setPossibleIcons: setPossibleIcons(set, get),
         resetHints: resetHints(set, get),
         setColorMinMax: setColorMinMax(set, get),
         placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => {

@@ -1,4 +1,4 @@
-.tuples-hints-container {
+.combination-notes-container {
     display: flex;
     width: fit-content;
     flex-direction: column;
@@ -6,7 +6,7 @@
     margin-top: 10px;
 }
 
-.tuples-hints-title {
+.combination-notes-title {
     margin-top: 10px;
     margin-bottom: 5px;
 }

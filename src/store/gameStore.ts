@@ -4,6 +4,7 @@ import { immer } from 'zustand/middleware/immer';
 
 import { modal } from '../interfaces/interfaces';
 import {
+    emptyCombinationNote,
     gameStates,
     holeHue,
     holeLightness,
@@ -26,6 +27,7 @@ import resetHints from './actions/resetHints';
 import initialGameState from './initialGameState';
 import generateDefaultRowColorsDataString from './functions/generateDefaultRowColorsDataString';
 import toggleDisableIcon from './actions/toggleDisableIcon';
+import ColorIcons from '../util/ColorIcons';
 
 
 
@@ -110,16 +112,28 @@ const useGameStore = create<gameStore>()(
         setColorMinMax: setColorMinMax(set, get),
         placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => {
             const { combinationNotes } = get().hints;
-            const colorTuple = Colors.deserialize(combinationNotes[rowIndex][0]);
+            const colorTuple = (ColorIcons.deserialize(combinationNotes[rowIndex][0])).colors;
+            const iconNamesTuple = (ColorIcons.deserialize(combinationNotes[rowIndex][0])).iconNames;
             colorTuple[columnIndex] = color;
+            const colorIconsTuple = ColorIcons.fuse(colorTuple, iconNamesTuple);
             set((state: gameState) => {
-                state.hints.combinationNotes[rowIndex][0] = Colors.serialize(colorTuple);
+                state.hints.combinationNotes[rowIndex][0] = ColorIcons.serialize(colorIconsTuple);
             }, false, 'placeTupleColor');
+        },
+        placeTupleIcon: ({iconName, rowIndex, columnIndex}: {iconName: string, rowIndex: number, columnIndex: number}) => {
+            const { combinationNotes } = get().hints;
+            const colorTuple = (ColorIcons.deserialize(combinationNotes[rowIndex][0])).colors;
+            const iconNamesTuple = (ColorIcons.deserialize(combinationNotes[rowIndex][0])).iconNames;
+            iconNamesTuple[columnIndex] = iconName;
+            const colorIconsTuple = ColorIcons.fuse(colorTuple, iconNamesTuple);
+            set((state: gameState) => {
+                state.hints.combinationNotes[rowIndex][0] = ColorIcons.serialize(colorIconsTuple);
+            }, false, 'placeTupleIcon');
         },
         addColorTuple: () => {
             set((state: gameState) => {
                 state.hints.combinationNotes
-                .push([generateDefaultRowColorsDataString(2),'']);
+                .push([...emptyCombinationNote]);
             }, false, 'addColorTuple')
         },
         addColorTupleSlot: (rowIndex: number) => {

@@ -12,7 +12,11 @@ class ColorIcon extends Color {
         return new ColorIcon(color.hue, color.saturation, color.lightness, iconName);
     }
 
-    get iconName(): string {
+    public get color(): Color{
+        return new Color(this.hue, this.saturation, this.lightness);
+    }
+
+    public get iconName(): string {
         return this._iconName;
     }
 

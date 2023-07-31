@@ -37,6 +37,8 @@ export declare type Draft<T> = T extends PrimitiveType ? T : T extends AtomicObj
 
 export type colorDataString = string;
 export type colorsDataString = string;
+export type colorIconDataString = string;
+export type colorIconsDataString = string;
 
 export type gameState = {
     displaySettings: displaySettings,
@@ -66,6 +68,7 @@ export type gameActions = {
     setPossibleColors: (colors: Colors, columnIndex: number) => void,
     setColorMinMax: ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => void,
     placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => void,
+    placeTupleIcon: ({iconName, rowIndex, columnIndex}: {iconName: string, rowIndex: number, columnIndex: number}) => void,
     addColorTuple: () => void,
     addColorTupleSlot: (rowIndex: number) => void,
     deleteColorTupleRow: (rowIndex: number) => void,

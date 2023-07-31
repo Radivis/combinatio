@@ -1,4 +1,4 @@
-import { defaultNumColors, defaultNumColumns, defaultNumIcons, defaultNumRows, gameStates, paletteNames, pieceTypes } from "../constants";
+import { defaultNumColors, defaultNumColumns, defaultNumIcons, defaultNumRows, emptyCombinationNote, gameStates, paletteNames, pieceTypes } from "../constants";
 import Colors from "../util/Colors";
 import { generateRegularPalette } from "./functions/generatePalette";
 import generateDefaultRowColorsDataString from "./functions/generateDefaultRowColorsDataString";
@@ -39,7 +39,7 @@ const initialGameState = {
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
         disabledColorsDataString: '[]',
         disabledIcons: [],
-        combinationNotes: Array(2).fill([generateDefaultRowColorsDataString(2),'']),
+        combinationNotes: Array(2).fill([...emptyCombinationNote]),
     },
     modal: {
         type: 'none',

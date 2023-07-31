@@ -1,3 +1,7 @@
+import generateDefaultRowColorsDataString from "./store/functions/generateDefaultRowColorsDataString";
+import ColorIcons from "./util/ColorIcons";
+import Colors from "./util/Colors";
+
 export const gameVersionNumber = '0.6.0';
 export const defaultNumColumns = 4;
 export const defaultNumRows = 8;
@@ -60,3 +64,7 @@ export enum pieceTypes {
     colorIcon = 'colorIcon',
     icon = 'icon'
 }
+
+export const emptyCombinationNote: [string, string] = [`${ColorIcons
+    .serialize(ColorIcons
+        .fuse(Colors.deserialize(generateDefaultRowColorsDataString(2)), ['', '']))}`,''];

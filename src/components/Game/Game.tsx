@@ -12,7 +12,7 @@ import { range } from "../../util/range";
 import useGameStore from "../../store/gameStore";
 
 import './Game.css';
-import TuplesHints from "../TuplesHints/TuplesHints";
+import CombinationNotes from "../CombinationNotes/CombinationNotes";
 import IconBuckets from "../IconBuckets/IconBuckets";
 
 interface gameProps {
@@ -123,7 +123,7 @@ const Game = (props: gameProps) => {
                     {pieceType === pieceTypes.colorIcon && 
                         <IconBuckets />
                     }
-                    <TuplesHints />
+                    <CombinationNotes />
                 </div>
             </div>
 

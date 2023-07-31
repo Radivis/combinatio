@@ -7,14 +7,16 @@ import Colors from "../../util/Colors";
 import ColorPin from "../ColorPin/ColorPin";
 import DropTarget from "../DropTarget/DropTarget";
 
-import './TuplesHintsRow.css';
+import './CombinationNotesRow.css';
 import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import ColorIcons from "../../util/ColorIcons";
+import ColorIcon from "../../util/ColorIcon";
 
 interface tuplesHintsRowProps {
     rowIndex: number
 }
 
-const TuplesHintsRow = (props: tuplesHintsRowProps) => {
+const CombinationNotesRow = (props: tuplesHintsRowProps) => {
     const { rowIndex } = props;
 
     const {
@@ -24,12 +26,14 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
         changeCombinationNote,
         deleteColorTupleRow,
         placeTupleColor,
+        placeTupleIcon,
     } = useGameStore((state) => {
         const {
             hints,
             addColorTupleSlot,
             changeCombinationNote,
             placeTupleColor,
+            placeTupleIcon,
             deleteColorTupleRow
         } = state;
         const { combinationNotes, disabledColorsDataString } = hints;
@@ -40,19 +44,40 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
             changeCombinationNote,
             deleteColorTupleRow,
             placeTupleColor,
+            placeTupleIcon,
         };
     })
 
-    const colorTuple = Colors.deserialize(combinationNotes[rowIndex][0]);
+    const colorIconTuple = ColorIcons.deserialize(combinationNotes[rowIndex][0]);
 
     const disabledColors = Colors.deserialize(disabledColorsDataString);
 
-    const onColorDropped = (colorObject: hslColorObject, columnIndex: number) => {
-        placeTupleColor({
-            color: Color.makeFromHslObject(colorObject),
-            rowIndex,
-            columnIndex
-        })
+    // const onColorDropped = (colorObject: hslColorObject, columnIndex: number) => {
+    //     placeTupleColor({
+    //         color: Color.makeFromHslObject(colorObject),
+    //         rowIndex,
+    //         columnIndex
+    //     })
+    // }
+
+    const onPieceDropped = (payload: object, columnIndex: number) => {
+        if ('iconName' in payload && typeof payload['iconName'] === 'string') {
+            // Icon is encoded via iconName
+            const { iconName } = payload;
+            placeTupleIcon({
+                iconName,
+                rowIndex,
+                columnIndex
+            })
+        } else {
+            // Color is encoded via hslColorObject
+            placeTupleColor({
+                color: Color.makeFromHslObject(payload as hslColorObject),
+                rowIndex,
+                columnIndex
+            })
+        }
+
     }
 
     const onClickAddTupleSlotButton = () => {
@@ -68,17 +93,18 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
     } 
 
     return (
-        <div className="tuples-hints-row">
-            {colorTuple.map((color: Color, columnIndex: number) => {
+        <div className="combination-notes-row">
+            {colorIconTuple.map((colorIcon: ColorIcon, columnIndex: number) => {
                 return <DropTarget
                     key = {`${rowIndex}: ${columnIndex}`}
-                    onItemDropped={(color: Color) => {
-                        onColorDropped(color, columnIndex)
+                    onItemDropped={(payload: object) => {
+                        onPieceDropped(payload, columnIndex)
                 }}>
                     <ColorPin
-                        color={color}
+                        color={colorIcon.color}
+                        iconName={colorIcon.iconName}
                         key={columnIndex}
-                        isDisabled={disabledColors.has(color)}
+                        isDisabled={disabledColors.has(colorIcon.color)}
                     />
                 </DropTarget>
 
@@ -100,4 +126,4 @@ const TuplesHintsRow = (props: tuplesHintsRowProps) => {
 
 }
 
-export default TuplesHintsRow;
+export default CombinationNotesRow;

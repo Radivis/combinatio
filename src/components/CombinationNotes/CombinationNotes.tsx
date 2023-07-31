@@ -1,11 +1,11 @@
 import useGameStore from '../../store/gameStore';
-import TuplesHintsRow from './TuplesHintsRow';
+import CombinationNotesRow from './CombinationNotesRow';
 
-import './TuplesHints.css';
+import './CombinationNotes.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-const TuplesHints = () => {
+const CombinationNotes = () => {
 
     const {
         areCombinationNotesActive,
@@ -23,14 +23,14 @@ const TuplesHints = () => {
     })
 
     return (
-        <div className='tuples-hints-container'>
+        <div className='combination-notes-container'>
         {(areCombinationNotesActive === true) &&
             <>
-                <h3 className='tuples-hints-title'>
+                <h3 className='combination-notes-title'>
                     Combination Notes
                 </h3>
                 {combinationNotes.map((combinationNote: [string, string], rowIndex: number) => {
-                    return <TuplesHintsRow 
+                    return <CombinationNotesRow 
                         rowIndex={rowIndex}
                         key={rowIndex}
                     />
@@ -43,4 +43,4 @@ const TuplesHints = () => {
     );
 }
 
-export default TuplesHints;
+export default CombinationNotes;

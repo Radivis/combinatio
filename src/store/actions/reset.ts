@@ -1,4 +1,4 @@
-import { gameStates, pieceTypes } from "../../constants";
+import { emptyCombinationNote, gameStates, pieceTypes } from "../../constants";
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import Colors from "../../util/Colors";
 import generateRandomGuess from "../functions/generateRandomGuess";
@@ -33,7 +33,7 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
             possibleSlotColorsDataStrings: Array(numColumns)
             .fill(state.game.paletteColorsDataString),
             disabledColorsDataString: '[]',
-            combinationNotes: Array(2).fill([generateDefaultRowColorsDataString(2), '']),
+            combinationNotes: Array(2).fill([...emptyCombinationNote]),
         }
         state.hints = blankHints;
         state.hints.colorsMinMax = blankHints.colorsMinMax;

@@ -1,4 +1,4 @@
-import { colorsDataString } from "./types";
+import { colorIconsDataString, colorsDataString } from "./types";
 
 export interface hslColorObject {
     hue: number;
@@ -31,7 +31,7 @@ export interface hints {
     possibleSlotColorsDataStrings: colorsDataString[];
     disabledColorsDataString: colorsDataString;
     disabledIcons?: string[];
-    combinationNotes: [colorsDataString, string][]; 
+    combinationNotes: [colorIconsDataString, string][]; 
 }
 
 export interface displaySettings {

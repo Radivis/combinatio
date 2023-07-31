@@ -32,7 +32,14 @@ class ColorIcons extends Array<ColorIcon> {
         }
 
         return new ColorIcons(colorIcons);
+    }
 
+    public get colors(): Colors {
+        return new Colors(this.map((colorIcon: ColorIcon) => colorIcon.color));
+    }
+
+    public get iconNames(): string[] {
+        return this.map((colorIcon: ColorIcon) => colorIcon.iconName);
     }
 
     public readonly has = (colorIcon: ColorIcon): boolean => {
@@ -91,6 +98,7 @@ class ColorIcons extends Array<ColorIcon> {
     }
 
     public static deserialize = (colorIconsString: string): ColorIcons => {
+        console.log(colorIconsString);
         return new ColorIcons(JSON.parse(colorIconsString)
             .map((colorIconString: string) => ColorIcon.deserialize(colorIconString)));
     }

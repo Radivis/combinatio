@@ -74,6 +74,12 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         ColorIcon appears (n times)
         _numColorIconPresent: All grey
 
+        ColorIcon appears (n times), color correct
+        _numColorIconPresentColorCorrect: Black rim, center grey
+
+        ColorIcon appears (n times), icon correct
+        _numColorIconPresentIconCorrect: Center black, grey
+
         Color and icon appear, but not simultaneously (n times)
         _numColorPresentIconPresent: All white
 
@@ -108,16 +114,18 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         */
 
         // Counts of the different status an evaluation pin can have
-        let _numFullyCorrect = 0;
-        let _numIconCorrectColorPresent = 0;
-        let _numColorCorrectIconPresent = 0;
-        let _numIconCorrectColorAmiss = 0;
-        let _numColorCorrectIconAmiss = 0;
-        let _numColorIconPresent = 0;
-        let _numColorPresentIconPresent = 0;
-        let _numColorPresentIconAmiss = 0;
-        let _numIconPresentColorAmiss = 0;
-        let _numAllAmiss = 0;
+        _infoPinStatusCounts['numFullyCorrect'] = 0;
+        _infoPinStatusCounts['numColorCorrectIconPresent'] = 0;
+        _infoPinStatusCounts['numColorCorrectIconAmiss'] = 0;
+        _infoPinStatusCounts['numIconCorrectColorPresent'] = 0;
+        _infoPinStatusCounts['numColorIconPresent'] = 0;
+        _infoPinStatusCounts['numColorIconPresentColorCorrect'] = 0;
+        _infoPinStatusCounts['numColorIconPresentIconCorrect'] = 0;
+        _infoPinStatusCounts['numColorPresentIconPresent'] = 0;
+        _infoPinStatusCounts['numColorPresentIconAmiss'] = 0;
+        _infoPinStatusCounts['numIconCorrectColorAmiss'] = 0;
+        _infoPinStatusCounts['numIconPresentColorAmiss'] = 0;
+        _infoPinStatusCounts['numAllAmiss'] = 0;
 
         // Objects storing the respective counts of the colorIcons, colors, and icons
         const solutionColorIconCounts: {[key: string]: number} = {};
@@ -199,38 +207,45 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
 
             // Increment the corresponding evaluation pin counter
             if (colorStatus === aspectStatus.correct) {
-                if (iconStatus === aspectStatus.correct) _numFullyCorrect++;
-                if (iconStatus === aspectStatus.present) _numColorCorrectIconPresent++;
-                if (iconStatus === aspectStatus.amiss) _numColorCorrectIconAmiss++;
-            } else if (colorStatus === aspectStatus.present) {
-                if (iconStatus === aspectStatus.correct) _numIconCorrectColorPresent++;
+                if (iconStatus === aspectStatus.correct) _infoPinStatusCounts['numFullyCorrect']++;
                 if (iconStatus === aspectStatus.present) {
                     if (colorIconStatus === aspectStatus.present) {
-                        _numColorIconPresent++;
+                        _infoPinStatusCounts['numColorIconPresentColorCorrect']++;
                     } else {
-                        _numColorPresentIconPresent++;
+                        _infoPinStatusCounts['numColorCorrectIconPresent']++;
+                    }   
+                }
+                if (iconStatus === aspectStatus.amiss) _infoPinStatusCounts['numColorCorrectIconAmiss']++;
+            } else if (colorStatus === aspectStatus.present) {
+                if (iconStatus === aspectStatus.correct) {
+                    if (colorIconStatus === aspectStatus.present) {
+                        _infoPinStatusCounts['numColorIconPresentIconCorrect']++;
+                    } else {
+                        _infoPinStatusCounts['numIconCorrectColorPresent']++;
+                    }   
+                }
+                if (iconStatus === aspectStatus.present) {
+                    if (colorIconStatus === aspectStatus.present) {
+                        _infoPinStatusCounts['numColorIconPresent']++;
+                    } else {
+                        _infoPinStatusCounts['numColorPresentIconPresent']++;
                     }
                 }
-                if (iconStatus === aspectStatus.amiss) _numColorPresentIconAmiss++;
+                if (iconStatus === aspectStatus.amiss) _infoPinStatusCounts['numColorPresentIconAmiss']++;
             } else if (colorStatus === aspectStatus.amiss) {
-                if (iconStatus === aspectStatus.correct) _numIconCorrectColorAmiss++;
-                if (iconStatus === aspectStatus.present) _numIconPresentColorAmiss++;
-                if (iconStatus === aspectStatus.amiss) _numAllAmiss++;
+                if (iconStatus === aspectStatus.correct) _infoPinStatusCounts['numIconCorrectColorAmiss']++;
+                if (iconStatus === aspectStatus.present) _infoPinStatusCounts['numIconPresentColorAmiss']++;
+                if (iconStatus === aspectStatus.amiss) _infoPinStatusCounts['numAllAmiss']++;
             }
-
-            // Store the counters in the _infoPinStatusCounts object
-            _infoPinStatusCounts['numFullyCorrect'] = _numFullyCorrect;
-            _infoPinStatusCounts['numColorCorrectIconPresent'] = _numColorCorrectIconPresent;
-            _infoPinStatusCounts['numColorCorrectIconAmiss'] = _numColorCorrectIconAmiss;
-            _infoPinStatusCounts['numIconCorrectColorPresent'] = _numIconCorrectColorPresent;
-            _infoPinStatusCounts['numColorIconPresent'] = _numColorIconPresent;
-            _infoPinStatusCounts['numColorPresentIconPresent'] = _numColorPresentIconPresent;
-            _infoPinStatusCounts['numColorPresentIconAmiss'] = _numColorPresentIconAmiss;
-            _infoPinStatusCounts['numIconCorrectColorAmiss'] = _numIconCorrectColorAmiss;
-            _infoPinStatusCounts['numIconPresentColorAmiss'] = _numIconPresentColorAmiss;
-            _infoPinStatusCounts['numAllAmiss'] = _numAllAmiss;
         }
-
+        // DEBUG
+        console.log(_infoPinStatusCounts);
+        console.log('rowColorIconCounts', rowColorIconCounts);
+        console.log('rowColorCounts', rowColorCounts);
+        console.log('rowIconCounts', rowIconCounts);
+        console.log('solutionColorIconCounts', solutionColorIconCounts);
+        console.log('solutionColorCounts', solutionColorCounts);
+        console.log('solutionIconCounts', solutionIconCounts);
     } else if (pieceType === pieceTypes.color) {
         // Compute number of fully correct pins
         currentRowColors.forEach((color, index) => {

@@ -58,6 +58,22 @@
     border-color: black;
 }
 
+.black-grey {
+    height: 6px;
+    width: 6px;
+    background-color: grey;
+    border-width: 3px;
+    border-color: black;
+}
+
+.grey-black {
+    height: 6px;
+    width: 6px;
+    background-color: black;
+    border-width: 3px;
+    border-color: grey;
+}
+
 .white-black {
     height: 6px;
     width: 6px;

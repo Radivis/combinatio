@@ -57,6 +57,12 @@ const InfoPins = (props: infoPinsProps) => {
         if (_infoPinStatusCounts['numFullyCorrect'] > 0) {
             _infoPinStatusCounts['numFullyCorrect']--;
             return ' black';
+        } else if (_infoPinStatusCounts['numColorIconPresentColorCorrect'] > 0) {
+            _infoPinStatusCounts['numColorIconPresentColorCorrect']--;
+            return ' black-grey';
+        } else if (_infoPinStatusCounts['numColorIconPresentIconCorrect'] > 0) {
+            _infoPinStatusCounts['numColorIconPresentIconCorrect']--;
+            return ' grey-black';
         } else if (_infoPinStatusCounts['numColorCorrectIconPresent'] > 0) {
             _infoPinStatusCounts['numColorCorrectIconPresent']--;
             return ' black-white';

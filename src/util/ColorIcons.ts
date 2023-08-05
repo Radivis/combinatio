@@ -98,7 +98,6 @@ class ColorIcons extends Array<ColorIcon> {
     }
 
     public static deserialize = (colorIconsString: string): ColorIcons => {
-        console.log(colorIconsString);
         return new ColorIcons(JSON.parse(colorIconsString)
             .map((colorIconString: string) => ColorIcon.deserialize(colorIconString)));
     }

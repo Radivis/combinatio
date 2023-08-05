@@ -8,6 +8,7 @@ import { gameState } from "../../interfaces/types";
 import ColorIcons from "../../util/ColorIcons";
 import ColorIcon from "../../util/ColorIcon";
 import Color from "../../util/Color";
+import { range } from "../../util/range";
 
 enum aspectStatus {
     'amiss',
@@ -102,6 +103,14 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         The counts at each step are stored in an object in which
         the key is serialization of the aspect and the value its count
 
+        Make an array of columnIndices to check
+        Phase A: Check for completely correct slots
+        For each slot:
+            Check colorIcon for correctness, and if true,
+            Increment occurrence of colorIcon, color, and icon
+            remove the column index from the columnIndices to check
+
+        Phase B: Check the slots that remain
         For each slot:
             Increment occurrence of colorIcon, color, and icon
             If the counter is higher than the number of solutionOccurrences, the respective
@@ -168,46 +177,100 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             rowIconCounts[iconName] = 0;
         })
 
+        // Store the slots that remain to be checked in an array of indicies
+        let columnIndicesToCheck = range(numColumns);
+        // Store the colorIcon status of each slot in an array
+        const columnIndexColorIconStatusArray = columnIndicesToCheck
+        .map((_columnIndex: number) => aspectStatus.amiss)
+        // Store the color status of each slot in an array
+        const columnIndexColorStatusArray = columnIndicesToCheck
+        .map((_columnIndex: number) => aspectStatus.amiss)
+        // Store the icon status of each slot in an array
+        const columnIndexIconStatusArray = columnIndicesToCheck
+        .map((_columnIndex: number) => aspectStatus.amiss)
+
+        // Check each slot for total correctness
         for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
-            // const colorIcon = currentRowColorIcons[columnIndex];
             const color = currentRowColors[columnIndex];
             const iconName = currentRowIconNames[columnIndex];
             const colorIcon = ColorIcon.fuse(color, iconName);
-            let colorStatus = aspectStatus.amiss;
-            let iconStatus = aspectStatus.amiss;
-            let colorIconStatus = aspectStatus.amiss;
-
-            // Check if colorIcon is present
-            rowColorIconCounts[colorIcon.serialize()]++;
-            if (rowColorIconCounts[colorIcon.serialize()] <= solutionColorIconCounts[colorIcon.serialize()]) {
-                colorIconStatus = aspectStatus.present;
+            if (colorIcon.equals(solutionColorIcons[columnIndex])) {
+                _infoPinStatusCounts['numFullyCorrect']++;
+                columnIndexColorIconStatusArray[columnIndex] = aspectStatus.correct;
+                rowColorIconCounts[colorIcon.serialize()]++;
+                rowColorCounts[color.serialize()]++;
+                rowIconCounts[iconName]++;
+                columnIndicesToCheck = columnIndicesToCheck
+                    .filter(_columnIndex => columnIndex !== _columnIndex);
             }
+        }
 
-            // Check if color is present
+        // Check colorIcon for each slot for presence
+        columnIndicesToCheck.forEach((columnIndex: number) => {
+            const color = currentRowColors[columnIndex];
+            const iconName = currentRowIconNames[columnIndex];
+            const colorIcon = ColorIcon.fuse(color, iconName);
+            rowColorIconCounts[colorIcon.serialize()]++;
+            if(rowColorIconCounts[colorIcon.serialize()] <= solutionColorIconCounts[colorIcon.serialize()]) {
+                columnIndexColorIconStatusArray[columnIndex] = aspectStatus.present;
+            }
+        });
+
+        let columnIndicesToCheckForColor = [...columnIndicesToCheck];
+
+        // Check color for each slot for correctness
+        columnIndicesToCheck.forEach((columnIndex: number) => {
+            const color = currentRowColors[columnIndex];
+            if(color.equals(solutionColors[columnIndex])) {
+                columnIndexColorStatusArray[columnIndex] = aspectStatus.correct;
+                rowColorCounts[color.serialize()]++;
+                columnIndicesToCheckForColor = columnIndicesToCheckForColor
+                    .filter(_columnIndex => columnIndex !== _columnIndex);
+            }
+        });
+
+        // Check color for each remaining slot for presence
+        columnIndicesToCheckForColor.forEach((columnIndex: number) => {
+            const color = currentRowColors[columnIndex];
             rowColorCounts[color.serialize()]++;
             if (rowColorCounts[color.serialize()] <= solutionColorCounts[color.serialize()]) {
-                colorStatus = aspectStatus.present;
+                columnIndexColorStatusArray[columnIndex] = aspectStatus.present;
             }
+        });
 
-            // Check if color is correct
-            if (color.equals(solutionColors[columnIndex])) {
-                colorStatus = aspectStatus.correct;
-            }
+        let columnIndicesToCheckForIcon = [...columnIndicesToCheck];
 
-            // Check if icon is present
-            rowIconCounts[iconName]++;
-            if (rowIconCounts[iconName] <= solutionIconCounts[iconName]) {
-                iconStatus = aspectStatus.present;
-            }
-
+        // Check icon for each slot for correctness
+        columnIndicesToCheck.forEach((columnIndex: number) => {
+            const iconName = currentRowIconNames[columnIndex];
             // Check if icon is correct
             if (iconName === solutionIconNames[columnIndex]) {
-                iconStatus = aspectStatus.correct;
+                columnIndexIconStatusArray[columnIndex] = aspectStatus.correct;
+                rowIconCounts[iconName]++;
+                columnIndicesToCheckForIcon = columnIndicesToCheckForIcon
+                    .filter(_columnIndex => columnIndex !== _columnIndex);
             }
+        });
+
+        // Check icon for each remaining slot for presence
+        columnIndicesToCheckForIcon.forEach((columnIndex: number) => {
+            const iconName = currentRowIconNames[columnIndex];
+            rowIconCounts[iconName]++;
+            if (rowIconCounts[iconName] <= solutionIconCounts[iconName]) {
+                columnIndexIconStatusArray[columnIndex] = aspectStatus.present;
+            }
+        });
+
+        // Compute the total pin status for each pin
+        for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+            const colorIconStatus = columnIndexColorIconStatusArray[columnIndex];
+            const colorStatus = columnIndexColorStatusArray[columnIndex];
+            const iconStatus = columnIndexIconStatusArray[columnIndex];
 
             // Increment the corresponding evaluation pin counter
             if (colorStatus === aspectStatus.correct) {
-                if (iconStatus === aspectStatus.correct) _infoPinStatusCounts['numFullyCorrect']++;
+                // Don't increment the numFullyCorrect status, because it has already been incremented!
+                // if (iconStatus === aspectStatus.correct) _infoPinStatusCounts['numFullyCorrect']++;
                 if (iconStatus === aspectStatus.present) {
                     if (colorIconStatus === aspectStatus.present) {
                         _infoPinStatusCounts['numColorIconPresentColorCorrect']++;
@@ -238,6 +301,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
                 if (iconStatus === aspectStatus.amiss) _infoPinStatusCounts['numAllAmiss']++;
             }
         }
+
         // DEBUG
         console.log(_infoPinStatusCounts);
         console.log('rowColorIconCounts', rowColorIconCounts);
@@ -246,6 +310,9 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         console.log('solutionColorIconCounts', solutionColorIconCounts);
         console.log('solutionColorCounts', solutionColorCounts);
         console.log('solutionIconCounts', solutionIconCounts);
+        console.log('columnIndexColorIconStatusArray', columnIndexColorIconStatusArray);
+        console.log('columnIndexColorStatusArray', columnIndexColorStatusArray);
+        console.log('columnIndexIconStatusArray', columnIndexIconStatusArray);
     } else if (pieceType === pieceTypes.color) {
         // Compute number of fully correct pins
         currentRowColors.forEach((color, index) => {

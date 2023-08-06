@@ -26,6 +26,7 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
     set((state: gameState & gameActions) => {
         const {
             maxIdenticalColorsInSolution,
+            maxIdenticalIconsInSolution,
             numColumns,
             numPrefilledRows,
             numColors,
@@ -62,6 +63,10 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
         // Regenerate colorsMinMax
         state.hints.colorsMinMax = Array(numColors)
             .fill([...[0, maxIdenticalColorsInSolution]]);
+
+        // Regenerate iconsMinMax
+        state.hints.iconsMinMax = Array(numIcons)
+        .fill([...[0, maxIdenticalIconsInSolution]]);
 
         // Reset disabled colors and icons
         state.hints.disabledColorsDataString = '[]';

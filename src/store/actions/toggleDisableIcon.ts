@@ -23,18 +23,15 @@ const toggleDisableIcon = (set: zustandSetter, get: zustandGetter) => (iconName:
         } else {
             // disable color
             newDisabledIcons = [...disabledIcons, iconName];
-            // TODO: Adapt this to icons
-            /*
             // set min and max of this color to 0
-            state.hints.colorsMinMax[iconIndex][0] = 0;
-            state.hints.colorsMinMax[iconIndex][1] = 0;
-            // remove this color from the possibleSlotColors for all slots
-            state.hints.possibleSlotColorsDataStrings.forEach((possibleSlotColorsDataString, index) => {
-                const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataString);
-                possibleSlotColors.remove(iconName);
-                state.hints.possibleSlotColorsDataStrings[index] = Colors.serialize(possibleSlotColors);
-            })
-            */
+            state.hints.iconsMinMax[iconIndex][0] = 0;
+            state.hints.iconsMinMax[iconIndex][1] = 0;
+            // remove this icon from the possibleSlotIcons for all slots
+            state.hints.possibleSlotIconNames.forEach((possibleIconNames, columnIndex) => {
+                possibleIconNames = possibleIconNames.filter(possibleIcon => possibleIcon !== iconName);
+                state.hints.possibleSlotIconNames[columnIndex] = possibleIconNames
+            });
+            
         }
         state.hints.disabledIcons = newDisabledIcons;
     }, false, 'toggleDisableIcon');

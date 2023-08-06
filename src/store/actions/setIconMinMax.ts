@@ -5,6 +5,7 @@ const setIconMinMax = (set: zustandSetter, get: zustandGetter) =>
     ({iconIndex, min, max}: {iconIndex: number, min?: number, max?: number}) => {
     set((state: gameState) => {
         const { numIcons, maxIdenticalIconsInSolution, numColumns } = state.gameSettings;
+        const { iconCollectionNames }= state.game;
         if (min !== undefined) {
             // How many icon occurences are already fixed?
             const minTotal = state.hints.iconsMinMax.reduce((prev: number,curr: [number, number]): number => {
@@ -35,35 +36,31 @@ const setIconMinMax = (set: zustandSetter, get: zustandGetter) =>
         if (max !== undefined) {
             // Enable icon, if max was 0 and is set to a different value
             if (state.hints.iconsMinMax[iconIndex][1] === 0 && max !== 0) {
-            // TODO: Adapt this code to icons
-            //     const paletteColors = Colors.deserialize(state.game.paletteColorsDataString);
-            //     const disabledColors = Colors.deserialize(state.hints.disabledColorsDataString);
-            //     const color = paletteColors[iconIndex];
-            //     if (disabledColors.has(color)) {
-            //         disabledColors.remove(color);
-            //         state.hints.disabledColorsDataString = Colors.serialize(disabledColors);
-            //     }
+                let disabledIcons = state.hints.disabledIcons;
+                const iconName = iconCollectionNames[iconIndex];
+                if (disabledIcons.includes(iconName)) {
+                    disabledIcons = disabledIcons.filter(disabledIcon => disabledIcon !== iconName);
+                    state.hints.disabledIcons = disabledIcons;
+                }
             }
             state.hints.iconsMinMax[iconIndex][1] = max;
             // Disable color, if max is set to 0
             // TODO: Adapt this code to icons
-            // if (max === 0) {
-            //     const paletteColors = Colors.deserialize(state.game.paletteColorsDataString);
-            //     const disabledColors = Colors.deserialize(state.hints.disabledColorsDataString);
-            //     const color = paletteColors[iconIndex];
-            //     if (!disabledColors.has(color)) {
-            //         disabledColors.add(color);
-            //         state.hints.disabledColorsDataString = Colors.serialize(disabledColors);
-            //     }
-            //     // remove this color from the possibleSlotColors for all slots
-            //     // Note: This is a duplication of the code in toggleDisableColor
-            //     // TODO: Check whether this can be solved via some kind of "reaction"
-            //     state.hints.possibleSlotColorsDataStrings.forEach((possibleSlotColorsDataString, index) => {
-            //     const possibleSlotColors = Colors.deserialize(possibleSlotColorsDataString);
-            //     possibleSlotColors.remove(color);
-            //     state.hints.possibleSlotColorsDataStrings[index] = Colors.serialize(possibleSlotColors);
-            // })
-            // }
+            if (max === 0) {
+                let disabledIcons = state.hints.disabledIcons;
+                const iconName = iconCollectionNames[iconIndex];
+                if (!disabledIcons.includes(iconName)) {
+                    disabledIcons.push(iconName);
+                    state.hints.disabledIcons = disabledIcons;
+                }
+                // remove this color from the possibleSlotColors for all slots
+                // Note: This is a duplication of the code in toggleDisableColor
+                // TODO: Check whether this can be solved via some kind of "reaction"
+                state.hints.possibleSlotIconNames.forEach((possibleIconNames, columnIndex) => {
+                    possibleIconNames = possibleIconNames.filter(possibleIcon => possibleIcon !== iconName);
+                    state.hints.possibleSlotIconNames[columnIndex] = possibleIconNames
+                });
+            }
         }
     }, false, 'setIconMinMax');
 }

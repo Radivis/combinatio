@@ -65,7 +65,7 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
                 // Splice doesn't work here, because the entries of the array are read-only!
                 // possibleCurrentSlotIconNames.splice(possibleCurrentSlotIconNames.indexOf(iconName), 1);
 
-                // Decrement max of this color, if max in sync
+                // Decrement max of this icon, if max in sync
                 if (iconsMinMax[iconIndex][1] === numIconPossible) {
                     setIconMinMax({iconIndex, max: numIconPossible - 1});
                 }

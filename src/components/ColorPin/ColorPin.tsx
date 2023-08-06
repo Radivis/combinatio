@@ -30,9 +30,9 @@ const ColorPin = (props: ColorPinProps) => {
     let {isOpaque} = props;
     if (isOpaque === undefined) isOpaque = false;
 
-    const { toggleDisableColor } = useGameStore((state) => {
-        const { toggleDisableColor } = state;
-        return { toggleDisableColor };
+    const { toggleDisableColor, toggleDisableIcon } = useGameStore((state) => {
+        const { toggleDisableColor, toggleDisableIcon } = state;
+        return { toggleDisableColor, toggleDisableIcon };
     })
 
     let className = 'colorPin ';
@@ -42,8 +42,14 @@ const ColorPin = (props: ColorPinProps) => {
     className.trim();
 
     const onClick = (ev: any) => {
-        // enable color in any case by clicking, if it is disabled
-        if (isDisabled) toggleDisableColor(color);
+        // enable color or icon in any case by clicking, if it is disabled
+        if (isDisabled) {
+            if (iconName !== undefined) {
+                toggleDisableIcon(iconName);
+            } else {
+                toggleDisableColor(color);
+            }
+        }
         else {
             if (isDisabledToggleActive) {
                 toggleDisableColor(color);

@@ -19,7 +19,7 @@ const toggleDisableIcon = (set: zustandSetter, get: zustandGetter) => (iconName:
             // Enable color
             newDisabledIcons = disabledIcons.filter(disabledIcon => disabledIcon !== iconName)
             // set max of this color to absolute max
-            state.hints.colorsMinMax[iconIndex][1] = state.gameSettings.maxIdenticalColorsInSolution;
+            state.hints.iconsMinMax[iconIndex][1] = state.gameSettings.maxIdenticalColorsInSolution;
         } else {
             // disable color
             newDisabledIcons = [...disabledIcons, iconName];

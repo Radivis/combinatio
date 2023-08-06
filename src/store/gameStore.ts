@@ -9,6 +9,7 @@ import {
     holeHue,
     holeLightness,
     holeSaturation,
+    pieceTypes,
 } from '../constants';
 import Colors from '../util/Colors';
 import Color from '../util/Color';
@@ -16,7 +17,8 @@ import ColorIcons from '../util/ColorIcons';
 import ColorIcon from '../util/ColorIcon';
 import { gameState, gameStore } from '../interfaces/types';
 // HELPER FUNCTIONS
-import generateRandomGuess from './functions/generateRandomGuess';
+import generateRandomColorGuess from './functions/generateRandomColorGuess';
+import generateRandomIconGuess from './functions/generateRandomIconGuess';
 // ACTIONS
 import changeGameSettings from './actions/changeGameSettings';
 import reset from './actions/reset';
@@ -109,11 +111,21 @@ const useGameStore = create<gameStore>()(
         reset: reset(set, get),
         randomGuess: () => {
             const state = get();
-            // Generate random guess
-            const randomGuess = generateRandomGuess(state);
+            const { pieceType } = state.gameSettings;
+            let randomColorGuess: Colors;
+            let randomIconGuess: string[];
+            if (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon) {
+                // Generate random color guess
+                randomColorGuess = generateRandomColorGuess(state);
+            }
+            if (pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon) {
+                // Generate random icon guess
+                randomIconGuess = generateRandomIconGuess(state);
+            }
             // Place random guess in the currely active game row
             set((state: gameState) => {
-                state.game.gameRows[state.game.activeRowIndex].rowColorsDataString = Colors.serialize(randomGuess);
+                state.game.gameRows[state.game.activeRowIndex].rowColorsDataString = Colors.serialize(randomColorGuess);
+                state.game.gameRows[state.game.activeRowIndex].rowIconNames = randomIconGuess;
             }, false, 'randomGuess')
         },
         guess: guess(set, get),

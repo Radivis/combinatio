@@ -27,7 +27,7 @@ const checkCycles = (cycles: number): boolean => {
  * @param {gameState} state - The current state of the game
  * @returns {Colors} - the new random guess as Colors instance
  */
-const generateRandomGuess = (state: gameState & gameActions, loops: number = LOOP_BOUND): Colors => {
+const generateRandomColorGuess = (state: gameState & gameActions, loops: number = LOOP_BOUND): Colors => {
 
     // Define allowed maxmium number of loop cycles to exit endless loops gracefully
     let cycles = CYCLE_BOUND;
@@ -334,7 +334,7 @@ const generateRandomGuess = (state: gameState & gameActions, loops: number = LOO
             if (color === undefined) areAllGuessColorsDefined = false;
         })
 
-        if (!areAllGuessColorsDefined) throw new LoopFailureError("Couldn't complete random guess");
+        if (!areAllGuessColorsDefined) throw new LoopFailureError("Couldn't complete random color guess");
 
         // Check is this guess has already been placed
         let isAlreadyPlaced = false;
@@ -346,10 +346,11 @@ const generateRandomGuess = (state: gameState & gameActions, loops: number = LOO
 
         // if already placed, get a new guess
         try {
-            if (isAlreadyPlaced === true) return generateRandomGuess(state);
+            if (isAlreadyPlaced === true) return generateRandomColorGuess(state);
         } catch (error: unknown) {
             if (error instanceof Error && error.message === "too much recursion") {
-                throw new Error("No possible remaining guess differs from any of the previous guesses!");
+                return generateRandomColorGuess(state);
+                // throw new Error("No possible remaining guess differs from any of the previous guesses!");
             }
             throw error;
         }
@@ -360,11 +361,11 @@ const generateRandomGuess = (state: gameState & gameActions, loops: number = LOO
 
             if (isDebugging) console.warn(`Unsuccesfull loop! Loops left: ${loops -1 }`);
 
-            return generateRandomGuess(state, loops - 1); 
+            return generateRandomColorGuess(state, loops - 1); 
         } else {
             if (error instanceof Error) {
                 setModal({
-                    messageHeader: 'Could not make random guess',
+                    messageHeader: 'Could not make random color guess',
                     messageBody: error.message,
                     isVisible: true,
                 })
@@ -376,4 +377,4 @@ const generateRandomGuess = (state: gameState & gameActions, loops: number = LOO
     return new Colors(guessColors as Color[]);
 }
 
-export default generateRandomGuess;
+export default generateRandomColorGuess;

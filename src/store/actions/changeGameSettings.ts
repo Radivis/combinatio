@@ -6,12 +6,13 @@ import { gameSettings } from "../../interfaces/interfaces";
 import generatePalette from "../functions/generatePalette";
 import { gameStates } from "../../constants";
 import generateSolutionColors from "../functions/generateSolutionColors";
-import generateRandomGuess from "../functions/generateRandomGuess";
+import generateRandomColorGuess from "../functions/generateRandomColorGuess";
 import { zustandGetter, zustandSetter } from "../../interfaces/types";
 import { gameState, gameActions } from "../../interfaces/types";
 import { pieceTypes } from "../../constants";
 import pickIconCollection from "../functions/pickIconCollection";
 import generateSolutionIcons from "../functions/generateSolutionIcons";
+import generateRandomIconGuess from "../functions/generateRandomIconGuess";
 
 const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSettings: gameSettings): void => {
     const oldState = get();
@@ -50,7 +51,7 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
 
             // (Re)generate possibleIconNames
             state.hints.possibleSlotIconNames = Array(numColumns)
-            .fill(iconCollectionNames)
+            .fill(iconCollectionNames);
         }
         state.game.gameRows = initializeGameRows(numRows, numColumns);
 
@@ -77,14 +78,15 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
 
         // Regenerate solution
         const solutionColors = generateSolutionColors(state);
+        state.game.solutionColorsDataString = Colors.serialize(solutionColors);
         if (pieceType === pieceTypes.colorIcon) {
             state.game.solutionIconNames = generateSolutionIcons(state);
         }
-        state.game.solutionColorsDataString = Colors.serialize(solutionColors);
 
         // Prefill rows
         for (let i = 1; i <= numPrefilledRows; i++) {
-            state.game.gameRows[i].rowColorsDataString = Colors.serialize(generateRandomGuess(state));
+            state.game.gameRows[i].rowColorsDataString = Colors.serialize(generateRandomColorGuess(state));
+            state.game.gameRows[i].rowIconNames = generateRandomIconGuess(state);
             setTimeout(() => get().guess(), 1);
         }
 

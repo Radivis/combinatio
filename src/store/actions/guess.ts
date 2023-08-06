@@ -196,6 +196,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             const colorIcon = ColorIcon.fuse(color, iconName);
             if (colorIcon.equals(solutionColorIcons[columnIndex])) {
                 _infoPinStatusCounts['numFullyCorrect']++;
+                _numFullyCorrect++;
                 columnIndexColorIconStatusArray[columnIndex] = aspectStatus.correct;
                 rowColorIconCounts[colorIcon.serialize()]++;
                 rowColorCounts[color.serialize()]++;
@@ -302,17 +303,18 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             }
         }
 
-        // DEBUG
-        console.log(_infoPinStatusCounts);
-        console.log('rowColorIconCounts', rowColorIconCounts);
-        console.log('rowColorCounts', rowColorCounts);
-        console.log('rowIconCounts', rowIconCounts);
-        console.log('solutionColorIconCounts', solutionColorIconCounts);
-        console.log('solutionColorCounts', solutionColorCounts);
-        console.log('solutionIconCounts', solutionIconCounts);
-        console.log('columnIndexColorIconStatusArray', columnIndexColorIconStatusArray);
-        console.log('columnIndexColorStatusArray', columnIndexColorStatusArray);
-        console.log('columnIndexIconStatusArray', columnIndexIconStatusArray);
+        // <DEBUG>
+        // console.log(_infoPinStatusCounts);
+        // console.log('rowColorIconCounts', rowColorIconCounts);
+        // console.log('rowColorCounts', rowColorCounts);
+        // console.log('rowIconCounts', rowIconCounts);
+        // console.log('solutionColorIconCounts', solutionColorIconCounts);
+        // console.log('solutionColorCounts', solutionColorCounts);
+        // console.log('solutionIconCounts', solutionIconCounts);
+        // console.log('columnIndexColorIconStatusArray', columnIndexColorIconStatusArray);
+        // console.log('columnIndexColorStatusArray', columnIndexColorStatusArray);
+        // console.log('columnIndexIconStatusArray', columnIndexIconStatusArray);
+        // </DEBUG>
     } else if (pieceType === pieceTypes.color) {
         // Compute number of fully correct pins
         currentRowColors.forEach((color, index) => {

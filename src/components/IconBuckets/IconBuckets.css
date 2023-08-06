@@ -4,6 +4,10 @@
     flex-wrap: nowrap;
 }
 
+.icon-container {
+    width: 40px;
+}
+
 .icon-occurences-title {
     margin-top: 0px;
     margin-bottom: 5px;

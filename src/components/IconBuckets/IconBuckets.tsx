@@ -48,12 +48,14 @@ const IconBuckets = (props: colorBucketsProps) => {
                         key={`${iconName}-drag`}
                         isActive={disabledIcons !== undefined && !disabledIcons.includes(iconName)}
                         dragPayloadObject={{iconName}}>
-                        <Icon
-                            key={`${iconName}-icon`}
-                            iconName={iconName}
-                            isDisabledToggleActive={true}
-                            isDisabled={disabledIcons !== undefined && disabledIcons.includes(iconName)}
-                        />
+                        <div className="icon-container">
+                            <Icon
+                                key={`${iconName}-icon`}
+                                iconName={iconName}
+                                isDisabledToggleActive={true}
+                                isDisabled={disabledIcons !== undefined && disabledIcons.includes(iconName)}
+                            />
+                        </div>
                     </Drag>
                     {areIconAmountHintsActive ? <MinMaxControl
                         key={iconName + '-min-max-control'}

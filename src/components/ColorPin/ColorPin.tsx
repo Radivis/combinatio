@@ -48,7 +48,11 @@ const ColorPin = (props: ColorPinProps) => {
             if (isDisabledToggleActive) {
                 toggleDisableColor(color);
             } else if (isOpacityToogleActive && opacityToogleCallback !== undefined) {
-                opacityToogleCallback(color);
+                if (iconName !== undefined) {
+                    opacityToogleCallback(iconName);
+                } else {
+                    opacityToogleCallback(color);
+                }
             }
         }
     }

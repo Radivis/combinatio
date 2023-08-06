@@ -18,24 +18,26 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
         colorsMinMax,
         disabledIcons,
         iconCollectionNames,
-        possibleCurrentSlotIconNames,
         possibleSlotIconNames,
         // setColorMinMax,
         setPossibleIcons,
     } = useGameStore((state) => {
         const { colorsMinMax, disabledIcons, possibleSlotIconNames } = state.hints;
-        const possibleCurrentSlotIconNames = state.hints.possibleSlotIconNames[columnIndex];
         const { iconCollectionNames } = state.game;
         const { setPossibleIcons, setColorMinMax } = state;
         return {
             colorsMinMax,
             disabledIcons,
             iconCollectionNames,
-            possibleCurrentSlotIconNames,
             possibleSlotIconNames,
             // setColorMinMax,
             setPossibleIcons,
         };
+    });
+
+    let { possibleCurrentSlotIconNames } = useGameStore((state) => {
+        const possibleCurrentSlotIconNames = state.hints.possibleSlotIconNames[columnIndex];
+        return { possibleCurrentSlotIconNames };
     });
 
     // compute number of slots in which this icon is theoretically possible,
@@ -53,12 +55,18 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
             // compute number of slots in which this  is possible
             const numColorPossible = computeNumIconPossible(iconName);
     
-            // get index of color in colorsPalette
-            const colorIndex = iconCollectionNames.indexOf(iconName);
+            // get index of icon in iconCollectionNames
+            const iconIndex = iconCollectionNames.indexOf(iconName);
     
             if (possibleCurrentSlotIconNames.includes(iconName)) {
                 // Icon was possible, must now be removed from possible colors
-                possibleCurrentSlotIconNames.splice(possibleCurrentSlotIconNames.indexOf(iconName), 1);
+                possibleCurrentSlotIconNames=possibleCurrentSlotIconNames.filter(_iconName => {
+                    return _iconName !== iconName;
+                });
+
+                // Splice doesn't work here, because the entries of the array are read-only!
+                // possibleCurrentSlotIconNames.splice(possibleCurrentSlotIconNames.indexOf(iconName), 1);
+
                 // Decrement max of this color, if max in sync
                 // TODO: Adapt this code, once iconsMinMax is implemented
                 // if (colorsMinMax[colorIndex][1] === numColorPossible) {
@@ -66,7 +74,10 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
                 // }
             } else {
                 // Color was impossible, must now be added to possible colors
-                possibleCurrentSlotIconNames.push(iconName);
+                // Make a copy of the possibleCurrentSlotIconNames, because it has read-only length!
+                const newPossibleCurrentSlotIconNames = [...possibleCurrentSlotIconNames];
+                newPossibleCurrentSlotIconNames.push(iconName);
+                possibleCurrentSlotIconNames = newPossibleCurrentSlotIconNames;
                 // Don't increment max of this color, because max might have been reduced on purpose!
                 // const newMax = Math.min(numColorPossible + 1, maxIdenticalColorsInSolution);
                 // setColorMinMax({colorIndex, max: newMax});

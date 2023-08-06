@@ -3,7 +3,7 @@ import { gameState } from "../../interfaces/types";
 
 const setPossibleIcons = (set: zustandSetter, get: zustandGetter) => (iconNames: string[], columnIndex: number) => {
     set((state: gameState) => {
-        const { iconCollectionNames }= state.game;
+        const { iconCollectionNames } = state.game;
         // const { colorsMinMax } = state.hints;
         const { numIcons, maxIdenticalColorsInSolution } = state.gameSettings;
 

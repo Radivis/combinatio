@@ -101,16 +101,16 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         For each icon:
             Count solutionIcon occurrences
         The counts at each step are stored in an object in which
-        the key is serialization of the aspect and the value its count
+        the key is the serialization of the aspect and the value its count
 
         Make an array of columnIndices to check
-        Phase A: Check for completely correct slots
+        Phase 1: Check for completely correct slots
         For each slot:
             Check colorIcon for correctness, and if true,
             Increment occurrence of colorIcon, color, and icon
             remove the column index from the columnIndices to check
 
-        Phase B: Check the slots that remain
+        Phase 2: Check the slots that remain
         For each slot:
             Increment occurrence of colorIcon, color, and icon
             If the counter is higher than the number of solutionOccurrences, the respective

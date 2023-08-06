@@ -12,6 +12,8 @@ import {
 } from '../constants';
 import Colors from '../util/Colors';
 import Color from '../util/Color';
+import ColorIcons from '../util/ColorIcons';
+import ColorIcon from '../util/ColorIcon';
 import { gameState, gameStore } from '../interfaces/types';
 // HELPER FUNCTIONS
 import generateRandomGuess from './functions/generateRandomGuess';
@@ -27,7 +29,6 @@ import resetHints from './actions/resetHints';
 import initialGameState from './initialGameState';
 import generateDefaultRowColorsDataString from './functions/generateDefaultRowColorsDataString';
 import toggleDisableIcon from './actions/toggleDisableIcon';
-import ColorIcons from '../util/ColorIcons';
 import setPossibleIcons from './actions/setPossibleIcons';
 
 
@@ -140,9 +141,9 @@ const useGameStore = create<gameStore>()(
         },
         addColorTupleSlot: (rowIndex: number) => {
             set((state: gameState) => {
-                const colorTuple = Colors.deserialize(state.hints.combinationNotes[rowIndex][0]);
-                colorTuple.push(new Color(holeHue, holeSaturation, holeLightness));
-                state.hints.combinationNotes[rowIndex][0] = Colors.serialize(colorTuple);
+                const colorIconTuple = ColorIcons.deserialize(state.hints.combinationNotes[rowIndex][0]);
+                colorIconTuple.push(new ColorIcon(holeHue, holeSaturation, holeLightness, ''));
+                state.hints.combinationNotes[rowIndex][0] = ColorIcons.serialize(colorIconTuple);
             }, false, 'addColorTuple')
         },
         deleteColorTupleRow: (rowIndex: number) => {

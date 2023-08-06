@@ -37,9 +37,9 @@ const IconBuckets = (props: colorBucketsProps) => {
     })
 
     return <div className="icon-buckets">
-        {/* {areColorAmountHintsActive && <h3 className="icon-occurences-title">
+        {areIconAmountHintsActive && <h3 className="icon-occurences-title">
             Icon Occurences
-        </h3>} */}
+        </h3>}
         {iconCollectionNames !== undefined && iconCollectionNames
             .map((iconName: string, iconIndex: number) => {
             return (

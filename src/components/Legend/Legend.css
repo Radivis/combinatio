@@ -1,0 +1,16 @@
+.legend-list{
+    display: flex;
+    flex-direction: column;
+}
+
+.legend-list-item {
+    margin: 5px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.legend-intro {
+    text-align: left;
+}

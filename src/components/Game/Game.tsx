@@ -14,6 +14,7 @@ import useGameStore from "../../store/gameStore";
 import './Game.css';
 import CombinationNotes from "../CombinationNotes/CombinationNotes";
 import IconBuckets from "../IconBuckets/IconBuckets";
+import Legend from "../Legend/Legend";
 
 interface gameProps {
 }
@@ -93,6 +94,7 @@ const Game = (props: gameProps) => {
             Start new game
         </button>
         <div className="game">
+            <Legend />
             <div className="board">
                 <SolutionRow
                     numColumns={numColumns}

@@ -54,7 +54,9 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
         // Prefill rows
         for (let i = 1; i <= state.gameSettings.numPrefilledRows; i++) {
             state.game.gameRows[i].rowColorsDataString = Colors.serialize(generateRandomColorGuess(state));
-            state.game.gameRows[i].rowIconNames = generateRandomIconGuess(state);
+            if (pieceType === pieceTypes.colorIcon) {
+                state.game.gameRows[i].rowIconNames = generateRandomIconGuess(state);
+            }
             setTimeout(() => get().guess(), 1);
         }
     }, false, 'reset')

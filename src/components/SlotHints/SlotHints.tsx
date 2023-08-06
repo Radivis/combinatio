@@ -1,4 +1,6 @@
+import { pieceTypes } from '../../constants';
 import { colorsDataString } from '../../interfaces/types';
+import useGameStore from '../../store/gameStore';
 import { range } from '../../util/range';
 import SlotHintColorColumn from './SlotHintColorColumn';
 import SlotHintIconColumn from './SlotHintIconColumn';
@@ -12,6 +14,11 @@ interface slotHintsProps {
 }
 
 const SlotHints = (props: slotHintsProps) => {
+    const { pieceType } = useGameStore((store) => {
+        const { pieceType } = store.gameSettings;
+        return { pieceType };
+    })
+
     const { numColumns, baseColorsDataString, iconCollectionNames } = props;
 
     const columnArray = range(numColumns);
@@ -30,7 +37,7 @@ const SlotHints = (props: slotHintsProps) => {
                     />
                 })}
             </div>
-            {iconCollectionNames[0] !== '' && (
+            {(pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) && (
                 <>                
                     <h3 className='slot-hints-title'>
                         Possible Icons per Slot

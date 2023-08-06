@@ -111,9 +111,9 @@ const useGameStore = create<gameStore>()(
         reset: reset(set, get),
         randomGuess: () => {
             const state = get();
-            const { pieceType } = state.gameSettings;
+            const { numColumns, pieceType } = state.gameSettings;
             let randomColorGuess: Colors;
-            let randomIconGuess: string[];
+            let randomIconGuess: string[] = Array(numColumns).fill('');
             if (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon) {
                 // Generate random color guess
                 randomColorGuess = generateRandomColorGuess(state);

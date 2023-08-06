@@ -345,15 +345,15 @@ const generateRandomColorGuess = (state: gameState & gameActions, loops: number 
         }
 
         // if already placed, get a new guess
-        try {
-            if (isAlreadyPlaced === true) return generateRandomColorGuess(state);
-        } catch (error: unknown) {
-            if (error instanceof Error && error.message === "too much recursion") {
-                return generateRandomColorGuess(state);
-                // throw new Error("No possible remaining guess differs from any of the previous guesses!");
-            }
-            throw error;
-        }
+        // try {
+        //     if (isAlreadyPlaced === true) return generateRandomColorGuess(state);
+        // } catch (error: unknown) {
+        //     if (error instanceof Error && error.message === "too much recursion") {
+        //         return generateRandomColorGuess(state);
+        //         // throw new Error("No possible remaining guess differs from any of the previous guesses!");
+        //     }
+        //     throw error;
+        // }
 
     } catch (error: unknown) {
         if (error instanceof CycleLimitError || error instanceof LoopFailureError) {

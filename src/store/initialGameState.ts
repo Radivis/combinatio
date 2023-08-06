@@ -10,6 +10,7 @@ const initialGameState = {
         areIconAmountHintsActive: true,
 		areSlotHintsActive: true,
         areCombinationNotesActive: true,
+        isLegendDisplayed: true,
         isRandomGuessButtonDisplayed: true,
     },
     gameSettings: {

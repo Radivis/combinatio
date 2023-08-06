@@ -28,6 +28,9 @@ const Settings = (props: settingsProps) => {
     const [areCombinationNotesActive, setAreCombinationNotesActive] = useGameStore((state) => {
         return [state.displaySettings.areCombinationNotesActive, state.setAreCombinationNotesActive];
     })
+    const [isLegendDisplayed, setIsLegendDisplayed] = useGameStore((state) => {
+        return [state.displaySettings.isLegendDisplayed, state.setIsLegendDisplayed];
+    })
     const [isRandomGuessButtonDisplayed, setIsRandomGuessButtonDisplayed] = useGameStore((state) => {
         return [state.displaySettings.isRandomGuessButtonDisplayed, state.setIsRandomGuessButtonDisplayed];
     })
@@ -119,6 +122,10 @@ const Settings = (props: settingsProps) => {
 
     const onChangeAreCombinationNotesActive = (ev: any) => {
         setAreCombinationNotesActive(ev.target.value === 'true' ? true : false);
+    }
+
+    const onChangeIsLegendDisplayed = (ev: any) => {
+        setIsLegendDisplayed(ev.target.value === 'true' ? true : false);
     }
 
     const onChangeIsRandomGuessButtonDisplayed = (ev: any) => {
@@ -283,6 +290,12 @@ const Settings = (props: settingsProps) => {
                     settingName={"areCombinationNotesActive"}
                     settingLabel="Show combination notes"
                     onChangeHandler={onChangeAreCombinationNotesActive}
+                />
+                <BooleanSetting
+                    setting={isLegendDisplayed}
+                    settingName={"isLegendDisplayed"}
+                    settingLabel="Show legend"
+                    onChangeHandler={onChangeIsLegendDisplayed}
                 />
                 <BooleanSetting
                     setting={isRandomGuessButtonDisplayed}

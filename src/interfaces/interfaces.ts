@@ -41,6 +41,7 @@ export interface displaySettings {
     areIconAmountHintsActive: boolean,
     areSlotHintsActive: boolean,
     areCombinationNotesActive: boolean,
+    isLegendDisplayed: boolean,
     isRandomGuessButtonDisplayed: boolean,
 }
 

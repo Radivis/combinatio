@@ -56,11 +56,26 @@ const Game = (props: gameProps) => {
         return holeColor;
     })
 
-    const { activeRowIndex, solutionColorsDataString, gameState, pieceType, reset } = useGameStore((state) => {
+    const {
+        activeRowIndex,
+        isLegendDisplayed,
+        solutionColorsDataString,
+        gameState,
+        pieceType,
+        reset
+    } = useGameStore((state) => {
         const { pieceType } = state.gameSettings;
+        const { isLegendDisplayed } = state.displaySettings;
         const { activeRowIndex, solutionColorsDataString, gameState } = state.game;
         const { reset } = state;
-        return { activeRowIndex, solutionColorsDataString, gameState, pieceType, reset };
+        return {
+            activeRowIndex,
+            isLegendDisplayed,
+            solutionColorsDataString,
+            gameState,
+            pieceType,
+            reset
+        };
     })
 
     const solutionColors = Colors.deserialize(solutionColorsDataString);
@@ -94,7 +109,7 @@ const Game = (props: gameProps) => {
             Start new game
         </button>
         <div className="game">
-            <Legend />
+            {isLegendDisplayed && <Legend />}
             <div className="board">
                 <SolutionRow
                     numColumns={numColumns}

@@ -67,6 +67,11 @@ const useGameStore = create<gameStore>()(
                 state.displaySettings.areCombinationNotesActive = value;
             }, false, 'setAreCombinationNotesActive')
         },
+        setIsLegendDisplayed: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.isLegendDisplayed = value;
+            }, false, 'setIsLegendDisplayed')
+        },
         setIsRandomGuessButtonDisplayed: (value: boolean) => {
             set((state: gameState) => {
                 state.displaySettings.isRandomGuessButtonDisplayed = value;

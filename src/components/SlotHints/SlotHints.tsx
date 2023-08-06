@@ -19,7 +19,7 @@ const SlotHints = (props: slotHintsProps) => {
         return { pieceType };
     })
 
-    const { numColumns, baseColorsDataString, iconCollectionNames } = props;
+    const { numColumns, baseColorsDataString } = props;
 
     const columnArray = range(numColumns);
 

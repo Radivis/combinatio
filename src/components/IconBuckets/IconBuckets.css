@@ -1,3 +1,9 @@
+.icon-buckets {
+    margin: 5px;
+    border: 1px dashed black;
+    padding: 5px;
+}
+
 .icon-bucket {
     display: flex;
     flex-direction: row;

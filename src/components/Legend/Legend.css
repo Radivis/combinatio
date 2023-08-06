@@ -1,3 +1,8 @@
+.legend {
+    border: 1px solid black;
+    padding: 5px;
+}
+
 .legend-list{
     display: flex;
     flex-direction: column;

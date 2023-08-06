@@ -38,6 +38,7 @@ export interface hints {
 
 export interface displaySettings {
     areColorAmountHintsActive: boolean,
+    areIconAmountHintsActive: boolean,
     areSlotHintsActive: boolean,
     areCombinationNotesActive: boolean,
     isRandomGuessButtonDisplayed: boolean,

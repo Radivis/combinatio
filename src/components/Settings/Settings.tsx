@@ -18,9 +18,13 @@ const Settings = (props: settingsProps) => {
     const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useGameStore((state) => {
         return [state.displaySettings.areColorAmountHintsActive, state.setAreColorAmountHintsActive];
     })
+    const [areIconAmountHintsActive, setAreIconAmountHintsActive] = useGameStore((state) => {
+        return [state.displaySettings.areIconAmountHintsActive, state.setAreIconAmountHintsActive];
+    });
     const [areSlotHintsActive, setAreSlotHintsActive] = useGameStore((state) => {
         return [state.displaySettings.areSlotHintsActive, state.setAreSlotHintsActive];
     })
+    
     const [areCombinationNotesActive, setAreCombinationNotesActive] = useGameStore((state) => {
         return [state.displaySettings.areCombinationNotesActive, state.setAreCombinationNotesActive];
     })
@@ -103,6 +107,10 @@ const Settings = (props: settingsProps) => {
 
     const onChangeAreColorAmountHintsActive = (ev: any) => {
         setAreColorAmountHintsActive(ev.target.value === 'true' ? true : false);
+    }
+
+    const onChangeAreIconAmountHintsActive = (ev: any) => {
+        setAreIconAmountHintsActive(ev.target.value === 'true' ? true : false);
     }
 
     const onChangeAreSlotHintsActive = (ev: any) => {
@@ -257,6 +265,12 @@ const Settings = (props: settingsProps) => {
                     settingName={"areColorAmountHintsActive"}
                     settingLabel="Use color amount hints"
                     onChangeHandler={onChangeAreColorAmountHintsActive}
+                />
+                <BooleanSetting
+                    setting={areIconAmountHintsActive}
+                    settingName={"areIconAmountHintsActive"}
+                    settingLabel="Use icon amount hints"
+                    onChangeHandler={onChangeAreIconAmountHintsActive}
                 />
                 <BooleanSetting
                     setting={areSlotHintsActive}

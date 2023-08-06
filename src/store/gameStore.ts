@@ -28,7 +28,6 @@ import setIconMinMax from './actions/setIconMinMax';
 import resetHints from './actions/resetHints';
 
 import initialGameState from './initialGameState';
-import generateDefaultRowColorsDataString from './functions/generateDefaultRowColorsDataString';
 import toggleDisableIcon from './actions/toggleDisableIcon';
 import setPossibleIcons from './actions/setPossibleIcons';
 
@@ -51,6 +50,11 @@ const useGameStore = create<gameStore>()(
         setAreColorAmountHintsActive: (value: boolean) => {
             set((state: gameState) => {
                 state.displaySettings.areColorAmountHintsActive = value;
+            }, false, 'setAreColorAmountHintsActive')
+        },
+        setAreIconAmountHintsActive: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.areIconAmountHintsActive = value;
             }, false, 'setAreColorAmountHintsActive')
         },
         setAreSlotHintsActive: (value: boolean) => {

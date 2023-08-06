@@ -11,7 +11,7 @@ interface colorBucketsProps {
 const IconBuckets = (props: colorBucketsProps) => {
 
     const {
-        areColorAmountHintsActive,
+        areIconAmountHintsActive,
         disabledIcons,
         iconCollectionNames,
         iconsMinMax,
@@ -21,12 +21,12 @@ const IconBuckets = (props: colorBucketsProps) => {
     } = useGameStore((state) => {
         const { setIconMinMax } = state;
         const { maxIdenticalIconsInSolution, numColumns } = state.gameSettings;
-        const { areColorAmountHintsActive } = state.displaySettings;
+        const { areIconAmountHintsActive } = state.displaySettings;
         const { iconCollectionNames } = state.game;
         // const { setColorMinMax } = state;
         const { disabledIcons, iconsMinMax } = state.hints;
         return {
-            areColorAmountHintsActive,
+            areIconAmountHintsActive,
             disabledIcons,
             iconCollectionNames,
             iconsMinMax,
@@ -55,7 +55,7 @@ const IconBuckets = (props: colorBucketsProps) => {
                             isDisabled={disabledIcons !== undefined && disabledIcons.includes(iconName)}
                         />
                     </Drag>
-                    {areColorAmountHintsActive ? <MinMaxControl
+                    {areIconAmountHintsActive ? <MinMaxControl
                         key={iconName + '-min-max-control'}
                         absoluteMin={0}
                         min={iconsMinMax[iconIndex][0]}

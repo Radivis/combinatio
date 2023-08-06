@@ -3,11 +3,11 @@ import Colors from "../util/Colors";
 import { generateRegularPalette } from "./functions/generatePalette";
 import generateDefaultRowColorsDataString from "./functions/generateDefaultRowColorsDataString";
 import initializeGameRows from "./functions/initializeGameRows";
-import generateSolutionIcons from "./functions/generateSolutionIcons";
 
 const initialGameState = {
     displaySettings: {
 		areColorAmountHintsActive: true,
+        areIconAmountHintsActive: true,
 		areSlotHintsActive: true,
         areCombinationNotesActive: true,
         isRandomGuessButtonDisplayed: true,

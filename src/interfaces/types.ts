@@ -51,6 +51,7 @@ export type gameState = {
 export type gameActions = {
     changeGameSettings: (newSettings: gameSettings) => void,
     setAreColorAmountHintsActive: (value: boolean) => void,
+    setAreIconAmountHintsActive: (value: boolean) => void,
     setAreSlotHintsActive: (value: boolean) => void,
     setAreCombinationNotesActive: (value: boolean) => void,
     setIsRandomGuessButtonDisplayed: (value: boolean) => void,

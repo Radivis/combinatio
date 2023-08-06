@@ -45,7 +45,6 @@ const setIconMinMax = (set: zustandSetter, get: zustandGetter) =>
             }
             state.hints.iconsMinMax[iconIndex][1] = max;
             // Disable color, if max is set to 0
-            // TODO: Adapt this code to icons
             if (max === 0) {
                 let disabledIcons = state.hints.disabledIcons;
                 const iconName = iconCollectionNames[iconIndex];

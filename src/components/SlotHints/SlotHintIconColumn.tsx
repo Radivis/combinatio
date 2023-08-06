@@ -1,5 +1,3 @@
-import { colorsDataString } from '../../interfaces/types';
-import Colors from '../../util/Colors';
 import Color from '../../util/Color';
 import ColorPin from '../ColorPin/ColorPin';
 
@@ -15,22 +13,22 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
     const { columnIndex } = props;
 
     const {
-        colorsMinMax,
+        iconsMinMax,
         disabledIcons,
         iconCollectionNames,
         possibleSlotIconNames,
-        // setColorMinMax,
+        setIconMinMax,
         setPossibleIcons,
     } = useGameStore((state) => {
-        const { colorsMinMax, disabledIcons, possibleSlotIconNames } = state.hints;
+        const { iconsMinMax, disabledIcons, possibleSlotIconNames } = state.hints;
         const { iconCollectionNames } = state.game;
-        const { setPossibleIcons, setColorMinMax } = state;
+        const { setPossibleIcons, setIconMinMax } = state;
         return {
-            colorsMinMax,
+            iconsMinMax,
             disabledIcons,
             iconCollectionNames,
             possibleSlotIconNames,
-            // setColorMinMax,
+            setIconMinMax,
             setPossibleIcons,
         };
     });
@@ -53,7 +51,7 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
     const opacityToogleCallback = (iconName: Color | string) => {
         if (typeof iconName === 'string') {
             // compute number of slots in which this  is possible
-            const numColorPossible = computeNumIconPossible(iconName);
+            const numIconPossible = computeNumIconPossible(iconName);
     
             // get index of icon in iconCollectionNames
             const iconIndex = iconCollectionNames.indexOf(iconName);
@@ -68,19 +66,19 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
                 // possibleCurrentSlotIconNames.splice(possibleCurrentSlotIconNames.indexOf(iconName), 1);
 
                 // Decrement max of this color, if max in sync
-                // TODO: Adapt this code, once iconsMinMax is implemented
-                // if (colorsMinMax[colorIndex][1] === numColorPossible) {
-                //     setColorMinMax({colorIndex, max: numColorPossible - 1});
-                // }
+                if (iconsMinMax[iconIndex][1] === numIconPossible) {
+                    setIconMinMax({iconIndex, max: numIconPossible - 1});
+                }
             } else {
                 // Color was impossible, must now be added to possible colors
                 // Make a copy of the possibleCurrentSlotIconNames, because it has read-only length!
                 const newPossibleCurrentSlotIconNames = [...possibleCurrentSlotIconNames];
                 newPossibleCurrentSlotIconNames.push(iconName);
                 possibleCurrentSlotIconNames = newPossibleCurrentSlotIconNames;
-                // Don't increment max of this color, because max might have been reduced on purpose!
-                // const newMax = Math.min(numColorPossible + 1, maxIdenticalColorsInSolution);
-                // setColorMinMax({colorIndex, max: newMax});
+
+                // Don't increment max of this icon, because max might have been reduced on purpose!
+                // const newMax = Math.min(numIconPossible + 1, maxIdenticalIconsInSolution);
+                // setIconMinMax({iconIndex, max: newMax});
             }
             setPossibleIcons(possibleCurrentSlotIconNames, columnIndex);
         }

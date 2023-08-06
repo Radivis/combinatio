@@ -11,22 +11,28 @@ interface colorBucketsProps {
 const IconBuckets = (props: colorBucketsProps) => {
 
     const {
-        // areColorAmountHintsActive,
+        areColorAmountHintsActive,
         disabledIcons,
         iconCollectionNames,
+        iconsMinMax,
         maxIdenticalIconsInSolution,
         numColumns,
+        setIconMinMax,
     } = useGameStore((state) => {
+        const { setIconMinMax } = state;
         const { maxIdenticalIconsInSolution, numColumns } = state.gameSettings;
-        const { iconCollectionNames }= state.game;
+        const { areColorAmountHintsActive } = state.displaySettings;
+        const { iconCollectionNames } = state.game;
         // const { setColorMinMax } = state;
-        const { disabledIcons } = state.hints;
+        const { disabledIcons, iconsMinMax } = state.hints;
         return {
-            // areColorAmountHintsActive,
+            areColorAmountHintsActive,
             disabledIcons,
             iconCollectionNames,
+            iconsMinMax,
             maxIdenticalIconsInSolution,
             numColumns,
+            setIconMinMax,
         };
     })
 
@@ -49,16 +55,16 @@ const IconBuckets = (props: colorBucketsProps) => {
                             isDisabled={disabledIcons !== undefined && disabledIcons.includes(iconName)}
                         />
                     </Drag>
-                    {/* {areColorAmountHintsActive ? <MinMaxControl
-                        key={iconName.hue + 720}
+                    {areColorAmountHintsActive ? <MinMaxControl
+                        key={iconName + '-min-max-control'}
                         absoluteMin={0}
-                        min={colorsMinMax[colorIndex][0]}
-                        max={colorsMinMax[colorIndex][1]}
-                        setMin={(min:number) => setColorMinMax({ colorIndex, min })}
-                        setMax={(max:number) => setColorMinMax({ colorIndex, max })}
-                        absoluteMax={maxIdenticalColorsInSolution}
+                        min={iconsMinMax[iconIndex][0]}
+                        max={iconsMinMax[iconIndex][1]}
+                        setMin={(min:number) => setIconMinMax({ iconIndex, min })}
+                        setMax={(max:number) => setIconMinMax({ iconIndex, max })}
+                        absoluteMax={maxIdenticalIconsInSolution}
                         /> : null
-                    } */}
+                    }
                 </div>
             )
         })}

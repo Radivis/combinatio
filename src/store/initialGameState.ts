@@ -35,6 +35,7 @@ const initialGameState = {
     },
     hints: {
         colorsMinMax: Array(defaultNumColors).fill([...[0, defaultNumColumns]]),
+        iconsMinMax: Array(defaultNumIcons).fill([...[0, defaultNumColumns]]),
         possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
         possibleSlotIconNames: [],

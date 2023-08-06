@@ -14,8 +14,10 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
         const {
             numRows,
             numColors,
+            numIcons,
             numColumns,
             maxIdenticalColorsInSolution,
+            maxIdenticalIconsInSolution,
             pieceType
         } = state.gameSettings;
 
@@ -30,6 +32,7 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
         // reset hints
         const blankHints = {
             colorsMinMax: Array(numColors).fill([...[0, maxIdenticalColorsInSolution]]),
+            iconsMinMax: Array(numIcons).fill([...[0, maxIdenticalIconsInSolution]]),
             possibleSlotColorsDataStrings: Array(numColumns)
             .fill(state.game.paletteColorsDataString),
             possibleSlotIconNames: [],

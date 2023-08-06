@@ -4,10 +4,17 @@ import { emptyCombinationNote } from "../../constants";
 
 const resetHints = (set: zustandSetter, get: zustandGetter) => () => {
     const settings = get().gameSettings;
-    const { numColors, numColumns, maxIdenticalColorsInSolution } = settings;
+    const {
+        numColors,
+        numIcons,
+        numColumns,
+        maxIdenticalColorsInSolution,
+        maxIdenticalIconsInSolution,
+    } = settings;
     set((state: gameState) => {
         const blankHints = {
             colorsMinMax: Array(numColors).fill([...[0, maxIdenticalColorsInSolution]]),
+            iconsMinMax: Array(numIcons).fill([...[0, maxIdenticalIconsInSolution]]),
             possibleSlotColorsDataStrings: Array(numColumns)
             .fill(state.game.paletteColorsDataString),
             possibleSlotIconNames: [],

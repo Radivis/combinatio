@@ -24,6 +24,7 @@ import guess from './actions/guess';
 import toggleDisableColor from './actions/toggleDisableColor';
 import setPossibleColors from './actions/setPossibleColors';
 import setColorMinMax from './actions/setColorMinMax';
+import setIconMinMax from './actions/setIconMinMax';
 import resetHints from './actions/resetHints';
 
 import initialGameState from './initialGameState';
@@ -113,6 +114,7 @@ const useGameStore = create<gameStore>()(
         setPossibleIcons: setPossibleIcons(set, get),
         resetHints: resetHints(set, get),
         setColorMinMax: setColorMinMax(set, get),
+        setIconMinMax: setIconMinMax(set, get),
         placeTupleColor: ({color, rowIndex, columnIndex}: {color: Color, rowIndex: number, columnIndex: number}) => {
             const { combinationNotes } = get().hints;
             const colorTuple = (ColorIcons.deserialize(combinationNotes[rowIndex][0])).colors;

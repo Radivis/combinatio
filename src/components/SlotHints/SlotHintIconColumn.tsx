@@ -4,6 +4,7 @@ import ColorPin from '../ColorPin/ColorPin';
 import './SlotHintIconColumn.css';
 import useGameStore from '../../store/gameStore';
 import { holeColor } from '../../constants';
+import Icon from '../Icon/Icon';
 
 interface slotHintColumnProps {
     columnIndex: number,
@@ -92,9 +93,8 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
         <div className='slot-hint-column'>
             {iconCollectionNames.map((iconName: string) => {
                 return (
-                    <ColorPin
+                    <Icon
                         key={iconName}
-                        color={holeColor}
                         iconName={iconName}
                         isDisabled={disabledIcons.includes(iconName)}
                         isOpaque={!possibleCurrentSlotIconNames.includes(iconName)}

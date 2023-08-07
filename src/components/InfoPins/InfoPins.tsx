@@ -95,7 +95,7 @@ const InfoPins = (props: infoPinsProps) => {
         }
     }
 
-    if (pieceType === pieceTypes.color) {
+    if (pieceType === pieceTypes.color || pieceType === pieceTypes.icon) {
         const numWhite = numCorrectColor - numFullyCorrect;
     
         pinClasses.forEach((_pinClass: string, columnIndex: number) => {

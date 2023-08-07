@@ -30,7 +30,9 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     // ### PART 0: Just-in-time generation of solution ###
 
     // Generate solution colors on the fly, if they haven't been set, yet
-    if (solutionColorsDataString === generateDefaultRowColorsDataString(numColumns)) {
+    if ((pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.color) &&
+        solutionColorsDataString === generateDefaultRowColorsDataString(numColumns)
+    ) {
         solutionColors = generateSolutionColors(state);
         solutionColorsDataString = Colors.serialize(solutionColors);
     }
@@ -342,6 +344,39 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
     
         // Add upp the number of correctly guess colors
         _numCorrectAspect = Object.values(correctHueCounts).reduce((acc, next) => acc+next, 0);
+    } else if (pieceType === pieceTypes.icon) {
+        // Compute number of fully correct pins
+        currentRowIconNames.forEach((iconName, iconIndex) => {
+            if (iconName === solutionIconNames[iconIndex]) _numFullyCorrect++;
+        })
+        
+        // Compute number of correct icons
+        // For each iconName collect the number that it appears in the currentRowIconNames Array
+        const rowIconNameCounts = Object.fromEntries(iconCollectionNames
+            .map(iconName => [iconName,0]));
+            currentRowIconNames.forEach(iconName => {
+            rowIconNameCounts[iconName]++;
+        })
+    
+        // For each iconName collect the number that it appears in the solutionIconNames Array
+        const solutionIconNameCounts = Object.fromEntries(iconCollectionNames
+            .map(iconName => [iconName,0]));
+        solutionIconNames.forEach(solutionIconName => {
+            solutionIconNameCounts[solutionIconName]++;
+        })
+    
+        // Always take the minimum of both numbers
+        const correctIconNameCounts = Object.fromEntries(iconCollectionNames
+            .map(iconName => [iconName,0]));
+            iconCollectionNames.forEach(iconName => {
+            correctIconNameCounts[iconName] = Math.min(
+                rowIconNameCounts[iconName],
+                solutionIconNameCounts[iconName]
+            );
+        })
+    
+        // Add upp the number of correctly guess icons
+        _numCorrectAspect = Object.values(correctIconNameCounts).reduce((acc, next) => acc+next, 0);
     }
 
     // ### PART 2: Check Game State ###

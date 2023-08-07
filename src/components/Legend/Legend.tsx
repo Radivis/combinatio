@@ -104,13 +104,36 @@ const Legend = () => {
     } else if (pieceType === pieceTypes.icon) {
         return (
             <div className="legend">
-                Legend for icon
+                <h3>Legend</h3>
+                <p className="legend-intro">
+                    "Appearance" respects the multiplicity of a piece.<br/>
+                    For example, if you place an icon twice, <br/>
+                    but the solution only contains one instance of that icon, <br/>
+                    only the first guess will be indicated as "appears"!
+                </p>
+                <div className="legend-list">
+                    <div className="legend-list-item">
+                        <div className="info-pin black" />
+                        Icon is correct
+                    </div>
+                    <div className="legend-list-item">
+                        <div className="info-pin white" />
+                        Icon appears 
+                    </div>
+                    <div className="legend-list-item">
+                        <div className="info-pin hole" />
+                        Icon doesn't appear
+                    </div>
+                </div>
             </div>
         );
     } else {
         return (
             <div className="legend">
-                Legend for undefined pieceType
+                <h3>Legend</h3>
+                <p className="legend-intro">
+                    If you see this your game mode is invalid!
+                </p>
             </div>
         );
     }

@@ -46,7 +46,11 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
         state.hints.colorsMinMax = blankHints.colorsMinMax;
 
         // generateSolution;
-        state.game.solutionColorsDataString = Colors.serialize(generateSolutionColors(state));
+        if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.color) {
+            state.game.solutionColorsDataString = Colors.serialize(generateSolutionColors(state));
+        } else {
+            state.game.solutionColorsDataString = generateDefaultRowColorsDataString(numColumns);
+        }
         if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) {
             state.game.solutionIconNames = generateSolutionIcons(state);
         } else {

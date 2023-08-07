@@ -56,6 +56,7 @@ const Settings = (props: settingsProps) => {
     const validPieceTypes = [
         pieceTypes.color,
         pieceTypes.colorIcon,
+        pieceTypes.icon,
     ]
 
     const onChangeNumRows = (ev: any) => {

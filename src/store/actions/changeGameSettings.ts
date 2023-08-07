@@ -45,7 +45,7 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
 
         // Regenerate game
         state.game.paletteColorsDataString = gamePaletteDataString;
-        if (pieceType === pieceTypes.colorIcon) {
+        if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) {
             const iconCollectionNames = pickIconCollection(numIcons);
             state.game.iconCollectionNames = iconCollectionNames;
 
@@ -77,8 +77,12 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
         state.hints.combinationNotes = Array(2).fill([generateDefaultRowColorsDataString(2), '']);
 
         // Regenerate solution
-        const solutionColors = generateSolutionColors(state);
-        state.game.solutionColorsDataString = Colors.serialize(solutionColors);
+        if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.color) {
+            const solutionColors = generateSolutionColors(state);
+            state.game.solutionColorsDataString = Colors.serialize(solutionColors);
+        } else {
+            state.game.solutionColorsDataString = generateDefaultRowColorsDataString(numColumns);
+        }
         if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) {
             state.game.solutionIconNames = generateSolutionIcons(state);
         } else {

@@ -25,18 +25,22 @@ const SlotHints = (props: slotHintsProps) => {
 
     return (
         <div className='slot-hints-outer-container'>
-            <h3 className='slot-hints-title'>
-                Possible Colors per Slot
-            </h3>
-            <div className='slot-hints-container'>
-                {columnArray.map(columnIndex => {
-                    return <SlotHintColorColumn
-                        key={columnIndex}
-                        columnIndex={columnIndex}
-                        baseColorsDataString={baseColorsDataString}
-                    />
-                })}
-            </div>
+            {(pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.color) && (
+                <>
+                    <h3 className='slot-hints-title'>
+                        Possible Colors per Slot
+                    </h3>
+                    <div className='slot-hints-container'>
+                        {columnArray.map(columnIndex => {
+                            return <SlotHintColorColumn
+                                key={columnIndex}
+                                columnIndex={columnIndex}
+                                baseColorsDataString={baseColorsDataString}
+                            />
+                        })}
+                    </div>
+                </>
+            )}
             {(pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) && (
                 <>                
                     <h3 className='slot-hints-title'>

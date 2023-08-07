@@ -134,13 +134,15 @@ const Game = (props: gameProps) => {
                     <Timer seconds={timerSeconds} />
                 </div>
                 <div>
-                    <ColorBuckets
-                        numColumns={numColumns}
-                        maxIdenticalColorsInSolution={maxIdenticalColorsInSolution}
-                        baseColorsDataString={paletteColorsDataString}
-                        areColorAmountHintsActive={areColorAmountHintsActive}
-                    />
-                    {pieceType === pieceTypes.colorIcon && 
+                    {(pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.color) &&
+                        <ColorBuckets
+                            numColumns={numColumns}
+                            maxIdenticalColorsInSolution={maxIdenticalColorsInSolution}
+                            baseColorsDataString={paletteColorsDataString}
+                            areColorAmountHintsActive={areColorAmountHintsActive}
+                        />
+                    }
+                    {(pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon)&& 
                         <IconBuckets />
                     }
                     <CombinationNotes />

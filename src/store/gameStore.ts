@@ -32,6 +32,7 @@ import resetHints from './actions/resetHints';
 import initialGameState from './initialGameState';
 import toggleDisableIcon from './actions/toggleDisableIcon';
 import setPossibleIcons from './actions/setPossibleIcons';
+import generateDefaultRowColorsDataString from './functions/generateDefaultRowColorsDataString';
 
 
 
@@ -112,7 +113,7 @@ const useGameStore = create<gameStore>()(
         randomGuess: () => {
             const state = get();
             const { numColumns, pieceType } = state.gameSettings;
-            let randomColorGuess: Colors;
+            let randomColorGuess: Colors = Colors.deserialize(generateDefaultRowColorsDataString(numColumns));
             let randomIconGuess: string[] = Array(numColumns).fill('');
             if (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon) {
                 // Generate random color guess

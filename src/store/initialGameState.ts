@@ -3,6 +3,9 @@ import Colors from "../util/Colors";
 import { generateRegularPalette } from "./functions/generatePalette";
 import generateDefaultRowColorsDataString from "./functions/generateDefaultRowColorsDataString";
 import initializeGameRows from "./functions/initializeGameRows";
+import pickIconCollection from "./functions/pickIconCollection";
+
+const initialIconCollection = pickIconCollection(defaultNumIcons);
 
 const initialGameState = {
     displaySettings: {
@@ -22,14 +25,14 @@ const initialGameState = {
 		maxIdenticalColorsInSolution: defaultNumColumns,
         maxIdenticalIconsInSolution: defaultNumColumns,
 		paletteName: paletteNames[0],
-        pieceType: pieceTypes.color
+        pieceType: pieceTypes.icon
     },
     game: {
-        paletteColorsDataString: Colors.serialize(generateRegularPalette(defaultNumColors)),
-        iconCollectionNames: [],
+        paletteColorsDataString: generateDefaultRowColorsDataString(defaultNumColumns),
+        iconCollectionNames: initialIconCollection,
         activeRowIndex: 1,
         solutionColorsDataString: generateDefaultRowColorsDataString(defaultNumColumns),
-        solutionIconNames: new Array(defaultNumColumns).fill(''),
+        solutionIconNames: new Array(defaultNumIcons).fill(''),
         gameRows: initializeGameRows(defaultNumRows, defaultNumColumns),
         gameState: gameStates[0],
         timerSeconds: 0,
@@ -39,7 +42,7 @@ const initialGameState = {
         iconsMinMax: Array(defaultNumIcons).fill([...[0, defaultNumColumns]]),
         possibleSlotColorsDataStrings: Array(defaultNumColumns)
             .fill(Colors.serialize(generateRegularPalette(defaultNumColors))),
-        possibleSlotIconNames: [],
+        possibleSlotIconNames: new Array(defaultNumIcons).fill([...initialIconCollection]),
         disabledColorsDataString: '[]',
         disabledIcons: [],
         combinationNotes: Array(2).fill([...emptyCombinationNote]),

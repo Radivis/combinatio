@@ -39,7 +39,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
 
     // Generate solution icons on the fly, if they haven't been set, yet
     if ((pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon) &&
-        solutionIconNames?.every((solutionIcon: string) => solutionIcon === '')
+        solutionIconNames.every((solutionIconName: string) => solutionIconName === '')
     ) {
         solutionIconNames = generateSolutionIcons(state);
     }
@@ -410,6 +410,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         state.game.gameState = newGameState;
         state.game.activeRowIndex = newActiveRowIndex;
         state.game.solutionColorsDataString = solutionColorsDataString;
+        state.game.solutionIconNames = solutionIconNames;
     }, false, 'guess')
 }
 

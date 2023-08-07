@@ -79,14 +79,16 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
         // Regenerate solution
         const solutionColors = generateSolutionColors(state);
         state.game.solutionColorsDataString = Colors.serialize(solutionColors);
-        if (pieceType === pieceTypes.colorIcon) {
+        if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) {
             state.game.solutionIconNames = generateSolutionIcons(state);
+        } else {
+            state.game.solutionIconNames = Array(numColumns).fill('');
         }
 
         // Prefill rows
         for (let i = 1; i <= numPrefilledRows; i++) {
             state.game.gameRows[i].rowColorsDataString = Colors.serialize(generateRandomColorGuess(state));
-            if (pieceType === pieceTypes.colorIcon) {
+            if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) {
                 state.game.gameRows[i].rowIconNames = generateRandomIconGuess(state);
             }
             setTimeout(() => get().guess(), 1);

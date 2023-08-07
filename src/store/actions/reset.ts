@@ -47,14 +47,16 @@ const reset = (set: zustandSetter, get: zustandGetter) => (): void => {
 
         // generateSolution;
         state.game.solutionColorsDataString = Colors.serialize(generateSolutionColors(state));
-        if (pieceType === pieceTypes.colorIcon) {
+        if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) {
             state.game.solutionIconNames = generateSolutionIcons(state);
+        } else {
+            state.game.solutionIconNames = Array(numColumns).fill('');
         }
 
         // Prefill rows
         for (let i = 1; i <= state.gameSettings.numPrefilledRows; i++) {
             state.game.gameRows[i].rowColorsDataString = Colors.serialize(generateRandomColorGuess(state));
-            if (pieceType === pieceTypes.colorIcon) {
+            if (pieceType === pieceTypes.colorIcon || pieceType === pieceTypes.icon) {
                 state.game.gameRows[i].rowIconNames = generateRandomIconGuess(state);
             }
             setTimeout(() => get().guess(), 1);

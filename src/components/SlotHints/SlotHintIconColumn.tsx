@@ -1,9 +1,7 @@
 import Color from '../../util/Color';
-import ColorPin from '../ColorPin/ColorPin';
 
 import './SlotHintIconColumn.css';
 import useGameStore from '../../store/gameStore';
-import { holeColor } from '../../constants';
 import Icon from '../Icon/Icon';
 
 interface slotHintColumnProps {

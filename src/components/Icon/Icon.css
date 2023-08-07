@@ -1,5 +1,6 @@
 .iconPin {
     margin: 5px;
+    border-radius: 50%;
     filter: 
         drop-shadow(-1px -1px 0px hsla(0, 100%, 100%, 0.75)) 
         drop-shadow(1px -1px 0px hsla(0, 100%, 100%, 0.75)) 
@@ -17,16 +18,16 @@
     filter:none;
   }
   
-  .highlighted {
+  .highlighted-icon {
     border-width: 0px;
-    padding: 2px;
+    padding: 0px;
     box-shadow: 0px 0px 10px 5px rgba(255,255,0,1);
   }
 
-  .transparent {
+  .transparent-icon {
     opacity: 0.5;
   }
   
-  .opaque {
+  .opaque-icon {
     opacity: 0.15;
   }

@@ -34,10 +34,10 @@ const Icon = (props: IconProps) => {
     })
 
     let className = 'iconPin ';
-    className += isTransparent ? 'transparent ' : '';
-    className += isOpaque ? 'opaque ' : '';
+    className += isTransparent ? 'transparent-icon ' : '';
+    className += isOpaque ? 'opaque-icon ' : '';
     className += isDisabled ? 'disabled-icon ' : '';
-    className += isHighlighted ? 'highlighted ' : '';
+    className += isHighlighted ? 'highlighted-icon ' : '';
     className.trim();
 
     const onClick = (ev: any) => {

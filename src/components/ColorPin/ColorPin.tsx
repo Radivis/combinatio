@@ -36,9 +36,9 @@ const ColorPin = (props: ColorPinProps) => {
     })
 
     let className = 'colorPin ';
-    className += isOpaque ? 'opaque ' : '';
-    className += isDisabled ? 'disabled ' : '';
-    className += isHighlighted ? 'highlighted ' : '';
+    className += isOpaque ? 'opaque-color ' : '';
+    className += isDisabled ? 'disabled-color ' : '';
+    className += isHighlighted ? 'highlighted-color ' : '';
     className.trim();
 
     const onClick = (ev: any) => {

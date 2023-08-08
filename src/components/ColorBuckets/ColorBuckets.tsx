@@ -41,7 +41,7 @@ const ColorBuckets = (props: colorBucketsProps) => {
                 <div key={color.hue - 1440} className='color-bucket'>
                     <Drag
                         key={color.hue - 720}
-                        isActive={!disabledColors.has(color)}
+                        isActive={true}
                         dragPayloadObject={{
                             hue: color.hue,
                             saturation: color.saturation,

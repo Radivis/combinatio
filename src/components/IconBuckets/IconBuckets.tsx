@@ -46,7 +46,7 @@ const IconBuckets = (props: colorBucketsProps) => {
                 <div key={iconName} className='icon-bucket'>
                     <Drag
                         key={`${iconName}-drag`}
-                        isActive={disabledIcons !== undefined && !disabledIcons.includes(iconName)}
+                        isActive={true}
                         dragPayloadObject={{iconName}}>
                         <div className="icon-container">
                             <Icon

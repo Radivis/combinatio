@@ -70,6 +70,11 @@ const useGameStore = create<gameStore>()(
                 state.displaySettings.areCombinationNotesActive = value;
             }, false, 'setAreCombinationNotesActive')
         },
+        setChangeMaxOccurrencesOnChangingMinOccurrences: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.changeMaxOccurrencesOnChangingMinOccurrences = value;
+            }, false, 'setChangeMaxOccurrencesOnChangingMinOccurrences')
+        },
         setIsLegendDisplayed: (value: boolean) => {
             set((state: gameState) => {
                 state.displaySettings.isLegendDisplayed = value;

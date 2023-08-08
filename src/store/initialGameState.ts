@@ -15,6 +15,7 @@ const initialGameState = {
         areCombinationNotesActive: true,
         isLegendDisplayed: true,
         isRandomGuessButtonDisplayed: true,
+        changeMaxOccurrencesOnChangingMinOccurrences: false,
     },
     gameSettings: {
 		numColors: defaultNumColors,

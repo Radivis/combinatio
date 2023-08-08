@@ -28,6 +28,16 @@ const Settings = (props: settingsProps) => {
     const [areCombinationNotesActive, setAreCombinationNotesActive] = useGameStore((state) => {
         return [state.displaySettings.areCombinationNotesActive, state.setAreCombinationNotesActive];
     })
+
+    const [
+        changeMaxOccurrencesOnChangingMinOccurrences,
+        setChangeMaxOccurrencesOnChangingMinOccurrences,
+    ] = useGameStore((state) => {
+        return [
+            state.displaySettings.changeMaxOccurrencesOnChangingMinOccurrences,
+            state.setChangeMaxOccurrencesOnChangingMinOccurrences,
+        ];
+    })
     const [isLegendDisplayed, setIsLegendDisplayed] = useGameStore((state) => {
         return [state.displaySettings.isLegendDisplayed, state.setIsLegendDisplayed];
     })
@@ -124,6 +134,12 @@ const Settings = (props: settingsProps) => {
     const onChangeAreCombinationNotesActive = (ev: any) => {
         setAreCombinationNotesActive(ev.target.value === 'true' ? true : false);
     }
+
+    const onChangeChangeMaxOccurrencesOnChangingMinOccurrences = (ev: any) => {
+        setChangeMaxOccurrencesOnChangingMinOccurrences(ev.target.value === 'true' ? true : false);
+    }
+
+    
 
     const onChangeIsLegendDisplayed = (ev: any) => {
         setIsLegendDisplayed(ev.target.value === 'true' ? true : false);
@@ -291,6 +307,12 @@ const Settings = (props: settingsProps) => {
                     settingName={"areCombinationNotesActive"}
                     settingLabel="Show combination notes"
                     onChangeHandler={onChangeAreCombinationNotesActive}
+                />
+                <BooleanSetting
+                    setting={changeMaxOccurrencesOnChangingMinOccurrences}
+                    settingName={"changeMaxOccurrencesOnChangingMinOccurrences"}
+                    settingLabel="Change max occurrences on changing min occurrences (experimental)"
+                    onChangeHandler={onChangeChangeMaxOccurrencesOnChangingMinOccurrences}
                 />
                 <BooleanSetting
                     setting={isLegendDisplayed}

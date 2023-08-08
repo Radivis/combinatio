@@ -14,7 +14,7 @@ const BooleanSetting = (props: booleanSettingProps) => {
 
 return (
     <div className="settings-row">
-        <label htmlFor="areSlotHintsActive">{`${settingLabel}: `}</label>
+        <label className="boolean-settings-label" htmlFor={settingName}>{`${settingLabel}: `}</label>
         Yes: <input
             name={settingName}
             type="radio"

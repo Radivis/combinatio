@@ -5,7 +5,8 @@ const setIconMinMax = (set: zustandSetter, get: zustandGetter) =>
     ({iconIndex, min, max}: {iconIndex: number, min?: number, max?: number}) => {
     set((state: gameState) => {
         const { numIcons, maxIdenticalIconsInSolution, numColumns } = state.gameSettings;
-        const { iconCollectionNames }= state.game;
+        const { changeMaxOccurrencesOnChangingMinOccurrences } = state.displaySettings;
+        const { iconCollectionNames } = state.game;
         if (min !== undefined) {
             // How many icon occurences are already fixed?
             const minTotal = state.hints.iconsMinMax.reduce((prev: number,curr: [number, number]): number => {
@@ -16,19 +17,21 @@ const setIconMinMax = (set: zustandSetter, get: zustandGetter) =>
 
             const step = min - state.hints.iconsMinMax[iconIndex][0];
             state.hints.iconsMinMax[iconIndex][0] = min;
-            // decrement the max values of all other icons
-            for (let i = 0; i < numIcons; i++) {
-                const prevMax = state.hints.iconsMinMax[i][1];
-                if (numRemainingSlots <= prevMax) {
-                    const newMax = prevMax - step;
-                    if (i !== iconIndex &&
-                        // new max must respect boundaries
-                        newMax > 0 &&
-                        newMax <= maxIdenticalIconsInSolution &&
-                        // the new max must not fall below the min!
-                        newMax >= state.hints.iconsMinMax[i][0]
-                        ) {
-                        state.hints.iconsMinMax[i][1] -= step;
+            if (changeMaxOccurrencesOnChangingMinOccurrences) {
+                // decrement the max values of all other icons
+                for (let i = 0; i < numIcons; i++) {
+                    const prevMax = state.hints.iconsMinMax[i][1];
+                    if (numRemainingSlots <= prevMax) {
+                        const newMax = prevMax - step;
+                        if (i !== iconIndex &&
+                            // new max must respect boundaries
+                            newMax > 0 &&
+                            newMax <= maxIdenticalIconsInSolution &&
+                            // the new max must not fall below the min!
+                            newMax >= state.hints.iconsMinMax[i][0]
+                            ) {
+                            state.hints.iconsMinMax[i][1] -= step;
+                        }
                     }
                 }
             }

@@ -6,6 +6,7 @@ const setPossibleIcons = (set: zustandSetter, get: zustandGetter) => (iconNames:
         const { iconCollectionNames } = state.game;
         const { iconsMinMax } = state.hints;
         const { numIcons, maxIdenticalIconsInSolution } = state.gameSettings;
+        const { changeMaxOccurrencesOnChangingMinOccurrences } = state.displaySettings;
 
         // Set the possible iconNames to the provided iconNames array
         state.hints.possibleSlotIconNames[columnIndex] = iconNames;
@@ -43,28 +44,30 @@ const setPossibleIcons = (set: zustandSetter, get: zustandGetter) => (iconNames:
             if (iconMin < numCertainSlots) {
                 iconsMinMax[iconIndex][0] = numCertainSlots;
                 
-                // decrement the max values of all other icons
-
-                // How many icons occurences are already fixed?
-                const minTotal = state.hints.iconsMinMax.reduce((prev: number,curr: [number, number]): number => {
-                    return prev + curr[0];
-                },0);
-                // How many slots can still be filled?
-                const numRemainingSlots = numColumns - minTotal;   
-
-                const step = numCertainSlots - state.hints.iconsMinMax[iconIndex][0];            
-                for (let i = 0; i < numIcons; i++) {
-                    const prevMax = state.hints.iconsMinMax[i][1];
-                    if (numRemainingSlots <= prevMax) {
-                        const newMax = prevMax - step;
-                        if (i !== iconIndex &&
-                            // new max must respect boundaries
-                            newMax > 0 &&
-                            newMax <= maxIdenticalIconsInSolution &&
-                            // the new max must not fall below the min!
-                            newMax >= state.hints.iconsMinMax[i][0]
-                            ) {
-                            state.hints.iconsMinMax[i][1] -= step;
+                if (changeMaxOccurrencesOnChangingMinOccurrences === true) {
+                    // decrement the max values of all other icons
+    
+                    // How many icons occurences are already fixed?
+                    const minTotal = state.hints.iconsMinMax.reduce((prev: number,curr: [number, number]): number => {
+                        return prev + curr[0];
+                    },0);
+                    // How many slots can still be filled?
+                    const numRemainingSlots = numColumns - minTotal;   
+    
+                    const step = numCertainSlots - state.hints.iconsMinMax[iconIndex][0];            
+                    for (let i = 0; i < numIcons; i++) {
+                        const prevMax = state.hints.iconsMinMax[i][1];
+                        if (numRemainingSlots <= prevMax) {
+                            const newMax = prevMax - step;
+                            if (i !== iconIndex &&
+                                // new max must respect boundaries
+                                newMax > 0 &&
+                                newMax <= maxIdenticalIconsInSolution &&
+                                // the new max must not fall below the min!
+                                newMax >= state.hints.iconsMinMax[i][0]
+                                ) {
+                                state.hints.iconsMinMax[i][1] -= step;
+                            }
                         }
                     }
                 }

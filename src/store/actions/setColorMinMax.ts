@@ -6,9 +6,11 @@ const setColorMinMax = (set: zustandSetter, get: zustandGetter) =>
     ({colorIndex, min, max}: {colorIndex: number, min?: number, max?: number}) => {
     set((state: gameState) => {
         const { numColors, maxIdenticalColorsInSolution, numColumns } = state.gameSettings;
+        const { changeMaxOccurrencesOnChangingMinOccurrences } = state.displaySettings;
         if (min !== undefined) {
             // How many color occurences are already fixed?
-            const minTotal = state.hints.colorsMinMax.reduce((prev: number,curr: [number, number]): number => {
+            const minTotal = state.hints.colorsMinMax
+                .reduce((prev: number, curr: [number, number]): number => {
                 return prev + curr[0];
             },0);
             // How many slots can still be filled?
@@ -16,19 +18,21 @@ const setColorMinMax = (set: zustandSetter, get: zustandGetter) =>
 
             const step = min - state.hints.colorsMinMax[colorIndex][0];
             state.hints.colorsMinMax[colorIndex][0] = min;
-            // decrement the max values of all other colors
-            for (let i = 0; i < numColors; i++) {
-                const prevMax = state.hints.colorsMinMax[i][1];
-                if (numRemainingSlots <= prevMax) {
-                    const newMax = prevMax - step;
-                    if (i !== colorIndex &&
-                        // new max must respect boundaries
-                        newMax > 0 &&
-                        newMax <= maxIdenticalColorsInSolution &&
-                        // the new max must not fall below the min!
-                        newMax >= state.hints.colorsMinMax[i][0]
-                        ) {
-                        state.hints.colorsMinMax[i][1] -= step;
+            if (changeMaxOccurrencesOnChangingMinOccurrences === true) {
+                // decrement the max values of all other colors
+                for (let i = 0; i < numColors; i++) {
+                    const prevMax = state.hints.colorsMinMax[i][1];
+                    if (numRemainingSlots <= prevMax) {
+                        const newMax = prevMax - step;
+                        if (i !== colorIndex &&
+                            // new max must respect boundaries
+                            newMax > 0 &&
+                            newMax <= maxIdenticalColorsInSolution &&
+                            // the new max must not fall below the min!
+                            newMax >= state.hints.colorsMinMax[i][0]
+                            ) {
+                            state.hints.colorsMinMax[i][1] -= step;
+                        }
                     }
                 }
             }

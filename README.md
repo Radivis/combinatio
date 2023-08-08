@@ -1,4 +1,19 @@
-# Getting Started with Create React App
+# Combinatio V0.6.0
+
+A combination guessing game with some twists
+
+- Drag and drop mechanics
+- Multiple game modes: Guess icons, colors, or combinations of icons and colors
+- Option to start with pre-filled rows
+- Many types of hints that you can use to outsource information from your memory
+- Use automatic guesses based on the current state of the hints
+- Options for changing the number or rows, columns, colors, icons, and many more
+
+## Technology
+
+Made with React, TypeScript, and Zustand for state management.
+
+### Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -101,7 +101,7 @@ const Game = (props: gameProps) => {
     }, [gameState]);
 
     return <div>
-        {gameState === gameStates[0] && <h2>Game waiting</h2>}
+        {gameState === gameStates[0] && <h2>Game is waiting for placement of first guess</h2>}
         {gameState === gameStates[1] && <h2>Game running</h2>}
         {gameState === gameStates[2] && <h2>Game won!</h2>}
         {gameState === gameStates[3] && <h2>Game lost!</h2>}

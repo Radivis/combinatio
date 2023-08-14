@@ -3,6 +3,7 @@ import Color from '../../util/Color';
 import './SlotHintIconColumn.css';
 import useGameStore from '../../store/gameStore';
 import Icon from '../Icon/Icon';
+import Drag from '../Drag/Drag';
 
 interface slotHintColumnProps {
     columnIndex: number,
@@ -91,15 +92,20 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
         <div className='slot-hint-column'>
             {iconCollectionNames.map((iconName: string) => {
                 return (
-                    <Icon
-                        key={iconName}
-                        iconName={iconName}
-                        isDisabled={disabledIcons.includes(iconName)}
-                        isOpaque={!possibleCurrentSlotIconNames.includes(iconName)}
-                        isOpacityToogleActive={true}
-                        isHighlighted={isHighlighted(iconName)}
-                        opacityToogleCallback={opacityToogleCallback}
-                    />
+                    <Drag
+                    key={`${iconName}-drag`}
+                    isActive={true}
+                    dragPayloadObject={{iconName}}>
+                        <Icon
+                            key={iconName}
+                            iconName={iconName}
+                            isDisabled={disabledIcons.includes(iconName)}
+                            isOpaque={!possibleCurrentSlotIconNames.includes(iconName)}
+                            isOpacityToogleActive={true}
+                            isHighlighted={isHighlighted(iconName)}
+                            opacityToogleCallback={opacityToogleCallback}
+                        />
+                    </Drag>
                 );
             })}
         </div>

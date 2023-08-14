@@ -1,4 +1,4 @@
-# Combinatio V0.6.0
+# Combinatio V0.6.1
 
 A combination guessing game with some twists
 

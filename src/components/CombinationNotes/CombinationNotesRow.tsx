@@ -113,8 +113,9 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
                 <FontAwesomeIcon icon={faPlus} size="sm"/>
             </button>
             <input
-                type="text"
+                type='text'
                 className='tuple-row-note'
+                placeholder='combination comment'
                 value={combinationNotes[rowIndex][1]}
                 onChange={onChangeNote}
             />

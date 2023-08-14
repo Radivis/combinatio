@@ -5,6 +5,7 @@ import ColorPin from '../ColorPin/ColorPin';
 
 import './SlotHintColorColumn.css';
 import useGameStore from '../../store/gameStore';
+import Drag from '../Drag/Drag';
 
 interface slotHintColumnProps {
     baseColorsDataString: colorsDataString
@@ -88,15 +89,24 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
         <div className='slot-hint-column'>
             {baseColors.map((color: Color) => {
                 return (
-                    <ColorPin
-                        key={color.hue}
-                        color={color}
-                        isDisabled={disabledColors.has(color)}
-                        isOpaque={!possibleSlotColors.has(color)}
-                        isOpacityToogleActive={true}
-                        isHighlighted={isHighlighted(color)}
-                        opacityToogleCallback={opacityToogleCallback}
-                    />
+                    <Drag
+                    key={color.hue - 720}
+                    isActive={true}
+                    dragPayloadObject={{
+                        hue: color.hue,
+                        saturation: color.saturation,
+                        lightness: color.lightness,
+                    }}>
+                        <ColorPin
+                            key={color.hue}
+                            color={color}
+                            isDisabled={disabledColors.has(color)}
+                            isOpaque={!possibleSlotColors.has(color)}
+                            isOpacityToogleActive={true}
+                            isHighlighted={isHighlighted(color)}
+                            opacityToogleCallback={opacityToogleCallback}
+                        />
+                    </Drag>
                 );
             })}
         </div>

@@ -20,6 +20,11 @@
     opacity: 20%;
 }
 
+.text-emphasis {
+    color: hsl(150, 75%, 35%);
+    text-shadow: 1px 0px hsl(150, 75%, 30%);
+}
+
 .value-display {
     display: flex;
     flex-direction: row;

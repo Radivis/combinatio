@@ -17,6 +17,7 @@ interface colorBucketsProps {
 
 const ColorBuckets = (props: colorBucketsProps) => {
     const {
+        numColumns,
         maxIdenticalColorsInSolution,
         baseColorsDataString,
         areColorAmountHintsActive,
@@ -32,10 +33,20 @@ const ColorBuckets = (props: colorBucketsProps) => {
 
     const baseColors = Colors.deserialize(baseColorsDataString);
 
+    const minSum = colorsMinMax.reduce((acc: number, curr: [number, number]) => acc + curr[0], 0);
+    const maxSum = colorsMinMax.reduce((acc: number, curr: [number, number]) => acc + curr[1], 0);
+
+    let sumError = '';
+    if (minSum > numColumns) sumError += 'Sum of minimum values exceeds number of slots!';
+    if (maxSum < numColumns) sumError += 'Sum of maximum values below number of slots!';
+
     return <div className="color-buckets">
         {areColorAmountHintsActive && <h3 className="color-occurences-title">
             Color Occurences
         </h3>}
+        {sumError !== '' && (
+            <p className="sum-error">{sumError}</p>
+        )}
         {baseColors.map((color: Color, colorIndex: number) => {
             return (
                 <div key={color.hue - 1440} className='color-bucket'>
@@ -63,6 +74,8 @@ const ColorBuckets = (props: colorBucketsProps) => {
                         setMin={(min:number) => setColorMinMax({ colorIndex, min })}
                         setMax={(max:number) => setColorMinMax({ colorIndex, max })}
                         absoluteMax={maxIdenticalColorsInSolution}
+                        emphasizeMin={minSum === numColumns}
+                        emphasizeMax={maxSum === numColumns}
                         /> : null
                     }
                 </div>

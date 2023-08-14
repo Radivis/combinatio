@@ -36,10 +36,20 @@ const IconBuckets = (props: colorBucketsProps) => {
         };
     })
 
+    const minSum = iconsMinMax.reduce((acc: number, curr: [number, number]) => acc + curr[0], 0);
+    const maxSum = iconsMinMax.reduce((acc: number, curr: [number, number]) => acc + curr[1], 0);
+
+    let sumError = '';
+    if (minSum > numColumns) sumError += 'Sum of minimum values exceeds number of slots!';
+    if (maxSum < numColumns) sumError += 'Sum of maximum values below number of slots!';
+
     return <div className="icon-buckets">
         {areIconAmountHintsActive && <h3 className="icon-occurences-title">
             Icon Occurences
         </h3>}
+        {sumError !== '' && (
+            <p className="sum-error">{sumError}</p>
+        )}
         {iconCollectionNames !== undefined && iconCollectionNames
             .map((iconName: string, iconIndex: number) => {
             return (
@@ -65,6 +75,8 @@ const IconBuckets = (props: colorBucketsProps) => {
                         setMin={(min:number) => setIconMinMax({ iconIndex, min })}
                         setMax={(max:number) => setIconMinMax({ iconIndex, max })}
                         absoluteMax={maxIdenticalIconsInSolution}
+                        emphasizeMin={minSum === numColumns}
+                        emphasizeMax={maxSum === numColumns}
                         /> : null
                     }
                 </div>

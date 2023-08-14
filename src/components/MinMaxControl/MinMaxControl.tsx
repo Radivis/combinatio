@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react"
-
 import './MinMaxControl.css';
 import IntegerControl from "../IntegerControl/IntegerControl";
 
 interface minMaxSliderProps {
     absoluteMin: number,
     absoluteMax: number,
+    emphasizeMin?: boolean,
+    emphasizeMax?: boolean,
     min: number,
     max: number,
     setMin: (min: number) => void,
@@ -16,6 +16,8 @@ const MinMaxControl = (props: minMaxSliderProps) => {
     const {
         absoluteMin,
         absoluteMax,
+        emphasizeMin,
+        emphasizeMax,
         min,
         max,
         setMax,
@@ -26,8 +28,14 @@ const MinMaxControl = (props: minMaxSliderProps) => {
     for (let i = min; i <= max; i++) classArray.push('slider-block filled');
     for (let i = max + 1; i <= absoluteMax; i++) classArray.push('slider-block empty');
 
+    const minClass = emphasizeMin ? 'text-emphasis' : '';
+    const maxClass = emphasizeMax ? 'text-emphasis' : '';
+
     return <div className='slider'>
-        Min:<IntegerControl
+        <span className={minClass}>
+            Min:
+        </span>
+        <IntegerControl
             integer={min}
             minValue={absoluteMin}
             maxValue = {absoluteMax}
@@ -43,7 +51,10 @@ const MinMaxControl = (props: minMaxSliderProps) => {
             </div>
             )}
         </div>
-        Max:<IntegerControl
+        <span className={maxClass}>
+            Max:
+        </span>
+        <IntegerControl
             integer={max}
             minValue={absoluteMin}
             maxValue={absoluteMax}

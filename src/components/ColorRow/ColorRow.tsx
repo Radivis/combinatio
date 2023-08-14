@@ -3,7 +3,7 @@ import Color from "../../util/Color";
 import Colors from "../../util/Colors";
 import DropTarget from "../DropTarget/DropTarget";
 import { hslColorObject } from "../../interfaces/interfaces";
-import { gameStates } from "../../constants";
+import { gameStates, pieceTypes } from "../../constants";
 
 import './ColorRow.css';
 import useGameStore from "../../store/gameStore";
@@ -19,6 +19,7 @@ const ColorRow = (props: colorRowProps) => {
 
     let {
         gameState,
+        pieceType,
         rowColorsDataString,
         rowIconNames,
         solutionColorsDataString,
@@ -27,10 +28,12 @@ const ColorRow = (props: colorRowProps) => {
         placeIcon
     } = useGameStore((state) => {
         const { placeColor, placeIcon } = state;
+        const { pieceType } = state.gameSettings;
         const { gameState, solutionColorsDataString, solutionIconNames } = state.game;
         const { rowColorsDataString, rowIconNames } = state.game.gameRows[rowIndex];
         return {
             gameState,
+            pieceType,
             rowColorsDataString,
             rowIconNames,
             solutionColorsDataString,
@@ -79,6 +82,7 @@ const ColorRow = (props: colorRowProps) => {
                     key = {`${rowIndex}: ${columnIndex}`}
                     color = {rowColors[columnIndex]}
                     iconName = {rowIconNames[columnIndex]}
+                    areIconsTransparent = {pieceType !== pieceTypes.icon}
                 />
             </DropTarget>
         )})

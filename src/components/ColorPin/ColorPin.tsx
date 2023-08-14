@@ -7,6 +7,7 @@ import Icon from "../Icon/Icon";
 interface ColorPinProps {
     color: Color;
     colorIndex?: number;
+    areIconsTransparent?: boolean;
     iconName?: string;
     isDisabled?: boolean,
     isOpaque?: boolean,
@@ -20,6 +21,7 @@ const ColorPin = (props: ColorPinProps) => {
     const {
         color,
         iconName,
+        areIconsTransparent,
         isOpacityToogleActive,
         isDisabledToggleActive,
         isDisabled,
@@ -71,7 +73,7 @@ const ColorPin = (props: ColorPinProps) => {
             {iconName !== undefined && iconName !== '' &&
                 <Icon
                     iconName={iconName}
-                    isTransparent={true}
+                    isTransparent={areIconsTransparent}
                 />
             }
         </div>

@@ -2,6 +2,7 @@ div[draggable=true] {
    cursor: grab;
 }
 
+/* This removes the background of dragged elements */
 div[draggable=true]::before, div[draggable=true]::after {
    content: "" !important;
 }

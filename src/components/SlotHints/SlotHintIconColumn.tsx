@@ -88,8 +88,10 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
         return possibleCurrentSlotIconNames.length === 1 && possibleCurrentSlotIconNames.includes(iconName);
     }
 
+    const className = `slot-hint-column${possibleCurrentSlotIconNames.length === 0 ? ' no-selection-error' : ''}`.trim();
+
     return (
-        <div className='slot-hint-column'>
+        <div className={className}>
             {iconCollectionNames.map((iconName: string) => {
                 return (
                     <Drag

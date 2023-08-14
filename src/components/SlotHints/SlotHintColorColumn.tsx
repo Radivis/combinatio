@@ -85,8 +85,10 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
         return possibleSlotColors.length === 1 && possibleSlotColors.has(color);
     }
 
+    const className = `slot-hint-column${possibleSlotColors.length === 0 ? ' no-selection-error' : ''}`.trim();
+
     return (
-        <div className='slot-hint-column'>
+        <div className={className}>
             {baseColors.map((color: Color) => {
                 return (
                     <Drag

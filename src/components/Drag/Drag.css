@@ -2,6 +2,10 @@ div[draggable=true] {
    cursor: grab;
 }
 
+div[draggable=true]::before, div[draggable=true]::after {
+   content: "" !important;
+}
+
 .no-drag {
    cursor:alias
 }

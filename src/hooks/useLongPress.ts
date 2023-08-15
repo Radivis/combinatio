@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { longPressDuration } from '../constants';
 
 type useLongPressParams = {onClickHandler: Function, onLongPressHandler: Function};
 
@@ -14,7 +15,7 @@ export default function useLongPress({onClickHandler, onLongPressHandler}: useLo
         isLongPress.current = true;
         onLongPressHandler();
         setActionType('longpress');
-      }, 500)
+      }, longPressDuration)
     }
   
     const handleOnClick = (ev: any) => {

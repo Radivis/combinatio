@@ -4,6 +4,7 @@ import Color from '../../util/Color';
 import Colors from '../../util/Colors';
 import ColorPin from '../ColorPin/ColorPin';
 import './ColorSelector.css';
+import { holeColor } from '../../constants';
 
 interface colorSelectorProps {
     columnIndex: number;
@@ -36,6 +37,14 @@ const ColorSelector = (props: colorSelectorProps) => {
         })
     }
 
+    const onUnsetColor = () => {
+        placeColor({
+            color: holeColor,
+            row: rowIndex,
+            column: columnIndex,
+        })
+    }
+
     return (
         <div className="color-selector">
             <button
@@ -52,6 +61,11 @@ const ColorSelector = (props: colorSelectorProps) => {
                     </div>                
                 )
             })}
+            <div onClick = {onUnsetColor}>
+                <ColorPin 
+                    color = {holeColor}
+                />
+            </div>
         </div>
     )
 }

@@ -80,6 +80,8 @@ const ColorRow = (props: colorRowProps) => {
                 }}>
                 <ColorPin
                     key = {`${rowIndex}: ${columnIndex}`}
+                    columnIndex = {columnIndex}
+                    rowIndex = {rowIndex}
                     color = {rowColors[columnIndex]}
                     iconName = {rowIconNames[columnIndex]}
                     areIconsTransparent = {pieceType !== pieceTypes.icon}

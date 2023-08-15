@@ -6,22 +6,35 @@ import ColorPin from '../ColorPin/ColorPin';
 import './ColorSelector.css';
 
 interface colorSelectorProps {
+    columnIndex: number;
+    rowIndex: number;
     onClose: MouseEventHandler;
 }
 
 const ColorSelector = (props: colorSelectorProps) => {
-    const { onClose } = props;
+    const { columnIndex, rowIndex, onClose } = props;
 
     const {
-        paletteColorsDataString
+        paletteColorsDataString,
+        placeColor,
      } = useGameStore((state) => {
         const { paletteColorsDataString } = state.game;
+        const { placeColor } = state;
         return {
-            paletteColorsDataString
+            paletteColorsDataString,
+            placeColor,
         }
     })
 
     const paletteColors = Colors.deserialize(paletteColorsDataString);
+
+    const onClick = (colorIndex: number) => {
+        placeColor({
+            color: paletteColors[colorIndex],
+            row: rowIndex,
+            column: columnIndex,
+        })
+    }
 
     return (
         <div className="color-selector">
@@ -30,11 +43,13 @@ const ColorSelector = (props: colorSelectorProps) => {
                 className="color-selector-close-button"
                 onClick={onClose}
             >x</button>
-            {paletteColors.map((color: Color) => {
-                return (                
-                    <ColorPin 
-                        color = {color}
-                    />
+            {paletteColors.map((color: Color, colorIndex: number) => {
+                return (
+                    <div onClick = {() => onClick(colorIndex)}>
+                        <ColorPin 
+                            color = {color} 
+                        />
+                    </div>                
                 )
             })}
         </div>

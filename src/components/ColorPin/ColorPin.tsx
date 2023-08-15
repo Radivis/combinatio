@@ -10,6 +10,8 @@ import ColorSelector from "../ColorSelector/ColorSelector";
 interface ColorPinProps {
     color: Color;
     colorIndex?: number;
+    columnIndex?: number;
+    rowIndex?: number;
     areIconsTransparent?: boolean;
     canRenderColorSelector?: boolean;
     iconName?: string;
@@ -26,6 +28,8 @@ const ColorPin = (props: ColorPinProps) => {
     const {
         color,
         iconName,
+        columnIndex,
+        rowIndex,
         areIconsTransparent,
         canRenderColorSelector,
         isOpacityToogleActive,
@@ -71,6 +75,7 @@ const ColorPin = (props: ColorPinProps) => {
                 }
             }
         }
+        setIsRenderingColorSelector(false);
     }
 
     const onLongPress = (ev: any) => {
@@ -79,7 +84,7 @@ const ColorPin = (props: ColorPinProps) => {
         }
     }
 
-    const { actionType, handlers } = useLongPress({
+    const { handlers } = useLongPress({
         onClickHandler: onClick,
         onLongPressHandler: onLongPress,
     });
@@ -93,10 +98,13 @@ const ColorPin = (props: ColorPinProps) => {
             style={style}
             {...handlers}
         >
-            {isRenderingColorSelector && (
-                <ColorSelector 
+            {(isRenderingColorSelector
+            && columnIndex !== undefined
+            && rowIndex !== undefined) && (
+                <ColorSelector
+                    columnIndex={columnIndex}
+                    rowIndex={rowIndex}
                     onClose={() => setIsRenderingColorSelector(false)}
-                
                 />
             )}
             {iconName !== undefined && iconName !== '' &&

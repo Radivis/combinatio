@@ -102,9 +102,13 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
                 }}>
                     <ColorPin
                         color={colorIcon.color}
+                        contextType="combination-notes"
+                        columnIndex={columnIndex}
+                        rowIndex={rowIndex}
                         iconName={colorIcon.iconName}
                         key={columnIndex}
                         isDisabled={disabledColors.has(colorIcon.color)}
+                        canRenderColorSelector={true}
                     />
                 </DropTarget>
 

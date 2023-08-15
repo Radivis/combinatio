@@ -7,42 +7,63 @@ import './ColorSelector.css';
 import { holeColor } from '../../constants';
 
 interface colorSelectorProps {
+    contextType: string;
     columnIndex: number;
     rowIndex: number;
     onClose: MouseEventHandler;
 }
 
 const ColorSelector = (props: colorSelectorProps) => {
-    const { columnIndex, rowIndex, onClose } = props;
+    const { contextType, columnIndex, rowIndex, onClose } = props;
 
     const {
         paletteColorsDataString,
         placeColor,
+        placeTupleColor,
      } = useGameStore((state) => {
         const { paletteColorsDataString } = state.game;
-        const { placeColor } = state;
+        const { placeColor, placeTupleColor } = state;
         return {
             paletteColorsDataString,
             placeColor,
+            placeTupleColor,
         }
     })
 
     const paletteColors = Colors.deserialize(paletteColorsDataString);
 
     const onClick = (colorIndex: number) => {
-        placeColor({
-            color: paletteColors[colorIndex],
-            row: rowIndex,
-            column: columnIndex,
-        })
+        if (contextType === 'game') {
+            placeColor({
+                color: paletteColors[colorIndex],
+                row: rowIndex,
+                column: columnIndex,
+            })
+        }
+        if (contextType === 'combination-notes') {
+            placeTupleColor({
+                color: paletteColors[colorIndex],
+                rowIndex,
+                columnIndex,
+            })
+        }
     }
 
     const onUnsetColor = () => {
-        placeColor({
-            color: holeColor,
-            row: rowIndex,
-            column: columnIndex,
-        })
+        if (contextType === 'game') {
+            placeColor({
+                color: holeColor,
+                row: rowIndex,
+                column: columnIndex,
+            })
+        }
+        if (contextType === 'combination-notes') {
+            placeTupleColor({
+                color: holeColor,
+                rowIndex,
+                columnIndex,
+            })
+        }
     }
 
     return (

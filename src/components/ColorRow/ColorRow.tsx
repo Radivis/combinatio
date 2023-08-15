@@ -79,6 +79,7 @@ const ColorRow = (props: colorRowProps) => {
                     if (isActiveRow) onPieceDropped(color, columnIndex)
                 }}>
                 <ColorPin
+                    contextType="game"
                     key = {`${rowIndex}: ${columnIndex}`}
                     columnIndex = {columnIndex}
                     rowIndex = {rowIndex}

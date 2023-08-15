@@ -9,6 +9,7 @@ import ColorSelector from "../ColorSelector/ColorSelector";
 
 interface ColorPinProps {
     color: Color;
+    contextType?: string;
     colorIndex?: number;
     columnIndex?: number;
     rowIndex?: number;
@@ -27,6 +28,7 @@ interface ColorPinProps {
 const ColorPin = (props: ColorPinProps) => {
     const {
         color,
+        contextType,
         iconName,
         columnIndex,
         rowIndex,
@@ -98,12 +100,11 @@ const ColorPin = (props: ColorPinProps) => {
             style={style}
             {...handlers}
         >
-            {(isRenderingColorSelector
-            && columnIndex !== undefined
-            && rowIndex !== undefined) && (
+            {isRenderingColorSelector && (
                 <ColorSelector
-                    columnIndex={columnIndex}
-                    rowIndex={rowIndex}
+                    contextType={contextType!}
+                    columnIndex={columnIndex!}
+                    rowIndex={rowIndex!}
                     onClose={() => setIsRenderingColorSelector(false)}
                 />
             )}

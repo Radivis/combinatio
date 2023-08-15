@@ -94,7 +94,10 @@ const ColorPin = (props: ColorPinProps) => {
             {...handlers}
         >
             {isRenderingColorSelector && (
-                <ColorSelector />
+                <ColorSelector 
+                    onClose={() => setIsRenderingColorSelector(false)}
+                
+                />
             )}
             {iconName !== undefined && iconName !== '' &&
                 <Icon

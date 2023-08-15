@@ -1,31 +1,42 @@
+import { MouseEventHandler } from 'react';
 import useGameStore from '../../store/gameStore';
-import ColorBuckets from '../ColorBuckets/ColorBuckets';
+import Color from '../../util/Color';
+import Colors from '../../util/Colors';
+import ColorPin from '../ColorPin/ColorPin';
 import './ColorSelector.css';
 
-const ColorSelector = () => {
+interface colorSelectorProps {
+    onClose: MouseEventHandler;
+}
+
+const ColorSelector = (props: colorSelectorProps) => {
+    const { onClose } = props;
 
     const {
-        maxIdenticalColorsInSolution,
-        numColumns,
         paletteColorsDataString
      } = useGameStore((state) => {
-        const { maxIdenticalColorsInSolution, numColumns } = state.gameSettings;
         const { paletteColorsDataString } = state.game;
         return {
-            maxIdenticalColorsInSolution,
-            numColumns,
             paletteColorsDataString
         }
     })
 
+    const paletteColors = Colors.deserialize(paletteColorsDataString);
+
     return (
-        <div>
-            <ColorBuckets
-                numColumns={numColumns}
-                maxIdenticalColorsInSolution={maxIdenticalColorsInSolution}
-                baseColorsDataString={paletteColorsDataString}
-                areColorAmountHintsActive={false}
-            />
+        <div className="color-selector">
+            <button
+                type='button'
+                className="color-selector-close-button"
+                onClick={onClose}
+            >x</button>
+            {paletteColors.map((color: Color) => {
+                return (                
+                    <ColorPin 
+                        color = {color}
+                    />
+                )
+            })}
         </div>
     )
 }

@@ -3,17 +3,22 @@ import Color from "../../util/Color";
 import './ColorPin.css';
 import useGameStore from "../../store/gameStore";
 import Icon from "../Icon/Icon";
+import useLongPress from "../../hooks/useLongPress";
+import { useState } from "react";
+import ColorSelector from "../ColorSelector/ColorSelector";
 
 interface ColorPinProps {
     color: Color;
     colorIndex?: number;
     areIconsTransparent?: boolean;
+    canRenderColorSelector?: boolean;
     iconName?: string;
     isDisabled?: boolean,
     isOpaque?: boolean,
     isHighlighted?: boolean,
     isOpacityToogleActive?: boolean,
     isDisabledToggleActive?: boolean,
+    isRenderingColorSelector?: boolean,
     opacityToogleCallback?: (piece: Color | string) => void,
 }
 
@@ -22,12 +27,15 @@ const ColorPin = (props: ColorPinProps) => {
         color,
         iconName,
         areIconsTransparent,
+        canRenderColorSelector,
         isOpacityToogleActive,
         isDisabledToggleActive,
         isDisabled,
         isHighlighted,
         opacityToogleCallback,
     } = props;
+
+    const [isRenderingColorSelector, setIsRenderingColorSelector] = useState<boolean>(false);
 
     let {isOpaque} = props;
     if (isOpaque === undefined) isOpaque = false;
@@ -65,11 +73,29 @@ const ColorPin = (props: ColorPinProps) => {
         }
     }
 
+    const onLongPress = (ev: any) => {
+        if (canRenderColorSelector === true) {
+            setIsRenderingColorSelector(true);
+        }
+    }
+
+    const { actionType, handlers } = useLongPress({
+        onClickHandler: onClick,
+        onLongPressHandler: onLongPress,
+    });
+
     // This case shouldn't happen, it's just for error handling
     const style = color !== undefined ? {backgroundColor: color.hsl} : {};
 
     return (
-        <div className={className} style={style} onClick={onClick}>
+        <div
+            className={className}
+            style={style}
+            {...handlers}
+        >
+            {isRenderingColorSelector && (
+                <ColorSelector />
+            )}
             {iconName !== undefined && iconName !== '' &&
                 <Icon
                     iconName={iconName}

@@ -1,3 +1,7 @@
+.color-pin-container {
+  position: relative;
+}
+
 .colorPin {
     display: flex;
     align-items: center;

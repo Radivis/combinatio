@@ -32,7 +32,7 @@ const ColorSelector = (props: colorSelectorProps) => {
 
     const paletteColors = Colors.deserialize(paletteColorsDataString);
 
-    const onClick = (colorIndex: number) => {
+    const onClick = (ev: any, colorIndex: number) => {
         if (contextType === 'game') {
             placeColor({
                 color: paletteColors[colorIndex],
@@ -47,9 +47,10 @@ const ColorSelector = (props: colorSelectorProps) => {
                 columnIndex,
             })
         }
+        onClose(ev);
     }
 
-    const onUnsetColor = () => {
+    const onUnsetColor = (ev: any) => {
         if (contextType === 'game') {
             placeColor({
                 color: holeColor,
@@ -64,6 +65,7 @@ const ColorSelector = (props: colorSelectorProps) => {
                 columnIndex,
             })
         }
+        onClose(ev);
     }
 
     return (
@@ -75,14 +77,14 @@ const ColorSelector = (props: colorSelectorProps) => {
             >x</button>
             {paletteColors.map((color: Color, colorIndex: number) => {
                 return (
-                    <div onClick = {() => onClick(colorIndex)}>
+                    <div onClick = {(ev) => onClick(ev, colorIndex)}>
                         <ColorPin 
                             color = {color} 
                         />
                     </div>                
                 )
             })}
-            <div onClick = {onUnsetColor}>
+            <div onClick = {(ev) => onUnsetColor(ev)}>
                 <ColorPin 
                     color = {holeColor}
                 />

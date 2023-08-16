@@ -86,7 +86,10 @@ const ColorRow = (props: colorRowProps) => {
                     color = {rowColors[columnIndex]}
                     iconName = {rowIconNames[columnIndex]}
                     areIconsTransparent = {pieceType !== pieceTypes.icon}
-                    canRenderColorSelector = {isActiveRow}
+                    canRenderColorSelector = {isActiveRow
+                        && (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon)}
+                    canRenderIconSelector = {isActiveRow
+                        && (pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon)}
                 />
             </DropTarget>
         )})

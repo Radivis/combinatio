@@ -6,6 +6,7 @@ import Icon from "../Icon/Icon";
 import useLongPress from "../../hooks/useLongPress";
 import { useState } from "react";
 import ColorSelector from "../ColorSelector/ColorSelector";
+import IconSelector from "../IconSelector/IconSelector";
 
 interface ColorPinProps {
     color: Color;
@@ -15,6 +16,7 @@ interface ColorPinProps {
     rowIndex?: number;
     areIconsTransparent?: boolean;
     canRenderColorSelector?: boolean;
+    canRenderIconSelector?: boolean;
     iconName?: string;
     isDisabled?: boolean,
     isOpaque?: boolean,
@@ -34,6 +36,7 @@ const ColorPin = (props: ColorPinProps) => {
         rowIndex,
         areIconsTransparent,
         canRenderColorSelector,
+        canRenderIconSelector,
         isOpacityToogleActive,
         isDisabledToggleActive,
         isDisabled,
@@ -42,6 +45,7 @@ const ColorPin = (props: ColorPinProps) => {
     } = props;
 
     const [isRenderingColorSelector, setIsRenderingColorSelector] = useState<boolean>(false);
+    const [isRenderingIconSelector, setIsRenderingIconSelector] = useState<boolean>(false);
 
     let {isOpaque} = props;
     if (isOpaque === undefined) isOpaque = false;
@@ -78,11 +82,15 @@ const ColorPin = (props: ColorPinProps) => {
             }
         }
         setIsRenderingColorSelector(false);
+        setIsRenderingIconSelector(false);
     }
 
     const onLongPress = (ev: any) => {
         if (canRenderColorSelector === true) {
             setIsRenderingColorSelector(true);
+        }
+        if (canRenderIconSelector === true) {
+            setIsRenderingIconSelector(true);
         }
     }
 
@@ -95,11 +103,15 @@ const ColorPin = (props: ColorPinProps) => {
     const style = color !== undefined ? {backgroundColor: color.hsl} : {};
 
     return (
-        <div
-            className={className}
-            style={style}
-            {...handlers}
-        >
+        <div className="color-pin-container">
+            {isRenderingIconSelector && (
+                <IconSelector
+                    contextType={contextType!}
+                    columnIndex={columnIndex!}
+                    rowIndex={rowIndex!}
+                    onClose={() => setIsRenderingIconSelector(false)}
+                />
+            )}
             {isRenderingColorSelector && (
                 <ColorSelector
                     contextType={contextType!}
@@ -108,12 +120,18 @@ const ColorPin = (props: ColorPinProps) => {
                     onClose={() => setIsRenderingColorSelector(false)}
                 />
             )}
-            {iconName !== undefined && iconName !== '' &&
-                <Icon
-                    iconName={iconName}
-                    isTransparent={areIconsTransparent}
-                />
-            }
+            <div
+                className={className}
+                style={style}
+                {...handlers}
+            >
+                {iconName !== undefined && iconName !== '' &&
+                    <Icon
+                        iconName={iconName}
+                        isTransparent={areIconsTransparent}
+                    />
+                }
+            </div>
         </div>
     );
 };

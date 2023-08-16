@@ -11,6 +11,7 @@ import './CombinationNotesRow.css';
 import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import ColorIcons from "../../util/ColorIcons";
 import ColorIcon from "../../util/ColorIcon";
+import { pieceTypes } from "../../constants";
 
 interface tuplesHintsRowProps {
     rowIndex: number
@@ -22,6 +23,7 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
     const {
         combinationNotes,
         disabledColorsDataString,
+        pieceType,
         addColorTupleSlot,
         changeCombinationNote,
         deleteColorTupleRow,
@@ -36,10 +38,12 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
             placeTupleIcon,
             deleteColorTupleRow
         } = state;
+        const { pieceType } = state.gameSettings;
         const { combinationNotes, disabledColorsDataString } = hints;
         return {
             combinationNotes,
             disabledColorsDataString,
+            pieceType,
             addColorTupleSlot,
             changeCombinationNote,
             deleteColorTupleRow,
@@ -108,7 +112,8 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
                         iconName={colorIcon.iconName}
                         key={columnIndex}
                         isDisabled={disabledColors.has(colorIcon.color)}
-                        canRenderColorSelector={true}
+                        canRenderColorSelector={pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon}
+                        canRenderIconSelector={pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon}
                     />
                 </DropTarget>
 

@@ -4,6 +4,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import {
 	faAsterisk,
+    faBan,
     faBatteryHalf,
     faBolt,
     faBrain,
@@ -58,6 +59,7 @@ library.add(
 	fas,
 	faAsterisk,
     faBatteryHalf,
+    faBan,
     faBolt,
     faBrain,
     faCannabis,

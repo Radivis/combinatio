@@ -54,6 +54,7 @@ import './App.css';
 import AppHeader from './components/AppHeader/AppHeader';
 import useGameStore from './store/gameStore';
 import ErrorModal from './components/ErrorModal/ErrorModal';
+import VersionHistory from './components/VersionHistory/VersionHistory';
 
 library.add(
 	fas,
@@ -133,6 +134,9 @@ const App = () => {
 						setActivePage={setActivePage}
 					/>
 				:
+                activePage === 'version-history' ?
+                    <VersionHistory />
+                :
 					<Game />
 				}
 			</main>

@@ -12,6 +12,7 @@ const AppHeader = ({setActivePage}: AppHeaderProps) => {
         <nav>
             <button onClick={() => {setActivePage('settings')}}>Settings</button>
             <button onClick={() => {setActivePage('game')}}>Game</button>
+            <button onClick={() => {setActivePage('version-history')}}>Version History</button>
         </nav>
         </header>
     );

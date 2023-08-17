@@ -7,6 +7,7 @@ const VersionHistory = () => {
             <ul className='version-history-list'>
                 <li>Added long-press functionality for game slots and combination hint slots</li>
                 <li>Added indicators for hints for the case that they violate basic boundary conditions</li>
+                <li>Added Version History</li>
                 <li>Minor CSS fixes</li>
             </ul>
             <h2>V0.6.0</h2>

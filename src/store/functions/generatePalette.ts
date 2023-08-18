@@ -17,12 +17,12 @@ const zanthiaPalette: Colors = new Colors([
     Color.makeHsl(32, 59, 48)
 ]);
 
-const generatePalette = (numberColors: number, paletteName: string): Colors => {
+const generatePalette = (numColors: number, paletteName: string): Colors => {
     switch (paletteName) {
         case paletteNames[1]:
             return zanthiaPalette;
         default:
-            return generateRegularPalette(numberColors);
+            return generateRegularPalette(numColors);
     }
  }
 

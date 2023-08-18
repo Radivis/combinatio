@@ -153,7 +153,7 @@ const Settings = (props: settingsProps) => {
         ev.preventDefault();
         // explicitly choose the currently selected palette value to prevent setting an invalid palette
         const formEntriesArray: any[] = Array.from(ev.target);
-        const selectedPaletteName = formEntriesArray.find((inputElement: any) => inputElement.name === 'paletteName').value;
+        const selectedPaletteName: string = formEntriesArray.find((inputElement: any) => inputElement.name === 'paletteName').value;
 
         changeSettings({
             numRows,

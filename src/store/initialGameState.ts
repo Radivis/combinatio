@@ -29,7 +29,7 @@ const initialGameState = {
         pieceType: pieceTypes.icon
     },
     game: {
-        paletteColorsDataString: generateDefaultRowColorsDataString(defaultNumColumns),
+        paletteColorsDataString: generateDefaultRowColorsDataString(defaultNumColors),
         iconCollectionNames: initialIconCollection,
         activeRowIndex: 1,
         solutionColorsDataString: generateDefaultRowColorsDataString(defaultNumColumns),

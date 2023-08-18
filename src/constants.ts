@@ -4,7 +4,8 @@ import ColorIcons from "./util/ColorIcons";
 import Colors from "./util/Colors";
 
 export const gameVersionNumber = '0.6.2';
-export const longPressDuration = 200;
+export const longPressDefaultDuration = 200;
+export const longPressExtendedDuration = 500;
 export const defaultNumColumns = 4;
 export const defaultNumRows = 8;
 export const defaultNumColors = 6;

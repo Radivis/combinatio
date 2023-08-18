@@ -1,9 +1,17 @@
 import { useState, useRef } from 'react';
-import { longPressDuration } from '../constants';
+import { longPressDefaultDuration } from '../constants';
 
-type useLongPressParams = {onClickHandler: Function, onLongPressHandler: Function};
+type useLongPressParams = {
+  onClickHandler: Function,
+  onLongPressHandler: Function,
+  longPressDuration?: number};
 
-export default function useLongPress({onClickHandler, onLongPressHandler}: useLongPressParams) {
+export default function useLongPress({
+    onClickHandler,
+    onLongPressHandler,
+    longPressDuration
+}: useLongPressParams) {
+    longPressDuration = longPressDuration || longPressDefaultDuration;
     const [actionType, setActionType] = useState<string>();
     const [isSuppressingMouseEvents, setIsSuppressingMouseEvents] = useState<boolean>(false);
   

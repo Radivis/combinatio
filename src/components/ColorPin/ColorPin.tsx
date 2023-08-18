@@ -7,6 +7,8 @@ import useLongPress from "../../hooks/useLongPress";
 import { useState } from "react";
 import ColorSelector from "../ColorSelector/ColorSelector";
 import IconSelector from "../IconSelector/IconSelector";
+import Colors from "../../util/Colors";
+import { longPressDefaultDuration, longPressExtendedDuration } from "../../constants";
 
 interface ColorPinProps {
     color: Color;
@@ -17,6 +19,7 @@ interface ColorPinProps {
     areIconsTransparent?: boolean;
     canRenderColorSelector?: boolean;
     canRenderIconSelector?: boolean;
+    selectColumnColorOnLongpress?: number;
     iconName?: string;
     isDisabled?: boolean,
     isOpaque?: boolean,
@@ -37,6 +40,7 @@ const ColorPin = (props: ColorPinProps) => {
         areIconsTransparent,
         canRenderColorSelector,
         canRenderIconSelector,
+        selectColumnColorOnLongpress,
         isOpacityToogleActive,
         isDisabledToggleActive,
         isDisabled,
@@ -44,15 +48,19 @@ const ColorPin = (props: ColorPinProps) => {
         opacityToogleCallback,
     } = props;
 
+    const longPressDuration = selectColumnColorOnLongpress !== undefined
+        ? longPressExtendedDuration
+        : longPressDefaultDuration;
+
     const [isRenderingColorSelector, setIsRenderingColorSelector] = useState<boolean>(false);
     const [isRenderingIconSelector, setIsRenderingIconSelector] = useState<boolean>(false);
 
     let {isOpaque} = props;
     if (isOpaque === undefined) isOpaque = false;
 
-    const { toggleDisableColor, toggleDisableIcon } = useGameStore((state) => {
-        const { toggleDisableColor, toggleDisableIcon } = state;
-        return { toggleDisableColor, toggleDisableIcon };
+    const { setPossibleColors, toggleDisableColor, toggleDisableIcon } = useGameStore((state) => {
+        const { setPossibleColors, toggleDisableColor, toggleDisableIcon } = state;
+        return { setPossibleColors, toggleDisableColor, toggleDisableIcon };
     })
 
     let className = 'colorPin ';
@@ -92,11 +100,15 @@ const ColorPin = (props: ColorPinProps) => {
         if (canRenderIconSelector === true) {
             setIsRenderingIconSelector(true);
         }
+        if (selectColumnColorOnLongpress !== undefined) {
+            setPossibleColors(new Colors([color]), selectColumnColorOnLongpress);
+        }
     }
 
     const { handlers } = useLongPress({
         onClickHandler: onClick,
         onLongPressHandler: onLongPress,
+        longPressDuration,
     });
 
     // This case shouldn't happen, it's just for error handling

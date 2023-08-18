@@ -1,7 +1,9 @@
 import './Icon.css';
 import useGameStore from "../../store/gameStore";
+import useLongPress from '../../hooks/useLongPress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { longPressExtendedDuration } from '../../constants';
 
 interface IconProps {
     iconName: string;
@@ -11,6 +13,7 @@ interface IconProps {
     isHighlighted?: boolean,
     isOpacityToogleActive?: boolean,
     isDisabledToggleActive?: boolean,
+    selectColumnIconOnLongpress?: number,
     opacityToogleCallback?: (iconName: string) => void,
 }
 
@@ -22,15 +25,18 @@ const Icon = (props: IconProps) => {
         isTransparent,
         isDisabled,
         isHighlighted,
+        selectColumnIconOnLongpress,
         opacityToogleCallback,
     } = props;
+
+    const longPressDuration = longPressExtendedDuration;
 
     let {isOpaque} = props;
     if (isOpaque === undefined) isOpaque = false;
 
-    const { toggleDisableIcon } = useGameStore((state) => {
-        const { toggleDisableIcon } = state;
-        return { toggleDisableIcon };
+    const { setPossibleIcons, toggleDisableIcon } = useGameStore((state) => {
+        const { setPossibleIcons, toggleDisableIcon } = state;
+        return { setPossibleIcons, toggleDisableIcon };
     })
 
     let className = 'iconPin ';
@@ -52,18 +58,29 @@ const Icon = (props: IconProps) => {
         }
     }
 
+    const onLongPress = (ev: any) => {
+        if (selectColumnIconOnLongpress !== undefined) {
+                setPossibleIcons([iconName], selectColumnIconOnLongpress);
+        }
+    }
+
+    const { handlers } = useLongPress({
+        onClickHandler: onClick,
+        onLongPressHandler: onLongPress,
+        longPressDuration,
+    });
+
     // This case shouldn't happen, it's just for error handling
     // const style = iconName !== undefined ? {backgroundColor: color.hsl} : {};
 
     return (
-        <>
-        <FontAwesomeIcon
-            className={className}
-            icon={iconName as IconName}
-            size="lg"
-            onClick={onClick}
-        />
-        </>
+        <div {...handlers}>
+            <FontAwesomeIcon
+                className={className}
+                icon={iconName as IconName}
+                size="lg"
+            />
+        </div>
     );
 };
 

@@ -107,6 +107,7 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
                             isOpacityToogleActive={true}
                             isHighlighted={isHighlighted(color)}
                             opacityToogleCallback={opacityToogleCallback}
+                            selectColumnColorOnLongpress={columnIndex}
                         />
                     </Drag>
                 );

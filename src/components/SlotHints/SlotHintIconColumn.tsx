@@ -1,3 +1,5 @@
+import useLongPress from '../../hooks/useLongPress';
+
 import Color from '../../util/Color';
 
 import './SlotHintIconColumn.css';
@@ -106,6 +108,7 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
                             isOpacityToogleActive={true}
                             isHighlighted={isHighlighted(iconName)}
                             opacityToogleCallback={opacityToogleCallback}
+                            selectColumnIconOnLongpress={columnIndex}
                         />
                     </Drag>
                 );

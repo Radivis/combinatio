@@ -184,8 +184,8 @@ const Settings = (props: settingsProps) => {
             <div className="settings-table">
                 <h2 className="settings-title">Game Settings</h2>
                 <div className="settings-row">
-                    <label htmlFor="paletteName">Piece type: </label>
-                    <select name='paletteName' onChange={onChangePieceType}>
+                    <label htmlFor="pieceType">Piece type: </label>
+                    <select name='pieceType' onChange={onChangePieceType}>
                         {validPieceTypes.map((pieceType: string) => <option
                             key={pieceType}
                             value={pieceType}

@@ -5,6 +5,7 @@ type useLongPressParams = {onClickHandler: Function, onLongPressHandler: Functio
 
 export default function useLongPress({onClickHandler, onLongPressHandler}: useLongPressParams) {
     const [actionType, setActionType] = useState<string>();
+    const [isSuppressingMouseEvents, setIsSuppressingMouseEvents] = useState<boolean>(false);
   
     const timerRef = useRef<NodeJS.Timeout>();
     const isLongPress = useRef<boolean>();
@@ -19,7 +20,6 @@ export default function useLongPress({onClickHandler, onLongPressHandler}: useLo
     }
   
     const handleOnClick = (ev: any) => {
-      console.log('handleOnClick');
       if ( isLongPress.current === true ) {
         return;
       }
@@ -28,19 +28,26 @@ export default function useLongPress({onClickHandler, onLongPressHandler}: useLo
     }
   
     const handleOnMouseDown = () => {
-      startPressTimer();
+      if (isSuppressingMouseEvents === false) {
+        startPressTimer();
+      }
     }
   
     const handleOnMouseUp = () => {
-      clearTimeout(timerRef.current);
+      if (isSuppressingMouseEvents === false) {
+        clearTimeout(timerRef.current);
+      }
     }
   
     const handleOnTouchStart = () => {
       startPressTimer();
+      setIsSuppressingMouseEvents(true);
     }
   
     const handleOnTouchEnd = () => {
-      if ( actionType === 'longpress' ) return;
+      if ( isLongPress.current === true ) {
+        return;
+      }
       clearTimeout(timerRef.current);
     }
   

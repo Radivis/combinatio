@@ -152,9 +152,11 @@ const Settings = (props: settingsProps) => {
     const onSubmit = (ev: any) => {
         ev.preventDefault();
         // explicitly choose the currently selected palette value to prevent setting an invalid palette
-        const formEntriesArray: any[] = Array.from(ev.target);
-        const selectedPaletteName: string = formEntriesArray.find((inputElement: any) => inputElement.name === 'paletteName').value;
-
+        let selectedPaletteName = _paletteName;
+        if (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon) {
+            const formEntriesArray: any[] = Array.from(ev.target);
+            selectedPaletteName = formEntriesArray.find((inputElement: any) => inputElement.name === 'paletteName').value;
+        }
         changeSettings({
             numRows,
             numColumns,
@@ -166,6 +168,7 @@ const Settings = (props: settingsProps) => {
             paletteName: selectedPaletteName,
             pieceType,
         })
+
         setActivePage('game');
     }
 
@@ -226,17 +229,19 @@ const Settings = (props: settingsProps) => {
                         onChange={onChangeNumPrefilledRows}
                     />
                 </div>
-                <div className="settings-row">
-                    <label htmlFor="numColors">Number of colors: </label>
-                    <IntegerSelect
-                        name={'numColors'}  
-                        min={2}
-                        max={20}
-                        defaultValue={numColors}
-                        onChange={onChangeNumColors}
-                    />
-                </div>
-                {pieceType === pieceTypes.colorIcon &&
+                {(pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon) &&
+                    <div className="settings-row">
+                        <label htmlFor="numColors">Number of colors: </label>
+                        <IntegerSelect
+                            name={'numColors'}  
+                            min={2}
+                            max={20}
+                            defaultValue={numColors}
+                            onChange={onChangeNumColors}
+                        />
+                    </div>
+                }
+                {(pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon) &&
                     <div className="settings-row">
                     <label htmlFor="numIcons">Number of icons: </label>
                     <IntegerSelect
@@ -247,17 +252,19 @@ const Settings = (props: settingsProps) => {
                         onChange={onChangeNumIcons}
                     />
                 </div>}
-                <div className="settings-row">
-                    <label htmlFor="maxIdenticalColorsInSolutions">Max. number of same colors: </label>
-                    <IntegerSelect
-                        name={'maxIdenticalColorsInSolutions'}   
-                        min={Math.ceil(numColumns / numColors) /** Any less is not possible! */}
-                        max={numColumns}
-                        defaultValue={maxIdenticalColorsInSolution}
-                        onChange={onChangeMaxIdenticalColorsInSolution}
-                    />
-                </div>
-                {pieceType === pieceTypes.colorIcon &&
+                {(pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon) &&
+                    <div className="settings-row">
+                        <label htmlFor="maxIdenticalColorsInSolutions">Max. number of same colors: </label>
+                        <IntegerSelect
+                            name={'maxIdenticalColorsInSolutions'}   
+                            min={Math.ceil(numColumns / numColors) /** Any less is not possible! */}
+                            max={numColumns}
+                            defaultValue={maxIdenticalColorsInSolution}
+                            onChange={onChangeMaxIdenticalColorsInSolution}
+                        />
+                    </div>
+                }
+                {(pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon) &&
                     <div className="settings-row">
                     <label htmlFor="maxIdenticalIconsInSolutions">Max. number of same icons: </label>
                     <IntegerSelect
@@ -268,19 +275,21 @@ const Settings = (props: settingsProps) => {
                         onChange={onChangeMaxIdenticalIconsInSolution}
                     />
                 </div>}
-                <div className="settings-row">
-                    <label htmlFor="paletteName">Color Palette: </label>
-                    <select name='paletteName' onChange={onChangePaletteName}>
-                        {validPaletteNames.map((paletteName: string) => <option
-                            key={paletteName}
-                            value={paletteName}
-                            selected={settings.paletteName === paletteName}
-                            >
-                                {paletteName}
-                            </option>
-                        )}
-                    </select>
-                </div>
+                {(pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon) &&
+                    <div className="settings-row">
+                        <label htmlFor="paletteName">Color Palette: </label>
+                        <select name='paletteName' onChange={onChangePaletteName}>
+                            {validPaletteNames.map((paletteName: string) => <option
+                                key={paletteName}
+                                value={paletteName}
+                                selected={settings.paletteName === paletteName}
+                                >
+                                    {paletteName}
+                                </option>
+                            )}
+                        </select>
+                    </div>
+                }
                 <button type="submit">Save settings and start new game</button>
                 <h3 className="settings-title">Display Settings</h3>
                 <p className="settings-paragraph">Changing these settings has an immediate effect and doesn't require restarting the game.</p>

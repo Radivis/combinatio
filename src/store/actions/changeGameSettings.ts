@@ -24,8 +24,6 @@ const changeGameSettings = (set: zustandSetter, get: zustandGetter) => (newSetti
     || oldState.gameSettings.paletteName !== newSettings.paletteName) {
         gamePaletteDataString = Colors.serialize(generatePalette(newSettings.numColors, newSettings.paletteName));
     }
-
-    console.log('gamePaletteDataString', gamePaletteDataString);
     
     set((state: gameState & gameActions) => {
         const {

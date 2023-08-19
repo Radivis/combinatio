@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { longPressDefaultDuration } from '../constants';
+import useUiStore from '../store/uiStore';
 
 type useLongPressParams = {
   onClickHandler: Function,
@@ -14,59 +15,69 @@ export default function useLongPress({
     longPressDuration = longPressDuration || longPressDefaultDuration;
     const [actionType, setActionType] = useState<string>();
     const [isSuppressingMouseEvents, setIsSuppressingMouseEvents] = useState<boolean>(false);
+
+    const { isLongPressSuppressed } = useUiStore(state => {
+      const { isLongPressSuppressed } = state;
+      return { isLongPressSuppressed }
+    })
   
     const timerRef = useRef<NodeJS.Timeout>();
     const isLongPress = useRef<boolean>();
+
+    // Stop the long press timeout, if long press is suppressed!
+    useEffect(() => {
+        clearTimeout(timerRef.current);
+    }, [isLongPressSuppressed])
   
     const startPressTimer = () => {
-      isLongPress.current = false;
-      timerRef.current = setTimeout(() => {
-        isLongPress.current = true;
-        onLongPressHandler();
-        setActionType('longpress');
-      }, longPressDuration)
+        isLongPress.current = false;
+        timerRef.current = setTimeout(() => {
+            isLongPress.current = true;
+            onLongPressHandler();
+            setActionType('longpress');
+        }, longPressDuration)
     }
   
     const handleOnClick = (ev: any) => {
-      if ( isLongPress.current === true ) {
-        return;
-      }
-      onClickHandler(ev);
-      setActionType('click')
+        if ( isLongPress.current === true ) {
+            return;
+        }
+        onClickHandler(ev);
+        setActionType('click')
     }
   
     const handleOnMouseDown = () => {
-      if (isSuppressingMouseEvents === false) {
-        startPressTimer();
-      }
+        if (isSuppressingMouseEvents === false) {
+            startPressTimer();
+        }
     }
   
     const handleOnMouseUp = () => {
-      if (isSuppressingMouseEvents === false) {
-        clearTimeout(timerRef.current);
-      }
+        if (isSuppressingMouseEvents === false) {
+            clearTimeout(timerRef.current);
+        }
     }
   
     const handleOnTouchStart = () => {
-      startPressTimer();
-      setIsSuppressingMouseEvents(true);
+        startPressTimer();
+        setIsSuppressingMouseEvents(true);
     }
   
     const handleOnTouchEnd = () => {
-      if ( isLongPress.current === true ) {
-        return;
-      }
-      clearTimeout(timerRef.current);
+        if ( isLongPress.current === true ) {
+            return;
+        }
+        clearTimeout(timerRef.current);
     }
   
     return {
         actionType,
         handlers: {
-          onClick: handleOnClick,
-          onMouseDown: handleOnMouseDown,
-          onMouseUp: handleOnMouseUp,
-          onTouchStart: handleOnTouchStart,
-          onTouchEnd: handleOnTouchEnd
+            onClick: handleOnClick,
+            onMouseDown: handleOnMouseDown,
+            onMouseUp: handleOnMouseUp,
+            onTouchStart: handleOnTouchStart,
+            onTouchEnd: handleOnTouchEnd
         }
     }
-  }
+}

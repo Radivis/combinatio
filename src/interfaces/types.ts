@@ -82,6 +82,17 @@ export type gameActions = {
 }
 
 export type gameStore = gameState & gameActions;
+
+export type uiState = {
+    isLongPressSuppressed: boolean;
+}
+
+export type uiActions = {
+    setIsLongPressSuppressed: (value: boolean) => void,
+}
+
+export type uiStore = uiState & uiActions;
+
 export type zustandGetter = () => gameStore;
 export type zustandSetter = (
     nextStateOrUpdater: gameStore | Partial<gameStore> | ((state: Draft<gameStore>) => void),

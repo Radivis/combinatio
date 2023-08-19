@@ -73,7 +73,8 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
                 rowIndex,
                 columnIndex
             })
-        } else {
+        } 
+        if ('hue' in payload && typeof payload['hue'] === 'number') {
             // Color is encoded via hslColorObject
             placeTupleColor({
                 color: Color.makeFromHslObject(payload as hslColorObject),

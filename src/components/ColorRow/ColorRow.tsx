@@ -60,7 +60,8 @@ const ColorRow = (props: colorRowProps) => {
                 row: rowIndex,
                 column: columnIndex
             })
-        } else {
+        }
+        if ('hue' in payload && typeof payload['hue'] === 'number') {
             // Color is encoded via hslColorObject
             placeColor({
                 color: Color.makeFromHslObject(payload as hslColorObject),
@@ -68,7 +69,6 @@ const ColorRow = (props: colorRowProps) => {
                 column: columnIndex
             })
         }
-
     }
 
     return <div className='colorRow'>

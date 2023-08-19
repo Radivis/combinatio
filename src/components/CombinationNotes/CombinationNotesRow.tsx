@@ -22,6 +22,7 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
     const { rowIndex } = props;
 
     const {
+        areTranspositionsActive,
         combinationNotes,
         disabledColorsDataString,
         pieceType,
@@ -40,8 +41,10 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
             deleteColorTupleRow
         } = state;
         const { pieceType } = state.gameSettings;
+        const { areTranspositionsActive }= state.displaySettings;
         const { combinationNotes, disabledColorsDataString } = hints;
         return {
+            areTranspositionsActive,
             combinationNotes,
             disabledColorsDataString,
             pieceType,
@@ -57,15 +60,30 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
 
     const disabledColors = Colors.deserialize(disabledColorsDataString);
 
-    // const onColorDropped = (colorObject: hslColorObject, columnIndex: number) => {
-    //     placeTupleColor({
-    //         color: Color.makeFromHslObject(colorObject),
-    //         rowIndex,
-    //         columnIndex
-    //     })
-    // }
-
     const onPieceDropped = (payload: object, columnIndex: number) => {
+        if ( areTranspositionsActive === true
+            &&'sourceCombinationNotesColumnIndex' in payload
+            && payload.sourceCombinationNotesColumnIndex !== undefined
+            && typeof payload.sourceCombinationNotesColumnIndex === 'number'
+            && 'sourceCombinationNotesRowIndex' in payload
+            && payload.sourceCombinationNotesRowIndex !== undefined
+            && typeof payload.sourceCombinationNotesRowIndex === 'number'
+            && payload.sourceCombinationNotesRowIndex === rowIndex) {
+                // Transposition within the same row
+                const rowColorIcons = ColorIcons.deserialize(combinationNotes[rowIndex][0]);
+                const targetColorIcon = rowColorIcons[columnIndex];
+                placeTupleColor({
+                    color: targetColorIcon.color,
+                    rowIndex: rowIndex,
+                    columnIndex: payload.sourceCombinationNotesColumnIndex,
+                })
+                placeTupleIcon({
+                    iconName: targetColorIcon.iconName,
+                    rowIndex: rowIndex,
+                    columnIndex: payload.sourceCombinationNotesColumnIndex,
+                })
+            }
+
         if ('iconName' in payload && typeof payload['iconName'] === 'string') {
             // Icon is encoded via iconName
             const { iconName } = payload;

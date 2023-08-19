@@ -7,6 +7,7 @@ import { gameStates, pieceTypes } from "../../constants";
 
 import './ColorRow.css';
 import useGameStore from "../../store/gameStore";
+import Drag from "../Drag/Drag";
 
 interface colorRowProps {
     rowIndex: number;
@@ -71,26 +72,37 @@ const ColorRow = (props: colorRowProps) => {
     }
 
     return <div className='colorRow'>
-        {[...Array(numColumns).keys()].map((columnIndex: number) =>
-        { return (
+        {[...Array(numColumns).keys()].map((columnIndex: number) => {
+            const color = rowColors[columnIndex];
+            const iconName = rowIconNames[columnIndex];
+            return (
             <DropTarget
                 key = {`${rowIndex}: ${columnIndex}`}
                 onItemDropped={(color: Color) => {
                     if (isActiveRow) onPieceDropped(color, columnIndex)
                 }}>
-                <ColorPin
-                    contextType="game"
-                    key = {`${rowIndex}: ${columnIndex}`}
-                    columnIndex = {columnIndex}
-                    rowIndex = {rowIndex}
-                    color = {rowColors[columnIndex]}
-                    iconName = {rowIconNames[columnIndex]}
-                    areIconsTransparent = {pieceType !== pieceTypes.icon}
-                    canRenderColorSelector = {isActiveRow
-                        && (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon)}
-                    canRenderIconSelector = {isActiveRow
-                        && (pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon)}
-                />
+                <Drag
+                    isActive={true}
+                    dragPayloadObject={{
+                        hue: color.hue,
+                        saturation: color.saturation,
+                        lightness: color.lightness,
+                        iconName,
+                    }}>
+                    <ColorPin
+                        contextType="game"
+                        key = {`${rowIndex}: ${columnIndex}`}
+                        columnIndex = {columnIndex}
+                        rowIndex = {rowIndex}
+                        color = {color}
+                        iconName = {iconName}
+                        areIconsTransparent = {pieceType !== pieceTypes.icon}
+                        canRenderColorSelector = {isActiveRow
+                            && (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon)}
+                        canRenderIconSelector = {isActiveRow
+                            && (pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon)}
+                    />
+                </Drag>
             </DropTarget>
         )})
         }

@@ -13,6 +13,8 @@ const Drag = (props: any) => {
       if (isActive === true) {
         setIsLongPressSuppressed(true);
         ev.dataTransfer.setData("text/plain", JSON.stringify(dragPayloadObject));
+        // Prevent the background of the dragged element from being dragged with it
+        ev.dataTransfer.setDragImage(ev.target, ev.target.offsetWidth / 2, ev.target.offsetHeight / 2);
       }
     }
 

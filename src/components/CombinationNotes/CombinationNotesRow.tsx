@@ -12,6 +12,7 @@ import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import ColorIcons from "../../util/ColorIcons";
 import ColorIcon from "../../util/ColorIcon";
 import { pieceTypes } from "../../constants";
+import Drag from "../Drag/Drag";
 
 interface tuplesHintsRowProps {
     rowIndex: number
@@ -105,18 +106,29 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
                     onItemDropped={(payload: object) => {
                         onPieceDropped(payload, columnIndex)
                 }}>
-                    <ColorPin
-                        color={colorIcon.color}
-                        contextType="combination-notes"
-                        columnIndex={columnIndex}
-                        rowIndex={rowIndex}
-                        iconName={colorIcon.iconName}
-                        key={columnIndex}
-                        isDisabled={disabledColors.has(colorIcon.color)}
-                        areIconsTransparent = {pieceType !== pieceTypes.icon}
-                        canRenderColorSelector={pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon}
-                        canRenderIconSelector={pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon}
-                    />
+                    <Drag
+                    isActive={true}
+                    dragPayloadObject={{
+                        hue: colorIcon.hue,
+                        saturation: colorIcon.saturation,
+                        lightness: colorIcon.lightness,
+                        iconName: colorIcon.iconName,
+                        sourceCombinationNotesRowIndex: rowIndex,
+                        sourceCombinationNotesColumnIndex: columnIndex,
+                    }}>
+                        <ColorPin
+                            color={colorIcon.color}
+                            contextType="combination-notes"
+                            columnIndex={columnIndex}
+                            rowIndex={rowIndex}
+                            iconName={colorIcon.iconName}
+                            key={columnIndex}
+                            isDisabled={disabledColors.has(colorIcon.color)}
+                            areIconsTransparent = {pieceType !== pieceTypes.icon}
+                            canRenderColorSelector={pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon}
+                            canRenderIconSelector={pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon}
+                        />
+                    </Drag>
                 </DropTarget>
 
             })}

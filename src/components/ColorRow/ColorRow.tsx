@@ -52,6 +52,28 @@ const ColorRow = (props: colorRowProps) => {
         }
 
     const onPieceDropped = (payload: object, columnIndex: number) => {
+        if ('sourceGameColumnIndex' in payload
+        && payload.sourceGameColumnIndex !== undefined
+        && typeof payload.sourceGameColumnIndex === 'number'
+        && 'sourceGameRowIndex' in payload
+        && payload.sourceGameRowIndex !== undefined
+        && typeof payload.sourceGameRowIndex === 'number'
+        && payload.sourceGameRowIndex === rowIndex) {
+            // Transposition within the active row
+            const targetColor = rowColors[columnIndex];
+            const targetIconName = rowIconNames[columnIndex];
+            placeColor({
+                color: targetColor,
+                row: rowIndex,
+                column: payload.sourceGameColumnIndex
+            })
+            placeIcon({
+                iconName: targetIconName,
+                row: rowIndex,
+                column: payload.sourceGameColumnIndex
+            })
+        }
+
         if ('iconName' in payload && typeof payload['iconName'] === 'string') {
             // Icon is encoded via iconName
             const { iconName } = payload;
@@ -69,6 +91,8 @@ const ColorRow = (props: colorRowProps) => {
                 column: columnIndex
             })
         }
+
+
     }
 
     return <div className='colorRow'>
@@ -88,6 +112,8 @@ const ColorRow = (props: colorRowProps) => {
                         saturation: color.saturation,
                         lightness: color.lightness,
                         iconName,
+                        sourceGameRowIndex: rowIndex,
+                        sourceGameColumnIndex: columnIndex,
                     }}>
                     <ColorPin
                         contextType="game"

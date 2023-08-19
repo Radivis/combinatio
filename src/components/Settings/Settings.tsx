@@ -29,6 +29,10 @@ const Settings = (props: settingsProps) => {
         return [state.displaySettings.areCombinationNotesActive, state.setAreCombinationNotesActive];
     })
 
+    const [areTranspositionsActive, setAreTranspositionsActive] = useGameStore((state) => {
+        return [state.displaySettings.areTranspositionsActive, state.setAreTranspositionsActive];
+    })
+
     const [
         changeMaxOccurrencesOnChangingMinOccurrences,
         setChangeMaxOccurrencesOnChangingMinOccurrences,
@@ -133,6 +137,10 @@ const Settings = (props: settingsProps) => {
 
     const onChangeAreCombinationNotesActive = (ev: any) => {
         setAreCombinationNotesActive(ev.target.value === 'true' ? true : false);
+    }
+
+    const onChangeAreTranspositionsActive = (ev: any) => {
+        setAreTranspositionsActive(ev.target.value === 'true' ? true : false);
     }
 
     const onChangeChangeMaxOccurrencesOnChangingMinOccurrences = (ev: any) => {
@@ -316,6 +324,12 @@ const Settings = (props: settingsProps) => {
                     settingName={"areCombinationNotesActive"}
                     settingLabel="Show combination notes"
                     onChangeHandler={onChangeAreCombinationNotesActive}
+                />
+                <BooleanSetting
+                    setting={areTranspositionsActive}
+                    settingName={"areTranspositionsActive"}
+                    settingLabel="Enable switching of pieces within the same row"
+                    onChangeHandler={onChangeAreTranspositionsActive}
                 />
                 <BooleanSetting
                     setting={changeMaxOccurrencesOnChangingMinOccurrences}

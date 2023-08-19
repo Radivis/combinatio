@@ -19,6 +19,7 @@ const ColorRow = (props: colorRowProps) => {
     const { rowIndex, numColumns, isActiveRow } = props;
 
     let {
+        areTranspositionsActive,
         gameState,
         pieceType,
         rowColorsDataString,
@@ -30,9 +31,11 @@ const ColorRow = (props: colorRowProps) => {
     } = useGameStore((state) => {
         const { placeColor, placeIcon } = state;
         const { pieceType } = state.gameSettings;
+        const { areTranspositionsActive } = state.displaySettings;
         const { gameState, solutionColorsDataString, solutionIconNames } = state.game;
         const { rowColorsDataString, rowIconNames } = state.game.gameRows[rowIndex];
         return {
+            areTranspositionsActive,
             gameState,
             pieceType,
             rowColorsDataString,
@@ -52,7 +55,8 @@ const ColorRow = (props: colorRowProps) => {
         }
 
     const onPieceDropped = (payload: object, columnIndex: number) => {
-        if ('sourceGameColumnIndex' in payload
+        if ( areTranspositionsActive === true
+        &&'sourceGameColumnIndex' in payload
         && payload.sourceGameColumnIndex !== undefined
         && typeof payload.sourceGameColumnIndex === 'number'
         && 'sourceGameRowIndex' in payload

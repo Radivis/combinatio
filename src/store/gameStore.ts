@@ -70,6 +70,11 @@ const useGameStore = create<gameStore>()(
                 state.displaySettings.areCombinationNotesActive = value;
             }, false, 'setAreCombinationNotesActive')
         },
+        setAreTranspositionsActive: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.areTranspositionsActive = value;
+            }, false, 'setAreTranspositionsActive')
+        },
         setChangeMaxOccurrencesOnChangingMinOccurrences: (value: boolean) => {
             set((state: gameState) => {
                 state.displaySettings.changeMaxOccurrencesOnChangingMinOccurrences = value;

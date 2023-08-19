@@ -13,6 +13,7 @@ const initialGameState = {
         areIconAmountHintsActive: true,
 		areSlotHintsActive: true,
         areCombinationNotesActive: true,
+        areTranspositionsActive: true,
         isLegendDisplayed: true,
         isRandomGuessButtonDisplayed: true,
         changeMaxOccurrencesOnChangingMinOccurrences: false,

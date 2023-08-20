@@ -10,7 +10,7 @@ const VersionHistory = () => {
                 <li>Already filled rows in "icon" pieceType mode aren't colored</li>
                 <li>Icons within the combination notes are semi-transparent in "colorIcon" pieceType mode</li>
                 <li>Fixed the broken behavior of long press on mobile devices</li>
-                <li>Dragged pieces should not drag their background with them</li>
+                <li className="failed">Dragged pieces should not drag their background with them</li>
                 <li>Dragging a piece prevents its long press event from firing as long as it is dragged</li>
                 <li>Long press on a slot hint piece now selects the piece as the only one</li>
                 <li>Pieces can now also be dragged from the game board or the combination notes</li>

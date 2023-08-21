@@ -1,4 +1,3 @@
-import { createRef, useEffect } from 'react';
 import { uiStore } from '../../interfaces/types';
 import useUiStore from '../../store/uiStore';
 import './Drag.css'
@@ -6,21 +5,18 @@ import './Drag.css'
 const Drag = (props: any) => {
     const { children, dragPayloadObject, isActive } = props;
 
-    const { setIsLongPressSuppressed } = useUiStore((state: uiStore) => {
-        const { setIsLongPressSuppressed } = state;
-        return { setIsLongPressSuppressed }
+    const { setIsLongPressSuppressed, setSelection } = useUiStore((state: uiStore) => {
+        const { setIsLongPressSuppressed, setSelection } = state;
+        return { setIsLongPressSuppressed, setSelection }
     })
 
-    const startDrag = (ev: any) => {
-        console.log('startDrag fired');
-        // Supress the default behavior of the touchstart event of mobile devices that initiates scrolling
-        if ('touches' in ev)  {
-            console.log('suppressing default behavior of onTouchStart event handler');
-            setIsLongPressSuppressed(true);
-            ev.preventDefault();
-            return;
+    const onClick = (ev: any) => {
+        if (isActive === true) {
+            setSelection(dragPayloadObject);
         }
+    }
 
+    const startDrag = (ev: any) => {
         if (isActive === true) {
             setIsLongPressSuppressed(true);
             ev.dataTransfer.setData("text/plain", JSON.stringify(dragPayloadObject));
@@ -29,9 +25,6 @@ const Drag = (props: any) => {
             * a picture that is dragged along with the cursor!
             */
             ev.dataTransfer.setDragImage(ev.target, ev.target.offsetWidth / 2, ev.target.offsetHeight / 2);
-
-            // prevent scrolling for touch devices
-            ev.preventDefault();
         }
     }
 
@@ -39,25 +32,15 @@ const Drag = (props: any) => {
       setIsLongPressSuppressed(false);
     }
 
-    const listenerRef = createRef<any>();
-
-    // React uses passive event listeners for touch events by default, so this approach needs to be used
-    useEffect(() => {
-        listenerRef.current.addEventListener('touchstart', startDrag, {passive: false});
-        return () => {
-            listenerRef.current.removeEventListener('touchstart', startDrag, {passive: false});
-        }
-    }, [])
-
     if(isActive) {
         return(
-                <div
-                    ref={listenerRef}
-                    className="drag"
-                    draggable
-                    onDragStart={startDrag}
-                    onDragEnd={endDrag}
-                >
+            <div
+                className="drag"
+                draggable
+                onClick={onClick}
+                onDragStart={startDrag}
+                onDragEnd={endDrag}
+            >
                 {children}
             </div>
         );

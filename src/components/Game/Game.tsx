@@ -10,6 +10,7 @@ import SlotHints from "../SlotHints/SlotHints";
 import Timer from "../Timer/Timer";
 import { range } from "../../util/range";
 import useGameStore from "../../store/gameStore";
+import Selection from "../Selection/Selection";
 
 import './Game.css';
 import CombinationNotes from "../CombinationNotes/CombinationNotes";
@@ -108,6 +109,7 @@ const Game = (props: gameProps) => {
         <button onClick={reset}>
             Start new game
         </button>
+        <Selection />
         <div className="game">
             {isLegendDisplayed && <Legend />}
             <div className="board">

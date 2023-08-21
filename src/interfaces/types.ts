@@ -86,10 +86,12 @@ export type gameStore = gameState & gameActions;
 
 export type uiState = {
     isLongPressSuppressed: boolean;
+    selection: object | undefined;
 }
 
 export type uiActions = {
     setIsLongPressSuppressed: (value: boolean) => void,
+    setSelection: (newSelection: object | undefined) => void,
 }
 
 export type uiStore = uiState & uiActions;

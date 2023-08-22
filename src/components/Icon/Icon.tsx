@@ -47,18 +47,20 @@ const Icon = (props: IconProps) => {
     className.trim();
 
     const onClick = (ev: any) => {
-        // enable icon in any case by clicking, if it is disabled
-        if (isDisabled) toggleDisableIcon(iconName);
-        else {
+    }
+
+    const onLongPress = () => {
+        // enable icon in any case by long press, if it is disabled
+        if (isDisabled) {
+            toggleDisableIcon(iconName);
+            return;
+        } else {
             if (isDisabledToggleActive) {
                 toggleDisableIcon(iconName);
             } else if (isOpacityToogleActive && opacityToogleCallback !== undefined) {
                 opacityToogleCallback(iconName);
             }
         }
-    }
-
-    const onLongPress = (ev: any) => {
         if (selectColumnIconOnLongpress !== undefined) {
                 setPossibleIcons([iconName], selectColumnIconOnLongpress);
         }

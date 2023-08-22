@@ -3,8 +3,8 @@ import { longPressDefaultDuration } from '../constants';
 import useUiStore from '../store/uiStore';
 
 type useLongPressParams = {
-  onClickHandler: Function,
-  onLongPressHandler: Function,
+  onClickHandler: (ev?: any) => void,
+  onLongPressHandler: () => void,
   longPressDuration?: number};
 
 export default function useLongPress({

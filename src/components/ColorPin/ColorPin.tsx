@@ -70,13 +70,19 @@ const ColorPin = (props: ColorPinProps) => {
     className.trim();
 
     const onClick = (ev: any) => {
-        // enable color or icon in any case by clicking, if it is disabled
+        setIsRenderingColorSelector(false);
+        setIsRenderingIconSelector(false);
+    }
+
+    const onLongPress = () => {
+        // enable color or icon in any case by long press, if it is disabled
         if (isDisabled) {
             if (iconName !== undefined) {
                 toggleDisableIcon(iconName);
             } else {
                 toggleDisableColor(color);
             }
+            return;
         }
         else {
             if (isDisabledToggleActive) {
@@ -89,11 +95,6 @@ const ColorPin = (props: ColorPinProps) => {
                 }
             }
         }
-        setIsRenderingColorSelector(false);
-        setIsRenderingIconSelector(false);
-    }
-
-    const onLongPress = (ev: any) => {
         if (canRenderColorSelector === true) {
             setIsRenderingColorSelector(true);
         }

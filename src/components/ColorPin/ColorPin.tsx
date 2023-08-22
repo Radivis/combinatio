@@ -70,6 +70,13 @@ const ColorPin = (props: ColorPinProps) => {
     className.trim();
 
     const onClick = (ev: any) => {
+        if (!isDisabled && isOpacityToogleActive && opacityToogleCallback !== undefined) {
+            if (iconName !== undefined) {
+                opacityToogleCallback(iconName);
+            } else {
+                opacityToogleCallback(color);
+            }
+        }
         setIsRenderingColorSelector(false);
         setIsRenderingIconSelector(false);
     }
@@ -87,12 +94,6 @@ const ColorPin = (props: ColorPinProps) => {
         else {
             if (isDisabledToggleActive) {
                 toggleDisableColor(color);
-            } else if (isOpacityToogleActive && opacityToogleCallback !== undefined) {
-                if (iconName !== undefined) {
-                    opacityToogleCallback(iconName);
-                } else {
-                    opacityToogleCallback(color);
-                }
             }
         }
         if (canRenderColorSelector === true) {

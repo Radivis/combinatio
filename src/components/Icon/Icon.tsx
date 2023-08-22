@@ -47,6 +47,12 @@ const Icon = (props: IconProps) => {
     className.trim();
 
     const onClick = (ev: any) => {
+        if (!isDisabled
+            && isOpacityToogleActive
+            && opacityToogleCallback !== undefined)
+        {
+            opacityToogleCallback(iconName);
+        }
     }
 
     const onLongPress = () => {
@@ -54,13 +60,9 @@ const Icon = (props: IconProps) => {
         if (isDisabled) {
             toggleDisableIcon(iconName);
             return;
-        } else {
-            if (isDisabledToggleActive) {
-                toggleDisableIcon(iconName);
-            } else if (isOpacityToogleActive && opacityToogleCallback !== undefined) {
-                opacityToogleCallback(iconName);
-            }
-        }
+        } else if (isDisabledToggleActive) {
+            toggleDisableIcon(iconName);
+        } 
         if (selectColumnIconOnLongpress !== undefined) {
                 setPossibleIcons([iconName], selectColumnIconOnLongpress);
         }

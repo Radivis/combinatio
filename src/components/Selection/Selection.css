@@ -1,4 +1,22 @@
 .selection-container {
     position: sticky;
-    top: 36px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    bottom: 10px;
+    left: 0px;
+}
+
+.selection-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 2px; 
 }

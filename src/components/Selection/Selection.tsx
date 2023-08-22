@@ -41,22 +41,27 @@ const Selection = () => {
     
     return (
         <div className="selection-container">
-            {selectionDataToRender !== null && 
-            <span>Selected Piece:</span>}
-            {selectionClassToRender === 'ColorIcon' && selectionDataToRender instanceof ColorIcon ? (
-                <ColorPin
-                    color = {selectionDataToRender.color}
-                    iconName = {selectionDataToRender.iconName}
+            {selectionDataToRender !== null &&
+            <>
+                <span>Selected Piece:</span>
+                <div className="selection-box">
+                {selectionClassToRender === 'ColorIcon' && selectionDataToRender instanceof ColorIcon ? (
+                    <ColorPin
+                        color = {selectionDataToRender.color}
+                        iconName = {selectionDataToRender.iconName}
+                    />
+                ) : selectionClassToRender === 'Color' && selectionDataToRender instanceof Color ? (
+                    <ColorPin
+                    color = {selectionDataToRender}
                 />
-            ) : selectionClassToRender === 'Color' && selectionDataToRender instanceof Color ? (
-                <ColorPin
-                color = {selectionDataToRender}
-            />
-            ) : selectionClassToRender === 'Icon' && typeof selectionDataToRender === 'string' ? (
-                <Icon 
-                    iconName={selectionDataToRender}
-                />
-            ) : null}
+                ) : selectionClassToRender === 'Icon' && typeof selectionDataToRender === 'string' ? (
+                    <Icon 
+                        iconName={selectionDataToRender}
+                    />
+                ) : null}
+                </div>
+            </>
+            }
         </div>
     );
 }

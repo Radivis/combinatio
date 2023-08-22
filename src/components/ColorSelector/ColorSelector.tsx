@@ -48,6 +48,7 @@ const ColorSelector = (props: colorSelectorProps) => {
             })
         }
         onClose(ev);
+        ev.stopPropagation();
     }
 
     const onUnsetColor = (ev: any) => {

@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import Selection from './components/Selection/Selection';
 
 import {
 	faAsterisk,
@@ -140,6 +141,7 @@ const App = () => {
 					<Game />
 				}
 			</main>
+            <Selection />
 		</div>
   	);
 }

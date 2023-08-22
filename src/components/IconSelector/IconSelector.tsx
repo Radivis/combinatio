@@ -43,6 +43,7 @@ const IconSelector = (props: colorSelectorProps) => {
             })
         }
         onClose(ev);
+        ev.stopPropagation();
     }
 
     const onUnsetIcon = (ev: any) => {

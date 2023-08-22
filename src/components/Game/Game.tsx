@@ -109,7 +109,6 @@ const Game = (props: gameProps) => {
         <button onClick={reset}>
             Start new game
         </button>
-        <Selection />
         <div className="game">
             {isLegendDisplayed && <Legend />}
             <div className="board">

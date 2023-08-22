@@ -77,9 +77,13 @@ const ColorSelector = (props: colorSelectorProps) => {
                 onClick={onClose}
             >x</button>
             {paletteColors.map((color: Color, colorIndex: number) => {
+                const colorString = paletteColors[colorIndex].serialize();
                 return (
-                    <div onClick = {(ev) => onClick(ev, colorIndex)}>
-                        <ColorPin 
+                    <div
+                        key = {`${colorString}-ColorPin-container`}
+                        onClick = {(ev) => onClick(ev, colorIndex)}>
+                        <ColorPin
+                            key = {`${colorString}-ColorPin`}
                             color = {color} 
                         />
                     </div>                

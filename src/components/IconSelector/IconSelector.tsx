@@ -73,8 +73,11 @@ const IconSelector = (props: colorSelectorProps) => {
             >x</button>
             {iconCollectionNames.map((iconName: string, iconIndex: number) => {
                 return (
-                    <div onClick = {(ev) => onClick(ev, iconIndex)}>
+                    <div
+                        key={`${iconCollectionNames[iconIndex]}-icon-container`}
+                        onClick = {(ev) => onClick(ev, iconIndex)}>
                         <Icon 
+                            key={`${iconCollectionNames[iconIndex]}-icon`}
                             iconName = {iconName} 
                         />
                     </div>                

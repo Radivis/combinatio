@@ -4,6 +4,7 @@ import useLongPress from '../../hooks/useLongPress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { longPressExtendedDuration } from '../../constants';
+import { useState } from 'react';
 
 interface IconProps {
     iconName: string;
@@ -29,6 +30,8 @@ const Icon = (props: IconProps) => {
         opacityToogleCallback,
     } = props;
 
+    const [isBeingSelected, setIsBeingSelected] = useState<boolean>(false);
+
     const longPressDuration = longPressExtendedDuration;
 
     let {isOpaque} = props;
@@ -44,9 +47,12 @@ const Icon = (props: IconProps) => {
     className += isOpaque ? 'opaque-icon ' : '';
     className += isDisabled ? 'disabled-icon ' : '';
     className += isHighlighted ? 'highlighted-icon ' : '';
+    className += isBeingSelected ? 'pick-up ' : '';
     className.trim();
 
     const onClick = (ev: any) => {
+        setIsBeingSelected(true);
+        setTimeout(() => { setIsBeingSelected(false);}, 1000);
         if (!isDisabled
             && isOpacityToogleActive
             && opacityToogleCallback !== undefined)

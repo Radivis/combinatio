@@ -141,6 +141,7 @@ const CombinationNotesRow = (props: tuplesHintsRowProps) => {
                             rowIndex={rowIndex}
                             iconName={colorIcon.iconName}
                             key={columnIndex}
+                            isSelectionTarget = {true}
                             isDisabled={disabledColors.has(colorIcon.color)}
                             areIconsTransparent = {pieceType !== pieceTypes.icon}
                             canRenderColorSelector={pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon}

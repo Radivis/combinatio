@@ -9,6 +9,8 @@ import ColorSelector from "../ColorSelector/ColorSelector";
 import IconSelector from "../IconSelector/IconSelector";
 import Colors from "../../util/Colors";
 import { longPressDefaultDuration, longPressExtendedDuration } from "../../constants";
+import useUiStore from "../../store/uiStore";
+import { uiStore } from "../../interfaces/types";
 
 interface ColorPinProps {
     color: Color;
@@ -27,6 +29,7 @@ interface ColorPinProps {
     isOpacityToogleActive?: boolean,
     isDisabledToggleActive?: boolean,
     isRenderingColorSelector?: boolean,
+    isSelectionTarget?: boolean,
     opacityToogleCallback?: (piece: Color | string) => void,
 }
 
@@ -45,6 +48,7 @@ const ColorPin = (props: ColorPinProps) => {
         isDisabledToggleActive,
         isDisabled,
         isHighlighted,
+        isSelectionTarget,
         opacityToogleCallback,
     } = props;
 
@@ -54,7 +58,13 @@ const ColorPin = (props: ColorPinProps) => {
 
     const [isRenderingColorSelector, setIsRenderingColorSelector] = useState<boolean>(false);
     const [isRenderingIconSelector, setIsRenderingIconSelector] = useState<boolean>(false);
-    const [isSelected, setIsSelected] = useState<boolean>(false);
+    const [isBeingSelected, setIsBeingSelected] = useState<boolean>(false);
+    const [isBeingDropped, setIsBeingDropped] = useState<boolean>(false);
+
+    const { selection } = useUiStore((state: uiStore) => {
+        const { selection } = state;
+        return { selection };
+    });
 
     let {isOpaque} = props;
     if (isOpaque === undefined) isOpaque = false;
@@ -68,12 +78,17 @@ const ColorPin = (props: ColorPinProps) => {
     className += isOpaque ? 'opaque-color ' : '';
     className += isDisabled ? 'disabled-color ' : '';
     className += isHighlighted ? 'highlighted-color ' : '';
-    className += isSelected ? 'pick-up ' : '';
+    className += isBeingSelected ? 'pick-up ' : '';
+    className += isBeingDropped ? 'drop-down ' : '';
     className.trim();
 
     const onClick = (ev: any) => {
-        setIsSelected(true);
-        setTimeout(() => { setIsSelected(false);}, 1000);
+        if (isSelectionTarget === true && selection !== undefined) {
+            setIsBeingDropped(true);
+            setTimeout(() => { setIsBeingDropped(false);}, 500);
+        }
+        setIsBeingSelected(true);
+        setTimeout(() => { setIsBeingSelected(false);}, 500);
         if (!isDisabled && isOpacityToogleActive && opacityToogleCallback !== undefined) {
             if (iconName !== undefined) {
                 opacityToogleCallback(iconName);

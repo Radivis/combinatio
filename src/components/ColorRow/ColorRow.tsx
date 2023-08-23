@@ -95,8 +95,6 @@ const ColorRow = (props: colorRowProps) => {
                 column: columnIndex
             })
         }
-
-
     }
 
     return <div className='colorRow'>
@@ -127,6 +125,7 @@ const ColorRow = (props: colorRowProps) => {
                         color = {color}
                         iconName = {iconName}
                         areIconsTransparent = {pieceType !== pieceTypes.icon}
+                        isSelectionTarget = {true}
                         canRenderColorSelector = {isActiveRow
                             && (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon)}
                         canRenderIconSelector = {isActiveRow

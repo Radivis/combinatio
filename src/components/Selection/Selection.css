@@ -1,5 +1,5 @@
 .selection-container {
-    position: sticky;
+    position: fixed;
     display: flex;
     justify-content: flex-start;
     align-items: center;

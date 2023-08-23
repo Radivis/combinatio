@@ -54,6 +54,7 @@ const ColorPin = (props: ColorPinProps) => {
 
     const [isRenderingColorSelector, setIsRenderingColorSelector] = useState<boolean>(false);
     const [isRenderingIconSelector, setIsRenderingIconSelector] = useState<boolean>(false);
+    const [isSelected, setIsSelected] = useState<boolean>(false);
 
     let {isOpaque} = props;
     if (isOpaque === undefined) isOpaque = false;
@@ -67,9 +68,12 @@ const ColorPin = (props: ColorPinProps) => {
     className += isOpaque ? 'opaque-color ' : '';
     className += isDisabled ? 'disabled-color ' : '';
     className += isHighlighted ? 'highlighted-color ' : '';
+    className += isSelected ? 'pick-up ' : '';
     className.trim();
 
     const onClick = (ev: any) => {
+        setIsSelected(true);
+        setTimeout(() => { setIsSelected(false);}, 1000);
         if (!isDisabled && isOpacityToogleActive && opacityToogleCallback !== undefined) {
             if (iconName !== undefined) {
                 opacityToogleCallback(iconName);

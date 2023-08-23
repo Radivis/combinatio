@@ -3,6 +3,11 @@ import './VersionHistory.css';
 const VersionHistory = () => {
     return (
         <div>
+            <h2>V0.6.3</h2>
+            <ul className='version-history-list'>
+                <li>Disabling and re-enabling a piece works with long press instead of click now</li>
+                <li>Clicking a piece now puts it into the current selection</li>
+            </ul>
             <h2>V0.6.2</h2>
             <ul className='version-history-list'>
                 <li>The "zanthia" color palette works again</li>

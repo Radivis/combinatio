@@ -114,6 +114,7 @@ const App = () => {
 	let [activePage, setActivePage] = useState<string>('game');
     let [mouseX, setMouseX] = useState<number>(0);
     let [mouseY, setMouseY] = useState<number>(0);
+    let [drop, setDrop] = useState<boolean>(false);
 
 	const { isVisible, messageHeader, messageBody, setModal } = useGameStore((state) => {
 		const { modal, setModal } = state;
@@ -134,13 +135,15 @@ const App = () => {
 
     const onClick: MouseEventHandler = (ev) => {
         if (selection !== undefined) {
-            setSelection(undefined);
+            setDrop(true);
+            setTimeout(() => {
+                setSelection(undefined);
+                setDrop(false);
+            }, 500);
         }
     }
 
     const onMouseMove: MouseEventHandler = (ev) => {
-        console.log(ev.clientX);
-        console.log(ev.clientY);
         setMouseX(ev.clientX);
         setMouseY(ev.clientY);
     }
@@ -160,14 +163,15 @@ const App = () => {
             overlayElement = <ColorPin
                 color={color}
                 iconName={iconName}
+                drop={drop}
             />
         } else if (hasIcon) {
             overlayElement = <Icon
                 iconName={selection['iconName'] as string}
+                drop={drop}
             />
         }
     }
-
 
  	return (
 		<div

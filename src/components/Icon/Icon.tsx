@@ -7,7 +7,8 @@ import { longPressExtendedDuration } from '../../constants';
 import { useState } from 'react';
 
 interface IconProps {
-    iconName: string;
+    iconName: string,
+    drop?: boolean,
     isTransparent?: boolean,
     isDisabled?: boolean,
     isOpaque?: boolean,
@@ -20,6 +21,7 @@ interface IconProps {
 
 const Icon = (props: IconProps) => {
     const {
+        drop,
         iconName,
         isOpacityToogleActive,
         isDisabledToggleActive,

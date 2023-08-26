@@ -4,7 +4,7 @@ import './ColorPin.css';
 import useGameStore from "../../store/gameStore";
 import Icon from "../Icon/Icon";
 import useLongPress from "../../hooks/useLongPress";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ColorSelector from "../ColorSelector/ColorSelector";
 import IconSelector from "../IconSelector/IconSelector";
 import Colors from "../../util/Colors";
@@ -22,6 +22,7 @@ interface ColorPinProps {
     canRenderColorSelector?: boolean;
     canRenderIconSelector?: boolean;
     selectColumnColorOnLongpress?: number;
+    drop?: boolean;
     iconName?: string;
     isDisabled?: boolean,
     isOpaque?: boolean,
@@ -44,6 +45,7 @@ const ColorPin = (props: ColorPinProps) => {
         canRenderColorSelector,
         canRenderIconSelector,
         selectColumnColorOnLongpress,
+        drop,
         isOpacityToogleActive,
         isDisabledToggleActive,
         isDisabled,
@@ -60,6 +62,15 @@ const ColorPin = (props: ColorPinProps) => {
     const [isRenderingIconSelector, setIsRenderingIconSelector] = useState<boolean>(false);
     const [isBeingSelected, setIsBeingSelected] = useState<boolean>(false);
     const [isBeingDropped, setIsBeingDropped] = useState<boolean>(false);
+
+    // Update drop state, on props change
+    useEffect(() => {
+        if (drop !== undefined) {
+            setIsBeingDropped(drop);
+        }
+    }, [drop])
+
+    if (isBeingDropped) console.log("ColorPin is being dropped");
 
     const { selection } = useUiStore((state: uiStore) => {
         const { selection } = state;

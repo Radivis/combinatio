@@ -37,10 +37,6 @@
   animation: pick-up 0.5s linear 0s 1 normal;
 }
 
-.drop-down {
-  animation: drop-down 0.5s linear 0s 1 normal;
-}
-
 @keyframes pick-up {
   0%{
     transform: scale(1);
@@ -66,6 +62,10 @@
   }
 }
 
+.drop-down {
+  animation: drop-down 0.5s linear 0s 1 normal;
+}
+
 @keyframes drop-down {
   0%{
     transform: scale(2.25);
@@ -89,5 +89,36 @@
   }
   100%{
     transform: scale(1);
+  }
+}
+
+.discard {
+  animation: discard 0.5s linear 0s 1 normal;
+}
+
+@keyframes discard {
+  0%{
+    transform: scale(1);
+    opacity: 1;
+  }
+  20%{
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  40%{
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+  60%{
+    transform: scale(0.4);
+    opacity: 0.4;
+  }
+  80%{
+    transform: scale(0.2);
+    opacity: 0.2;
+  }
+  100%{
+    transform: scale(0);
+    opacity: 0;
   }
 }

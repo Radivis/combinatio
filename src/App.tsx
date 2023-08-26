@@ -114,7 +114,7 @@ const App = () => {
 	let [activePage, setActivePage] = useState<string>('game');
     let [mouseX, setMouseX] = useState<number>(0);
     let [mouseY, setMouseY] = useState<number>(0);
-    let [drop, setDrop] = useState<boolean>(false);
+    let [discard, setDiscard] = useState<boolean>(false);
 
 	const { isVisible, messageHeader, messageBody, setModal } = useGameStore((state) => {
 		const { modal, setModal } = state;
@@ -135,10 +135,10 @@ const App = () => {
 
     const onClick: MouseEventHandler = (ev) => {
         if (selection !== undefined) {
-            setDrop(true);
+            setDiscard(true);
             setTimeout(() => {
                 setSelection(undefined);
-                setDrop(false);
+                setDiscard(false);
             }, 500);
         }
     }
@@ -163,12 +163,12 @@ const App = () => {
             overlayElement = <ColorPin
                 color={color}
                 iconName={iconName}
-                drop={drop}
+                discard={discard}
             />
         } else if (hasIcon) {
             overlayElement = <Icon
                 iconName={selection['iconName'] as string}
-                drop={drop}
+                drop={discard}
             />
         }
     }

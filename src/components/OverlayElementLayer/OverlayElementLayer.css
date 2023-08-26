@@ -1,0 +1,5 @@
+.overlay-element-layer-container{
+    position: fixed;
+    width: fit-content;
+    height: fit-content;
+}

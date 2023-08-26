@@ -58,6 +58,10 @@ import ErrorModal from './components/ErrorModal/ErrorModal';
 import VersionHistory from './components/VersionHistory/VersionHistory';
 import useUiStore from './store/uiStore';
 import { uiStore } from './interfaces/types';
+import ColorPin from './components/ColorPin/ColorPin';
+import Color from './util/Color';
+import OverlayElementLayer from './components/OverlayElementLayer/OverlayElementLayer';
+import Icon from './components/Icon/Icon';
 
 library.add(
 	fas,
@@ -108,6 +112,8 @@ library.add(
 const App = () => {
 
 	let [activePage, setActivePage] = useState<string>('game');
+    let [mouseX, setMouseX] = useState<number>(0);
+    let [mouseY, setMouseY] = useState<number>(0);
 
 	const { isVisible, messageHeader, messageBody, setModal } = useGameStore((state) => {
 		const { modal, setModal } = state;
@@ -130,12 +136,51 @@ const App = () => {
         if (selection !== undefined) {
             setSelection(undefined);
         }
-        console.log(ev.clientX);
-        console.log(ev.clientY);
     }
 
+    const onMouseMove: MouseEventHandler = (ev) => {
+        console.log(ev.clientX);
+        console.log(ev.clientY);
+        setMouseX(ev.clientX);
+        setMouseY(ev.clientY);
+    }
+
+    let overlayElement = null;
+    if (selection !== undefined) {
+        const hasColor = 'hue' in selection && typeof selection['hue'] === 'number'
+            && 'saturation' in selection && typeof selection['saturation'] === 'number'
+            && 'lightness' in selection && typeof selection['lightness'] === 'number';
+        const hasIcon = 'iconName' in selection && typeof selection['iconName'] === 'string';
+        if (hasColor) {
+            const hue: number = selection['hue'] as number;
+            const saturation: number = selection['saturation'] as number;
+            const lightness: number = selection['lightness'] as number;
+            const color = new Color(hue, saturation, lightness)
+            const iconName = hasIcon ? selection['iconName'] as string : undefined
+            overlayElement = <ColorPin
+                color={color}
+                iconName={iconName}
+            />
+        } else if (hasIcon) {
+            overlayElement = <Icon
+                iconName={selection['iconName'] as string}
+            />
+        }
+    }
+
+
  	return (
-		<div className="App" onClick={(ev) => onClick(ev)}>
+		<div
+            className="App"
+            onClick={(ev) => onClick(ev)}
+            onMouseMove={(ev) => onMouseMove(ev)}
+        >
+            <OverlayElementLayer
+                x={mouseX}
+                y={mouseY}
+            >
+                {overlayElement}
+            </OverlayElementLayer>
 			<AppHeader 
 				setActivePage={setActivePage}
 			/>

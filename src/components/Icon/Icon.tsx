@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 interface IconProps {
     iconName: string,
-    drop?: boolean,
+    discard?: boolean,
     isTransparent?: boolean,
     isDisabled?: boolean,
     isOpaque?: boolean,
@@ -21,7 +21,7 @@ interface IconProps {
 
 const Icon = (props: IconProps) => {
     const {
-        drop,
+        discard,
         iconName,
         isOpacityToogleActive,
         isDisabledToggleActive,
@@ -50,6 +50,7 @@ const Icon = (props: IconProps) => {
     className += isDisabled ? 'disabled-icon ' : '';
     className += isHighlighted ? 'highlighted-icon ' : '';
     className += isBeingSelected ? 'pick-up ' : '';
+    className += discard ? 'discard ' : '';
     className.trim();
 
     const onClick = (ev: any) => {

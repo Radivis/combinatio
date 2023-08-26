@@ -168,7 +168,7 @@ const App = () => {
         } else if (hasIcon) {
             overlayElement = <Icon
                 iconName={selection['iconName'] as string}
-                drop={discard}
+                discard={discard}
             />
         }
     }

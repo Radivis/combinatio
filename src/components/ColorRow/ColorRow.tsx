@@ -125,7 +125,7 @@ const ColorRow = (props: colorRowProps) => {
                         color = {color}
                         iconName = {iconName}
                         areIconsTransparent = {pieceType !== pieceTypes.icon}
-                        isSelectionTarget = {true}
+                        isSelectionTarget = {isActiveRow}
                         canRenderColorSelector = {isActiveRow
                             && (pieceType === pieceTypes.color || pieceType === pieceTypes.colorIcon)}
                         canRenderIconSelector = {isActiveRow

@@ -16,7 +16,11 @@ const GameRow = (props: gameRowProps) => {
         activeRowIndex,
     } = props;
 
-    return <div className="game-row">
+    let gameRowContainerClassName = 'game-row '
+    if (activeRowIndex === rowIndex) gameRowContainerClassName += 'highlighted ';
+    gameRowContainerClassName.trim();
+
+    return <div className={gameRowContainerClassName}>
         <div className="row-index-container">
             {rowIndex}
         </div>

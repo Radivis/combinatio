@@ -8,6 +8,10 @@
     padding: 5px;
 }
 
+.game-row.highlighted {
+    background-color: hsl(34,79%,70%);
+}
+
 .row-index-container {
     width: 18px;
 }

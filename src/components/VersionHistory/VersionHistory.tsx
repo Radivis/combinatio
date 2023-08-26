@@ -7,6 +7,7 @@ const VersionHistory = () => {
             <ul className='version-history-list'>
                 <li>Disabling and re-enabling a piece works with long press instead of click now</li>
                 <li>Clicking a piece now puts it into the current selection</li>
+                <li>The currently active row of the game is now highlighted</li>
             </ul>
             <h2>V0.6.2</h2>
             <ul className='version-history-list'>

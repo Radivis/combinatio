@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {MouseEventHandler, useState} from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import Selection from './components/Selection/Selection';
@@ -56,6 +56,8 @@ import AppHeader from './components/AppHeader/AppHeader';
 import useGameStore from './store/gameStore';
 import ErrorModal from './components/ErrorModal/ErrorModal';
 import VersionHistory from './components/VersionHistory/VersionHistory';
+import useUiStore from './store/uiStore';
+import { uiStore } from './interfaces/types';
 
 library.add(
 	fas,
@@ -113,14 +115,27 @@ const App = () => {
 		return { isVisible, messageHeader, messageBody, setModal };
 	})
 
+    const { selection, setSelection } = useUiStore((state: uiStore) => {
+        const { selection, setSelection } = state;
+        return { selection, setSelection };
+    });
+
 	const onDismiss = () => setModal({
 		messageHeader: '',
 		messageBody: '',
 		isVisible: false,
 	})
 
+    const onClick: MouseEventHandler = (ev) => {
+        if (selection !== undefined) {
+            setSelection(undefined);
+        }
+        console.log(ev.clientX);
+        console.log(ev.clientY);
+    }
+
  	return (
-		<div className="App">
+		<div className="App" onClick={(ev) => onClick(ev)}>
 			<AppHeader 
 				setActivePage={setActivePage}
 			/>

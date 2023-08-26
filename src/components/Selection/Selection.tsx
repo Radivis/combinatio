@@ -49,6 +49,7 @@ const Selection = () => {
                     <ColorPin
                         color = {selectionDataToRender.color}
                         iconName = {selectionDataToRender.iconName}
+                        areIconsTransparent = {true}
                     />
                 ) : selectionClassToRender === 'Color' && selectionDataToRender instanceof Color ? (
                     <ColorPin

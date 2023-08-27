@@ -37,7 +37,6 @@ const DropTarget = (props: any) => {
 
     const onMouseLeave = (ev: any) => {
         setIsGlobalClickSuppressed(false);
-        console.log("leaving drop target");
     }
       
     return (

@@ -18,9 +18,11 @@ import IconBuckets from "../IconBuckets/IconBuckets";
 import Legend from "../Legend/Legend";
 
 interface gameProps {
+    isTouchScreenDevice: boolean;
 }
 
 const Game = (props: gameProps) => {
+    const { isTouchScreenDevice } = props;
     const [
         areColorAmountHintsActive,
         areSlotHintsActive,
@@ -124,7 +126,7 @@ const Game = (props: gameProps) => {
                     numColumns={numColumns}
                     activeRowIndex = {activeRowIndex}
                 />)}
-                <Selection />
+                {isTouchScreenDevice && <Selection />}
                 {areSlotHintsActive && <SlotHints
                     numColumns={numColumns}
                     baseColorsDataString={paletteColorsDataString}

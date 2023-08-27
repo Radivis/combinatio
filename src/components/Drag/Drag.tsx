@@ -23,7 +23,6 @@ const Drag = (props: any) => {
 
     const onMouseLeave = (ev: any) => {
         setIsGlobalClickSuppressed(false);
-        console.log("leaving drag element boundary");
     }
 
     const startDrag = (ev: any) => {

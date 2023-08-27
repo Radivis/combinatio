@@ -57,10 +57,7 @@ import ErrorModal from './components/ErrorModal/ErrorModal';
 import VersionHistory from './components/VersionHistory/VersionHistory';
 import useUiStore from './store/uiStore';
 import { uiStore } from './interfaces/types';
-import ColorPin from './components/ColorPin/ColorPin';
-import Color from './util/Color';
 import OverlayElementLayer from './components/OverlayElementLayer/OverlayElementLayer';
-import Icon from './components/Icon/Icon';
 
 library.add(
 	fas,
@@ -149,17 +146,26 @@ const App = () => {
         }
     }
 
+    const isTouchScreenDevice = (() => {
+        try{
+            document.createEvent('TouchEvent');
+            return true;
+        } catch(e) {
+            return false;
+        }
+    })();
+
  	return (
 		<div
             className="App"
             onClick={(ev) => onClick(ev)}
             onMouseMove={(ev) => onMouseMove(ev)}
         >
-            <OverlayElementLayer
+            {!isTouchScreenDevice && <OverlayElementLayer
                 x = {mouseX}
                 y = {mouseY}
                 discard = {discard}
-            />
+            />}
 			<AppHeader 
 				setActivePage={setActivePage}
 			/>
@@ -177,7 +183,7 @@ const App = () => {
                 activePage === 'version-history' ?
                     <VersionHistory />
                 :
-					<Game />
+					<Game isTouchScreenDevice={isTouchScreenDevice} />
 				}
 			</main>
 		</div>

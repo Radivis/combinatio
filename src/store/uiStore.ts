@@ -10,7 +10,6 @@ const useUiStore = create<uiStore>()(
         selection: {},
         selectionStatus: selectionStatusType.EMPTY,
         setIsGlobalClickSuppressed: (value: boolean) => {
-            console.log('isGlobalClickSuppressed', value);
             set((state: uiState) => {
                 state.isGlobalClickSuppressed = value;
             });

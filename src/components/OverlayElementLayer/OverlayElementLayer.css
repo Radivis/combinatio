@@ -3,6 +3,7 @@
     width: 100%;
     height: 100%;
     z-index: 5000;
+    /* Mouse events should pass through this transparent layer! */
     pointer-events: none;
 }
 

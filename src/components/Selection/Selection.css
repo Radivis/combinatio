@@ -1,12 +1,10 @@
 .selection-container {
-    position: fixed;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    bottom: 10px;
-    left: 0px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
 
 .selection-box{
@@ -19,4 +17,9 @@
     width: 36px;
     height: 36px;
     padding: 2px; 
+}
+
+.selection-text {
+    font-weight: bold;
+    font-size: large;
 }

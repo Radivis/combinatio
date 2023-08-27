@@ -124,6 +124,7 @@ const Game = (props: gameProps) => {
                     numColumns={numColumns}
                     activeRowIndex = {activeRowIndex}
                 />)}
+                <Selection />
                 {areSlotHintsActive && <SlotHints
                     numColumns={numColumns}
                     baseColorsDataString={paletteColorsDataString}

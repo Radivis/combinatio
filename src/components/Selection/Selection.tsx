@@ -43,7 +43,7 @@ const Selection = () => {
         <div className="selection-container">
             {selectionDataToRender !== null &&
             <>
-                <span>Selected Piece:</span>
+                <span className="selection-text">Selected Piece:</span>
                 <div className="selection-box">
                 {selectionClassToRender === 'ColorIcon' && selectionDataToRender instanceof ColorIcon ? (
                     <ColorPin

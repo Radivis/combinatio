@@ -5,13 +5,14 @@ import { immer } from "zustand/middleware/immer";
 
 const useUiStore = create<uiStore>()(
     immer((set, get) => ({
-        isClickSuppressed: false,
+        isGlobalClickSuppressed: false,
         isLongPressSuppressed: false,
         selection: {},
         selectionStatus: selectionStatusType.EMPTY,
-        setIsClickSuppressed: (value: boolean) => {
+        setIsGlobalClickSuppressed: (value: boolean) => {
+            console.log('isGlobalClickSuppressed', value);
             set((state: uiState) => {
-                state.isClickSuppressed = value;
+                state.isGlobalClickSuppressed = value;
             });
         },
         setIsLongPressSuppressed: (value: boolean) => {
@@ -21,7 +22,6 @@ const useUiStore = create<uiStore>()(
         },
         setSelection: (newSelection: object | undefined) => {
             const { selectionStatus } = get();
-            console.log('newSelection', newSelection);
             set((state: uiState) => {
                 if (selectionStatus !== selectionStatusType.DISCARDING) {
                     state.selection = newSelection;

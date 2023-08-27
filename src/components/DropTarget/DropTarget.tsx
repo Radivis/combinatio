@@ -6,9 +6,9 @@ import useUiStore from "../../store/uiStore";
 const DropTarget = (props: any) => {
     const { children, onItemDropped } = props;
 
-    const { selection, setSelection } = useUiStore((state: uiStore) => {
-        const { selection, setSelection } = state;
-        return { selection, setSelection } 
+    const { selection, setSelection, setIsGlobalClickSuppressed } = useUiStore((state: uiStore) => {
+        const { selection, setSelection, setIsGlobalClickSuppressed } = state;
+        return { selection, setSelection, setIsGlobalClickSuppressed } 
     })
 
     const dragOver = (ev: any) => {
@@ -29,9 +29,24 @@ const DropTarget = (props: any) => {
             setSelection(undefined);
         }
     }
+
+    // Suppress global clicks, so that the selection cannot be discarded by accident
+    const onMouseEnter = (ev: any) => {
+        setIsGlobalClickSuppressed(true);
+    }
+
+    const onMouseLeave = (ev: any) => {
+        setIsGlobalClickSuppressed(false);
+    }
       
     return (
-        <div onDragOver={dragOver} onDrop={drop} onClick={onClick}>
+        <div
+            onDragOver={dragOver}
+            onDrop={drop}
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             {children}
         </div>
     );

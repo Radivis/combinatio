@@ -1,7 +1,6 @@
 import {MouseEventHandler, useState} from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import Selection from './components/Selection/Selection';
 
 import {
 	faAsterisk,
@@ -122,9 +121,9 @@ const App = () => {
 		return { isVisible, messageHeader, messageBody, setModal };
 	})
 
-    const { isClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus } = useUiStore((state: uiStore) => {
-        const { isClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus } = state;
-        return { isClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus };
+    const { isGlobalClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus } = useUiStore((state: uiStore) => {
+        const { isGlobalClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus } = state;
+        return { isGlobalClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus };
     });
 
 	const onDismiss = () => setModal({
@@ -134,7 +133,7 @@ const App = () => {
 	})
 
     const onClick: MouseEventHandler = (ev) => {
-        if (selection !== undefined) {
+        if (selection !== undefined && isGlobalClickSuppressed !== true) {
             discardSelection();
             setDiscard(true);
             setTimeout(() => {
@@ -205,7 +204,6 @@ const App = () => {
 					<Game />
 				}
 			</main>
-            <Selection />
 		</div>
   	);
 }

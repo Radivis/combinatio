@@ -91,7 +91,7 @@ export enum selectionStatusType {
 } 
 
 export type uiState = {
-    isClickSuppressed: boolean;
+    isGlobalClickSuppressed: boolean;
     isLongPressSuppressed: boolean;
     selection: object | undefined;
     selectionStatus: selectionStatusType;
@@ -99,7 +99,7 @@ export type uiState = {
 
 export type uiActions = {
     discardSelection: () => void;
-    setIsClickSuppressed: (value: boolean) => void,
+    setIsGlobalClickSuppressed: (value: boolean) => void,
     setIsLongPressSuppressed: (value: boolean) => void,
     setSelection: (newSelection: object | undefined) => void,
     setSelectionStatus: (newSelectionStatus: selectionStatusType) => void,

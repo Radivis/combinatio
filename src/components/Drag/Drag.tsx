@@ -5,17 +5,24 @@ import './Drag.css'
 const Drag = (props: any) => {
     const { children, dragPayloadObject, isActive } = props;
 
-    const { setIsClickSuppressed, setIsLongPressSuppressed, setSelection } = useUiStore((state: uiStore) => {
-        const { setIsClickSuppressed, setIsLongPressSuppressed, setSelection } = state;
-        return { setIsClickSuppressed, setIsLongPressSuppressed, setSelection }
+    const { setIsGlobalClickSuppressed, setIsLongPressSuppressed, setSelection } = useUiStore((state: uiStore) => {
+        const { setIsGlobalClickSuppressed, setIsLongPressSuppressed, setSelection } = state;
+        return { setIsGlobalClickSuppressed, setIsLongPressSuppressed, setSelection }
     })
 
     const onClick = (ev: any) => {
         if (isActive === true) {
             setSelection(dragPayloadObject);
-            // setIsClickSuppressed(true);
-            // setTimeout(() => setIsClickSuppressed(false), 500);
         }
+    }
+
+    // Suppress global clicks, so that the selection cannot be discarded by accident
+    const onMouseEnter = (ev: any) => {
+        setIsGlobalClickSuppressed(true);
+    }
+
+    const onMouseLeave = (ev: any) => {
+        setIsGlobalClickSuppressed(false);
     }
 
     const startDrag = (ev: any) => {
@@ -40,6 +47,8 @@ const Drag = (props: any) => {
                 className="drag"
                 draggable
                 onClick={onClick}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
                 onDragStart={startDrag}
                 onDragEnd={endDrag}
             >

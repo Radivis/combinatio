@@ -5,14 +5,16 @@ import './Drag.css'
 const Drag = (props: any) => {
     const { children, dragPayloadObject, isActive } = props;
 
-    const { setIsLongPressSuppressed, setSelection } = useUiStore((state: uiStore) => {
-        const { setIsLongPressSuppressed, setSelection } = state;
-        return { setIsLongPressSuppressed, setSelection }
+    const { setIsClickSuppressed, setIsLongPressSuppressed, setSelection } = useUiStore((state: uiStore) => {
+        const { setIsClickSuppressed, setIsLongPressSuppressed, setSelection } = state;
+        return { setIsClickSuppressed, setIsLongPressSuppressed, setSelection }
     })
 
     const onClick = (ev: any) => {
         if (isActive === true) {
             setSelection(dragPayloadObject);
+            // setIsClickSuppressed(true);
+            // setTimeout(() => setIsClickSuppressed(false), 500);
         }
     }
 

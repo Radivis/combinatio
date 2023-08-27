@@ -57,7 +57,7 @@ import useGameStore from './store/gameStore';
 import ErrorModal from './components/ErrorModal/ErrorModal';
 import VersionHistory from './components/VersionHistory/VersionHistory';
 import useUiStore from './store/uiStore';
-import { uiStore } from './interfaces/types';
+import { selectionStatusType, uiStore } from './interfaces/types';
 import ColorPin from './components/ColorPin/ColorPin';
 import Color from './util/Color';
 import OverlayElementLayer from './components/OverlayElementLayer/OverlayElementLayer';
@@ -122,9 +122,9 @@ const App = () => {
 		return { isVisible, messageHeader, messageBody, setModal };
 	})
 
-    const { selection, setSelection } = useUiStore((state: uiStore) => {
-        const { selection, setSelection } = state;
-        return { selection, setSelection };
+    const { isClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus } = useUiStore((state: uiStore) => {
+        const { isClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus } = state;
+        return { isClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus };
     });
 
 	const onDismiss = () => setModal({
@@ -135,9 +135,9 @@ const App = () => {
 
     const onClick: MouseEventHandler = (ev) => {
         if (selection !== undefined) {
+            discardSelection();
             setDiscard(true);
             setTimeout(() => {
-                setSelection(undefined);
                 setDiscard(false);
             }, 500);
         }

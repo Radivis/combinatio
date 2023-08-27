@@ -84,14 +84,25 @@ export type gameActions = {
 
 export type gameStore = gameState & gameActions;
 
+export enum selectionStatusType {
+    EMPTY,
+    ACTIVE,
+    DISCARDING,
+} 
+
 export type uiState = {
+    isClickSuppressed: boolean;
     isLongPressSuppressed: boolean;
     selection: object | undefined;
+    selectionStatus: selectionStatusType;
 }
 
 export type uiActions = {
+    discardSelection: () => void;
+    setIsClickSuppressed: (value: boolean) => void,
     setIsLongPressSuppressed: (value: boolean) => void,
     setSelection: (newSelection: object | undefined) => void,
+    setSelectionStatus: (newSelectionStatus: selectionStatusType) => void,
 }
 
 export type uiStore = uiState & uiActions;

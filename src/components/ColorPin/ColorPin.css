@@ -92,7 +92,7 @@
   }
 }
 
-.discard {
+.colorPin.discard {
   animation: discard 0.5s linear 0s 1 normal;
 }
 

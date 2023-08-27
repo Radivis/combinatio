@@ -1,22 +1,57 @@
 import { create } from "zustand";
-import { uiState, uiStore } from "../interfaces/types";
+import { selectionStatusType, uiState, uiStore } from "../interfaces/types";
 import { immer } from "zustand/middleware/immer";
 
 
 const useUiStore = create<uiStore>()(
     immer((set, get) => ({
+        isClickSuppressed: false,
         isLongPressSuppressed: false,
         selection: {},
+        selectionStatus: selectionStatusType.EMPTY,
+        setIsClickSuppressed: (value: boolean) => {
+            set((state: uiState) => {
+                state.isClickSuppressed = value;
+            });
+        },
         setIsLongPressSuppressed: (value: boolean) => {
             set((state: uiState) => {
                 state.isLongPressSuppressed = value;
             });
         },
         setSelection: (newSelection: object | undefined) => {
+            const { selectionStatus } = get();
+            console.log('newSelection', newSelection);
             set((state: uiState) => {
-                state.selection = newSelection;
+                if (selectionStatus !== selectionStatusType.DISCARDING) {
+                    state.selection = newSelection;
+                    if (newSelection !== undefined) {
+                        state.selectionStatus = selectionStatusType.ACTIVE;
+                    } else {
+                        state.selectionStatus = selectionStatusType.EMPTY;
+                    }
+                }
             })
-        }
+        },
+        /*
+        * Empties the selection with a delay
+        */
+        discardSelection: () => {
+            const { selectionStatus } = get();
+            if (selectionStatus !== selectionStatusType.DISCARDING) {
+                setTimeout(() => {
+                    set((state: uiState) => {
+                        state.selection = undefined;
+                        state.selectionStatus = selectionStatusType.EMPTY;
+                    })
+                }, 500)
+            }
+        },
+        setSelectionStatus: (newSelectionStatus: selectionStatusType): void => {
+            set((state: uiState) => {
+                state.selectionStatus = newSelectionStatus;
+            })
+        },
     }))
 );
 

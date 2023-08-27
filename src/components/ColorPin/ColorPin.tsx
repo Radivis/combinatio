@@ -139,7 +139,7 @@ const ColorPin = (props: ColorPinProps) => {
     const style = color !== undefined ? {backgroundColor: color.hsl} : {};
 
     return (
-        <div className="color-pin-container">
+        <div className="color-pin-container" onMouseLeave={()=>{}}>
             {isRenderingIconSelector && (
                 <IconSelector
                     contextType={contextType!}

@@ -56,7 +56,7 @@ import useGameStore from './store/gameStore';
 import ErrorModal from './components/ErrorModal/ErrorModal';
 import VersionHistory from './components/VersionHistory/VersionHistory';
 import useUiStore from './store/uiStore';
-import { selectionStatusType, uiStore } from './interfaces/types';
+import { uiStore } from './interfaces/types';
 import ColorPin from './components/ColorPin/ColorPin';
 import Color from './util/Color';
 import OverlayElementLayer from './components/OverlayElementLayer/OverlayElementLayer';
@@ -110,10 +110,17 @@ library.add(
 
 const App = () => {
 
-	let [activePage, setActivePage] = useState<string>('game');
-    let [mouseX, setMouseX] = useState<number>(0);
-    let [mouseY, setMouseY] = useState<number>(0);
-    let [discard, setDiscard] = useState<boolean>(false);
+	const [activePage, setActivePage] = useState<string>('game');
+    const [mouseX, setMouseX] = useState<number>(0);
+    const [mouseY, setMouseY] = useState<number>(0);
+    const [discard, setDiscard] = useState<boolean>(false);
+
+    const onMouseMove: MouseEventHandler = (ev) => {
+        setMouseX(ev.clientX);
+        setMouseY(ev.clientY);
+        // console.log('x',ev.clientX);
+        // console.log('y',ev.clientY);
+    }
 
 	const { isVisible, messageHeader, messageBody, setModal } = useGameStore((state) => {
 		const { modal, setModal } = state;
@@ -121,9 +128,9 @@ const App = () => {
 		return { isVisible, messageHeader, messageBody, setModal };
 	})
 
-    const { isGlobalClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus } = useUiStore((state: uiStore) => {
-        const { isGlobalClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus } = state;
-        return { isGlobalClickSuppressed, selection, discardSelection, setSelection, setSelectionStatus };
+    const { isGlobalClickSuppressed, selection, discardSelection, } = useUiStore((state: uiStore) => {
+        const { isGlobalClickSuppressed, selection, discardSelection, } = state;
+        return { isGlobalClickSuppressed, selection, discardSelection, };
     });
 
 	const onDismiss = () => setModal({
@@ -142,36 +149,6 @@ const App = () => {
         }
     }
 
-    const onMouseMove: MouseEventHandler = (ev) => {
-        setMouseX(ev.clientX);
-        setMouseY(ev.clientY);
-    }
-
-    let overlayElement = null;
-    if (selection !== undefined) {
-        const hasColor = 'hue' in selection && typeof selection['hue'] === 'number'
-            && 'saturation' in selection && typeof selection['saturation'] === 'number'
-            && 'lightness' in selection && typeof selection['lightness'] === 'number';
-        const hasIcon = 'iconName' in selection && typeof selection['iconName'] === 'string';
-        if (hasColor) {
-            const hue: number = selection['hue'] as number;
-            const saturation: number = selection['saturation'] as number;
-            const lightness: number = selection['lightness'] as number;
-            const color = new Color(hue, saturation, lightness)
-            const iconName = hasIcon ? selection['iconName'] as string : undefined
-            overlayElement = <ColorPin
-                color={color}
-                iconName={iconName}
-                discard={discard}
-            />
-        } else if (hasIcon) {
-            overlayElement = <Icon
-                iconName={selection['iconName'] as string}
-                discard={discard}
-            />
-        }
-    }
-
  	return (
 		<div
             className="App"
@@ -179,11 +156,10 @@ const App = () => {
             onMouseMove={(ev) => onMouseMove(ev)}
         >
             <OverlayElementLayer
-                x={mouseX}
-                y={mouseY}
-            >
-                {overlayElement}
-            </OverlayElementLayer>
+                x = {mouseX}
+                y = {mouseY}
+                discard = {discard}
+            />
 			<AppHeader 
 				setActivePage={setActivePage}
 			/>

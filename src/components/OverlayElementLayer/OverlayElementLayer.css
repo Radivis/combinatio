@@ -1,5 +1,13 @@
 .overlay-element-layer-container{
     position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 5000;
+    pointer-events: none;
+}
+
+.overlay-element-container{
+    position: fixed;
     width: fit-content;
     height: fit-content;
     z-index: 5000;

@@ -3,9 +3,9 @@ div[draggable=true] {
 }
 
 /* This attempts to remove the background of dragged elements, but doesn't seem to work */
-div[draggable=true]::before, div[draggable=true]::after {
+/* div[draggable=true]::before, div[draggable=true]::after {
    content: "" !important;
-}
+} */
 
 .no-drag {
    cursor:alias

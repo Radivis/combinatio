@@ -6,6 +6,7 @@ const VersionHistory = () => {
             <h2>V0.6.4</h2>
             <ul className='version-history-list'>
                 <li>The check for touch device ability should be more reliable now</li>
+                <li>icon and color can now be added separately to the currently selected piece</li>
             </ul>
             <h2>V0.6.3</h2>
             <ul className='version-history-list'>

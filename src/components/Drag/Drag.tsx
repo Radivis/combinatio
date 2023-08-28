@@ -29,20 +29,17 @@ const Drag = (props: any) => {
             if (selection === undefined) {
                 setSelection(dragPayloadObject);
             } else {
-                if ('hue' in selection) {
-                    if ('iconName' in dragPayloadObject) {
-                        setSelection({ ...selection, iconName: dragPayloadObject.iconName })
-                    }
-                }
-                if ('iconName' in selection) {
-                    if ('hue' in dragPayloadObject) {
-                        setSelection({
-                            ...selection,
-                            hue: dragPayloadObject.hue,
-                            saturation: dragPayloadObject.saturation,
-                            lightness: dragPayloadObject.lightness,
-                        })
-                    }
+                if ('hue' in selection && !('hue' in dragPayloadObject) && 'iconName' in dragPayloadObject) {
+                    setSelection({ ...selection, iconName: dragPayloadObject.iconName })
+                } else if ('iconName' in selection && !('iconName' in dragPayloadObject) && 'hue' in dragPayloadObject) {
+                    setSelection({
+                        ...selection,
+                        hue: dragPayloadObject.hue,
+                        saturation: dragPayloadObject.saturation,
+                        lightness: dragPayloadObject.lightness,
+                    })
+                } else {
+                    setSelection(dragPayloadObject);
                 }
             }
         }

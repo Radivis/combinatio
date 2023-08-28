@@ -101,14 +101,10 @@ const ColorRow = (props: colorRowProps) => {
         {[...Array(numColumns).keys()].map((columnIndex: number) => {
             const color = rowColors[columnIndex];
             const iconName = rowIconNames[columnIndex];
-            return (
-            <DropTarget
-                key = {`${rowIndex}: ${columnIndex}`}
-                onItemDropped={(color: Color) => {
-                    if (isActiveRow) onPieceDropped(color, columnIndex)
-                }}>
+            const draggableColorPin = (
                 <Drag
                     isActive={true}
+                    key = {`Drag-container-${rowIndex}: ${columnIndex}`}
                     dragPayloadObject={{
                         hue: color.hue,
                         saturation: color.saturation,
@@ -132,9 +128,24 @@ const ColorRow = (props: colorRowProps) => {
                             && (pieceType === pieceTypes.icon || pieceType === pieceTypes.colorIcon)}
                     />
                 </Drag>
-            </DropTarget>
-        )})
-        }
+            );
+            if (isActiveRow) {
+                return (
+                    <DropTarget
+                    key = {`${rowIndex}: ${columnIndex}`}
+                    onItemDropped={(color: Color) => {
+                        if (isActiveRow) onPieceDropped(color, columnIndex)
+                    }}>
+                        {draggableColorPin}
+                    </DropTarget>
+                )
+            }
+            return (
+                <div key={`Container-${rowIndex}: ${columnIndex}`}> 
+                    {draggableColorPin}
+                </div>
+            )
+        })}
     </div>
 }
 

@@ -3,6 +3,10 @@ import './VersionHistory.css';
 const VersionHistory = () => {
     return (
         <div>
+            <h2>V0.6.4</h2>
+            <ul className='version-history-list'>
+                <li>The check for touch device ability should be more reliable now</li>
+            </ul>
             <h2>V0.6.3</h2>
             <ul className='version-history-list'>
                 <li>Disabling and re-enabling a piece works with long press instead of click now</li>

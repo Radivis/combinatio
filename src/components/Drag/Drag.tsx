@@ -5,14 +5,46 @@ import './Drag.css'
 const Drag = (props: any) => {
     const { children, dragPayloadObject, isActive } = props;
 
-    const { setIsGlobalClickSuppressed, setIsLongPressSuppressed, setSelection } = useUiStore((state: uiStore) => {
-        const { setIsGlobalClickSuppressed, setIsLongPressSuppressed, setSelection } = state;
-        return { setIsGlobalClickSuppressed, setIsLongPressSuppressed, setSelection }
+    const {
+        selection,
+        setIsGlobalClickSuppressed,
+        setIsLongPressSuppressed,
+        setSelection,
+    } = useUiStore((state: uiStore) => {
+        const {
+            selection,
+            setIsGlobalClickSuppressed,
+            setIsLongPressSuppressed,
+            setSelection,
+        } = state;
+        return { selection,
+            setIsGlobalClickSuppressed,
+            setIsLongPressSuppressed,
+            setSelection,
+        }
     })
 
     const onClick = (ev: any) => {
         if (isActive === true) {
-            setSelection(dragPayloadObject);
+            if (selection === undefined) {
+                setSelection(dragPayloadObject);
+            } else {
+                if ('hue' in selection) {
+                    if ('iconName' in dragPayloadObject) {
+                        setSelection({ ...selection, iconName: dragPayloadObject.iconName })
+                    }
+                }
+                if ('iconName' in selection) {
+                    if ('hue' in dragPayloadObject) {
+                        setSelection({
+                            ...selection,
+                            hue: dragPayloadObject.hue,
+                            saturation: dragPayloadObject.saturation,
+                            lightness: dragPayloadObject.lightness,
+                        })
+                    }
+                }
+            }
         }
     }
 

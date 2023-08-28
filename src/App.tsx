@@ -147,12 +147,10 @@ const App = () => {
     }
 
     const isTouchScreenDevice = (() => {
-        try{
-            document.createEvent('TouchEvent');
-            return true;
-        } catch(e) {
-            return false;
-        }
+        return (
+            window.matchMedia("(pointer: coarse)").matches
+            || ('ontouchstart' in window && window.ontouchstart !== null)
+        );
     })();
 
  	return (

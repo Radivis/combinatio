@@ -1,4 +1,6 @@
-import { uiState } from "../../interfaces/types";
+import { pieceTypes } from "../../constants";
+import { gameState, uiState } from "../../interfaces/types";
+import useGameStore from "../../store/gameStore";
 import useUiStore from "../../store/uiStore";
 import Color from "../../util/Color";
 import ColorIcon from "../../util/ColorIcon";
@@ -11,6 +13,11 @@ const Selection = () => {
     const { selection } = useUiStore((state: uiState) => {
         const { selection } = state;
         return { selection } 
+    })
+
+    const { pieceType } = useGameStore((state: gameState) => {
+        const { pieceType } = state.gameSettings;
+        return { pieceType };
     })
 
     let selectionClassToRender = null;
@@ -49,7 +56,7 @@ const Selection = () => {
                     <ColorPin
                         color = {selectionDataToRender.color}
                         iconName = {selectionDataToRender.iconName}
-                        areIconsTransparent = {true}
+                        areIconsTransparent = {pieceType !== pieceTypes.icon}
                     />
                 ) : selectionClassToRender === 'Color' && selectionDataToRender instanceof Color ? (
                     <ColorPin

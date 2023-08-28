@@ -3,7 +3,9 @@ import ColorPin from '../ColorPin/ColorPin';
 import './OverlayElementLayer.css';
 import useUiStore from '../../store/uiStore';
 import Icon from '../Icon/Icon';
-import { uiStore } from '../../interfaces/types';
+import { gameState, uiStore } from '../../interfaces/types';
+import useGameStore from '../../store/gameStore';
+import { pieceTypes } from '../../constants';
 
 
 interface overlayElementLayerProps {
@@ -19,6 +21,11 @@ const OverlayElementLayer = (props: overlayElementLayerProps) => {
         const { selection } = state;
         return { selection };
     });
+
+    const { pieceType } = useGameStore((state: gameState) => {
+        const { pieceType } = state.gameSettings;
+        return { pieceType };
+    })
 
     const style = {
         left: x + 'px',
@@ -40,6 +47,7 @@ const OverlayElementLayer = (props: overlayElementLayerProps) => {
             overlayElement = <ColorPin
                 color={color}
                 iconName={iconName}
+                areIconsTransparent = {pieceType !== pieceTypes.icon}
                 discard={discard}
             />
         } else if (hasIcon) {

@@ -68,6 +68,12 @@ const Drag = (props: any) => {
         setIsGlobalClickSuppressed(false);
     }
 
+    // Suppress glonbal click for a while to prevent discarding the selection after picking up another piece
+    const onTouchEnd = (ev: any) => {
+        setIsGlobalClickSuppressed(true);
+        setTimeout(() => setIsGlobalClickSuppressed(false), 100)
+    }
+
     const startDrag = (ev: any) => {
         if (isActive === true) {
             setIsLongPressSuppressed(true);
@@ -81,7 +87,7 @@ const Drag = (props: any) => {
     }
 
     const endDrag = (ev: any) => {
-      setIsLongPressSuppressed(false);
+        setIsLongPressSuppressed(false);
     }
 
     if(isActive) {
@@ -92,6 +98,7 @@ const Drag = (props: any) => {
                 onClick={onClick}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
+                onTouchEnd={onTouchEnd}
                 onDragStart={startDrag}
                 onDragEnd={endDrag}
             >

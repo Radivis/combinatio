@@ -11,6 +11,7 @@ const useUiStore = create<uiStore>()(
         selection: {},
         selectionStatus: selectionStatusType.EMPTY,
         setIsGlobalClickSuppressed: (value: boolean) => {
+            console.log('setIsGlobalClickSuppressed', value);
             set((state: uiState) => {
                 state.isGlobalClickSuppressed = value;
             });
@@ -42,6 +43,7 @@ const useUiStore = create<uiStore>()(
         * Empties the selection with a delay
         */
         discardSelection: () => {
+            console.log('discardSelection');
             const { selectionStatus } = get();
             if (selectionStatus !== selectionStatusType.DISCARDING) {
                 setTimeout(() => {

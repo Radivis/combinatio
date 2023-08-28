@@ -16,9 +16,9 @@ export default function useLongPress({
     const [actionType, setActionType] = useState<string>();
     const [isSuppressingMouseEvents, setIsSuppressingMouseEvents] = useState<boolean>(false);
 
-    const { isLongPressSuppressed } = useUiStore(state => {
-      const { isLongPressSuppressed } = state;
-      return { isLongPressSuppressed }
+    const { isLongPressSuppressed, setIsLongPressInProgress, } = useUiStore(state => {
+      const { isLongPressSuppressed, setIsLongPressInProgress, } = state;
+      return { isLongPressSuppressed, setIsLongPressInProgress, }
     })
   
     const timerRef = useRef<NodeJS.Timeout>();
@@ -33,6 +33,7 @@ export default function useLongPress({
         isLongPress.current = false;
         timerRef.current = setTimeout(() => {
             isLongPress.current = true;
+            setIsLongPressInProgress(true);
             onLongPressHandler();
             setActionType('longpress');
         }, longPressDuration)
@@ -56,6 +57,7 @@ export default function useLongPress({
         if (isSuppressingMouseEvents === false) {
             clearTimeout(timerRef.current);
         }
+        setTimeout(() => setIsLongPressInProgress(false), 1);
     }
   
     const handleOnTouchStart = () => {

@@ -6,12 +6,18 @@ import { immer } from "zustand/middleware/immer";
 const useUiStore = create<uiStore>()(
     immer((set, get) => ({
         isGlobalClickSuppressed: false,
+        isLongPressInProgress: false,
         isLongPressSuppressed: false,
         selection: {},
         selectionStatus: selectionStatusType.EMPTY,
         setIsGlobalClickSuppressed: (value: boolean) => {
             set((state: uiState) => {
                 state.isGlobalClickSuppressed = value;
+            });
+        },
+        setIsLongPressInProgress: (value: boolean) => {
+            set((state: uiState) => {
+                state.isLongPressInProgress = value;
             });
         },
         setIsLongPressSuppressed: (value: boolean) => {

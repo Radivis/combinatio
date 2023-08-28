@@ -6,18 +6,22 @@ const Drag = (props: any) => {
     const { children, dragPayloadObject, isActive } = props;
 
     const {
+        isLongPressInProgress,
         selection,
         setIsGlobalClickSuppressed,
         setIsLongPressSuppressed,
         setSelection,
     } = useUiStore((state: uiStore) => {
         const {
+            isLongPressInProgress,
             selection,
             setIsGlobalClickSuppressed,
             setIsLongPressSuppressed,
             setSelection,
         } = state;
-        return { selection,
+        return {
+            isLongPressInProgress,
+            selection,
             setIsGlobalClickSuppressed,
             setIsLongPressSuppressed,
             setSelection,
@@ -25,13 +29,23 @@ const Drag = (props: any) => {
     })
 
     const onClick = (ev: any) => {
-        if (isActive === true) {
+        if (isActive === true && !isLongPressInProgress) {
             if (selection === undefined) {
                 setSelection(dragPayloadObject);
             } else {
-                if ('hue' in selection && !('hue' in dragPayloadObject) && 'iconName' in dragPayloadObject) {
+                if (
+                    'hue' in selection
+                    && !('hue' in dragPayloadObject)
+                    && 'iconName' in dragPayloadObject
+                ) {
+                    // payload is a simple icon, add it to the current selection or replace its icon
                     setSelection({ ...selection, iconName: dragPayloadObject.iconName })
-                } else if ('iconName' in selection && !('iconName' in dragPayloadObject) && 'hue' in dragPayloadObject) {
+                } else if (
+                    'iconName' in selection
+                    && !('iconName' in dragPayloadObject)
+                    && 'hue' in dragPayloadObject
+                ) {
+                    // payload is a simple color, add it to the current selection or replace its color
                     setSelection({
                         ...selection,
                         hue: dragPayloadObject.hue,

@@ -1,5 +1,3 @@
-import useLongPress from '../../hooks/useLongPress';
-
 import Color from '../../util/Color';
 
 import './SlotHintIconColumn.css';
@@ -15,6 +13,7 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
     const { columnIndex } = props;
 
     const {
+        changeOccurrencesOnChangingPossibleSlots,
         iconsMinMax,
         disabledIcons,
         iconCollectionNames,
@@ -25,7 +24,9 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
         const { iconsMinMax, disabledIcons, possibleSlotIconNames } = state.hints;
         const { iconCollectionNames } = state.game;
         const { setPossibleIcons, setIconMinMax } = state;
+        const { changeOccurrencesOnChangingPossibleSlots } = state.displaySettings;
         return {
+            changeOccurrencesOnChangingPossibleSlots,
             iconsMinMax,
             disabledIcons,
             iconCollectionNames,
@@ -67,9 +68,11 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
                 // Splice doesn't work here, because the entries of the array are read-only!
                 // possibleCurrentSlotIconNames.splice(possibleCurrentSlotIconNames.indexOf(iconName), 1);
 
-                // Decrement max of this icon, if max in sync
-                if (iconsMinMax[iconIndex][1] === numIconPossible) {
-                    setIconMinMax({iconIndex, max: numIconPossible - 1});
+                if (changeOccurrencesOnChangingPossibleSlots === true) {
+                    // Decrement max of this icon, if max in sync
+                    if (iconsMinMax[iconIndex][1] === numIconPossible) {
+                        setIconMinMax({iconIndex, max: numIconPossible - 1});
+                    }
                 }
             } else {
                 // Color was impossible, must now be added to possible colors

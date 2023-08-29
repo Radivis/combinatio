@@ -34,6 +34,16 @@ const Settings = (props: settingsProps) => {
     })
 
     const [
+        changeOccurrencesOnChangingPossibleSlots,
+        setChangeOccurrencesOnChangingPossibleSlots,
+    ] = useGameStore((state) => {
+        return [
+            state.displaySettings.changeOccurrencesOnChangingPossibleSlots,
+            state.setChangeOccurrencesOnChangingPossibleSlots,
+        ];
+    })
+
+    const [
         changeMaxOccurrencesOnChangingMinOccurrences,
         setChangeMaxOccurrencesOnChangingMinOccurrences,
     ] = useGameStore((state) => {
@@ -143,11 +153,13 @@ const Settings = (props: settingsProps) => {
         setAreTranspositionsActive(ev.target.value === 'true' ? true : false);
     }
 
+    const onChangeChangeOccurrencesOnChangingPossibleSlots = (ev: any) => {
+        setChangeOccurrencesOnChangingPossibleSlots(ev.target.value === 'true' ? true : false);
+    }
+
     const onChangeChangeMaxOccurrencesOnChangingMinOccurrences = (ev: any) => {
         setChangeMaxOccurrencesOnChangingMinOccurrences(ev.target.value === 'true' ? true : false);
     }
-
-    
 
     const onChangeIsLegendDisplayed = (ev: any) => {
         setIsLegendDisplayed(ev.target.value === 'true' ? true : false);
@@ -332,12 +344,6 @@ const Settings = (props: settingsProps) => {
                     onChangeHandler={onChangeAreTranspositionsActive}
                 />
                 <BooleanSetting
-                    setting={changeMaxOccurrencesOnChangingMinOccurrences}
-                    settingName={"changeMaxOccurrencesOnChangingMinOccurrences"}
-                    settingLabel="Change max occurrences on changing min occurrences (experimental)"
-                    onChangeHandler={onChangeChangeMaxOccurrencesOnChangingMinOccurrences}
-                />
-                <BooleanSetting
                     setting={isLegendDisplayed}
                     settingName={"isLegendDisplayed"}
                     settingLabel="Show legend"
@@ -348,6 +354,19 @@ const Settings = (props: settingsProps) => {
                     settingName={"isRandomGuessButtonDisplayed"}
                     settingLabel="Show random guess button"
                     onChangeHandler={onChangeIsRandomGuessButtonDisplayed}
+                />
+                <h4 className="settings-title">Hint Interaction Settings</h4>
+                <BooleanSetting
+                    setting={changeOccurrencesOnChangingPossibleSlots}
+                    settingName={"changeOccurrencesOnChangingPossibleSlots"}
+                    settingLabel="Change min or max occurrences on changing possible slots for pieces"
+                    onChangeHandler={onChangeChangeOccurrencesOnChangingPossibleSlots}
+                />
+                <BooleanSetting
+                    setting={changeMaxOccurrencesOnChangingMinOccurrences}
+                    settingName={"changeMaxOccurrencesOnChangingMinOccurrences"}
+                    settingLabel="Change max occurrences on changing min occurrences (experimental)"
+                    onChangeHandler={onChangeChangeMaxOccurrencesOnChangingMinOccurrences}
                 />
             </div>
             

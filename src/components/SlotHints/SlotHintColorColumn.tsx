@@ -16,6 +16,7 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
     const { baseColorsDataString, columnIndex } = props;
 
     const {
+        changeOccurrencesOnChangingPossibleSlots,
         colorsMinMax,
         disabledColorsDataString,
         paletteColorsDataString,
@@ -27,8 +28,10 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
         const { colorsMinMax, disabledColorsDataString, possibleSlotColorsDataStrings } = state.hints;
         const possibleSlotColorsDataString = state.hints.possibleSlotColorsDataStrings[columnIndex];
         const { paletteColorsDataString } = state.game;
+        const { changeOccurrencesOnChangingPossibleSlots } = state.displaySettings;
         const { setPossibleColors, setColorMinMax } = state;
         return {
+            changeOccurrencesOnChangingPossibleSlots,
             colorsMinMax,
             disabledColorsDataString,
             paletteColorsDataString,
@@ -66,9 +69,12 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
             if (possibleSlotColors.has(color)) {
                 // Color was possible, must now be removed from possible colors
                 possibleSlotColors.remove(color);
-                // Decrement max of this color, if max in sync
-                if (colorsMinMax[colorIndex][1] === numColorPossible) {
-                    setColorMinMax({colorIndex, max: numColorPossible - 1});
+
+                if (changeOccurrencesOnChangingPossibleSlots === true) {
+                    // Decrement max of this color, if max in sync
+                    if (colorsMinMax[colorIndex][1] === numColorPossible) {
+                        setColorMinMax({colorIndex, max: numColorPossible - 1});
+                    }
                 }
             } else {
                 // Color was impossible, must now be added to possible colors

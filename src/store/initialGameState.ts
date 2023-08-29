@@ -16,6 +16,7 @@ const initialGameState = {
         areTranspositionsActive: true,
         isLegendDisplayed: true,
         isRandomGuessButtonDisplayed: true,
+        changeOccurrencesOnChangingPossibleSlots: false,
         changeMaxOccurrencesOnChangingMinOccurrences: false,
     },
     gameSettings: {

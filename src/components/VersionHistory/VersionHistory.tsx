@@ -5,11 +5,13 @@ const VersionHistory = () => {
         <div>
             <h2>V0.6.4</h2>
             <ul className='version-history-list'>
+                <li>Added option "Change min or max occurrences on changing possible slots for pieces" (deactivated by default)</li>
                 <li>The check for touch device ability should be more reliable now</li>
                 <li>icon and color can now be added separately to the currently selected piece</li>
                 <li>Long press now suppresses click events</li>
                 <li>Prevented the discarding on the selection on touch devices, after it was changed</li>
                 <li>Prevented infoPins from getting squashed in very low resolutions</li>
+                <li>Fixed icon transparency for the currently selected piece in "colorIcon" pieceType mode</li>
             </ul>
             <h2>V0.6.3</h2>
             <ul className='version-history-list'>

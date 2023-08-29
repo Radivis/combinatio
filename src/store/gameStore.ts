@@ -75,6 +75,11 @@ const useGameStore = create<gameStore>()(
                 state.displaySettings.areTranspositionsActive = value;
             }, false, 'setAreTranspositionsActive')
         },
+        setChangeOccurrencesOnChangingPossibleSlots: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.changeOccurrencesOnChangingPossibleSlots = value;
+            }, false, 'setChangeOccurrencesOnChangingPossibleSlots')
+        },
         setChangeMaxOccurrencesOnChangingMinOccurrences: (value: boolean) => {
             set((state: gameState) => {
                 state.displaySettings.changeMaxOccurrencesOnChangingMinOccurrences = value;

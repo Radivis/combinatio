@@ -10,9 +10,9 @@ import Icon from "../Icon/Icon";
 import './Selection.css';
 
 const Selection = () => {
-    const { selection } = useUiStore((state: uiState) => {
-        const { selection } = state;
-        return { selection } 
+    const { selection, isDiscardAnimationRunning } = useUiStore((state: uiState) => {
+        const { selection, isDiscardAnimationRunning } = state;
+        return { selection, isDiscardAnimationRunning } 
     })
 
     const { pieceType } = useGameStore((state: gameState) => {
@@ -57,6 +57,7 @@ const Selection = () => {
                         color = {selectionDataToRender.color}
                         iconName = {selectionDataToRender.iconName}
                         areIconsTransparent = {pieceType !== pieceTypes.icon}
+                        discard = {isDiscardAnimationRunning}
                     />
                 ) : selectionClassToRender === 'Color' && selectionDataToRender instanceof Color ? (
                     <ColorPin
@@ -65,6 +66,7 @@ const Selection = () => {
                 ) : selectionClassToRender === 'Icon' && typeof selectionDataToRender === 'string' ? (
                     <Icon 
                         iconName={selectionDataToRender}
+                        discard = {isDiscardAnimationRunning}
                     />
                 ) : null}
                 </div>

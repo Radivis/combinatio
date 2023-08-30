@@ -110,7 +110,7 @@ const App = () => {
 	const [activePage, setActivePage] = useState<string>('game');
     const [mouseX, setMouseX] = useState<number>(0);
     const [mouseY, setMouseY] = useState<number>(0);
-    const [discard, setDiscard] = useState<boolean>(false);
+    // const [discard, setDiscard] = useState<boolean>(false);
 
     const onMouseMove: MouseEventHandler = (ev) => {
         setMouseX(ev.clientX);
@@ -125,9 +125,24 @@ const App = () => {
 		return { isVisible, messageHeader, messageBody, setModal };
 	})
 
-    const { isGlobalClickSuppressed, selection, discardSelection, } = useUiStore((state: uiStore) => {
-        const { isGlobalClickSuppressed, selection, discardSelection, } = state;
-        return { isGlobalClickSuppressed, selection, discardSelection, };
+    const {
+        isGlobalClickSuppressed,
+        isDiscardAnimationRunning,
+        selection,
+        discardSelection,
+    } = useUiStore((state: uiStore) => {
+        const {
+            isGlobalClickSuppressed,
+            isDiscardAnimationRunning,
+            selection,
+            discardSelection,
+        } = state;
+        return {
+            isGlobalClickSuppressed,
+            isDiscardAnimationRunning,
+            selection,
+            discardSelection,
+        };
     });
 
 	const onDismiss = () => setModal({
@@ -139,10 +154,6 @@ const App = () => {
     const onClick: MouseEventHandler = (ev) => {
         if (selection !== undefined && isGlobalClickSuppressed !== true) {
             discardSelection();
-            setDiscard(true);
-            setTimeout(() => {
-                setDiscard(false);
-            }, 500);
         }
     }
 
@@ -162,7 +173,7 @@ const App = () => {
             {!isTouchScreenDevice && <OverlayElementLayer
                 x = {mouseX}
                 y = {mouseY}
-                discard = {discard}
+                discard = {isDiscardAnimationRunning}
             />}
 			<AppHeader 
 				setActivePage={setActivePage}

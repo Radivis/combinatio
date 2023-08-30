@@ -8,6 +8,7 @@ const useUiStore = create<uiStore>()(
         isGlobalClickSuppressed: false,
         isLongPressInProgress: false,
         isLongPressSuppressed: false,
+        isDiscardAnimationRunning: false,
         selection: {},
         selectionStatus: selectionStatusType.EMPTY,
         setIsGlobalClickSuppressed: (value: boolean) => {
@@ -24,6 +25,16 @@ const useUiStore = create<uiStore>()(
         setIsLongPressSuppressed: (value: boolean) => {
             set((state: uiState) => {
                 state.isLongPressSuppressed = value;
+            });
+        },
+        startDiscardAnimation: () => {
+            setTimeout(() => {
+                set((state: uiState) => {
+                    state.isDiscardAnimationRunning = false;
+                });
+            }, 500)
+            set((state: uiState) => {
+                state.isDiscardAnimationRunning = true;
             });
         },
         setSelection: (newSelection: object | undefined) => {
@@ -44,14 +55,15 @@ const useUiStore = create<uiStore>()(
         */
         discardSelection: () => {
             console.log('discardSelection');
-            const { selectionStatus } = get();
+            const { selectionStatus, startDiscardAnimation } = get();
             if (selectionStatus !== selectionStatusType.DISCARDING) {
+                startDiscardAnimation();
                 setTimeout(() => {
                     set((state: uiState) => {
                         state.selection = undefined;
                         state.selectionStatus = selectionStatusType.EMPTY;
                     })
-                }, 500)
+                }, 450)
             }
         },
         setSelectionStatus: (newSelectionStatus: selectionStatusType): void => {

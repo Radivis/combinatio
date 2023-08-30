@@ -95,6 +95,7 @@ export type uiState = {
     isGlobalClickSuppressed: boolean;
     isLongPressInProgress: boolean;
     isLongPressSuppressed: boolean;
+    isDiscardAnimationRunning: boolean;
     selection: object | undefined;
     selectionStatus: selectionStatusType;
 }
@@ -103,6 +104,7 @@ export type uiActions = {
     discardSelection: () => void;
     setIsGlobalClickSuppressed: (value: boolean) => void,
     setIsLongPressInProgress: (value: boolean) => void,
+    startDiscardAnimation: () => void,
     setIsLongPressSuppressed: (value: boolean) => void,
     setSelection: (newSelection: object | undefined) => void,
     setSelectionStatus: (newSelectionStatus: selectionStatusType) => void,

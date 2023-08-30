@@ -4,7 +4,7 @@ import './ColorPin.css';
 import useGameStore from "../../store/gameStore";
 import Icon from "../Icon/Icon";
 import useLongPress from "../../hooks/useLongPress";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import ColorSelector from "../ColorSelector/ColorSelector";
 import IconSelector from "../IconSelector/IconSelector";
 import Colors from "../../util/Colors";
@@ -129,6 +129,16 @@ const ColorPin = (props: ColorPinProps) => {
         }
     }
 
+    const onCloseColorSelector: MouseEventHandler = (ev) => {
+        setIsRenderingColorSelector(false);
+        ev.stopPropagation();
+    }
+
+    const onCloseIconSelector: MouseEventHandler = (ev) => {
+        setIsRenderingIconSelector(false);
+        ev.stopPropagation();
+    }
+
     const { handlers } = useLongPress({
         onClickHandler: onClick,
         onLongPressHandler: onLongPress,
@@ -145,7 +155,7 @@ const ColorPin = (props: ColorPinProps) => {
                     contextType={contextType!}
                     columnIndex={columnIndex!}
                     rowIndex={rowIndex!}
-                    onClose={() => setIsRenderingIconSelector(false)}
+                    onClose={(ev) => onCloseIconSelector(ev)}
                 />
             )}
             {isRenderingColorSelector && (
@@ -153,7 +163,7 @@ const ColorPin = (props: ColorPinProps) => {
                     contextType={contextType!}
                     columnIndex={columnIndex!}
                     rowIndex={rowIndex!}
-                    onClose={() => setIsRenderingColorSelector(false)}
+                    onClose={(ev) => onCloseColorSelector(ev)}
                 />
             )}
             <div

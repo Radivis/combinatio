@@ -14,10 +14,11 @@ const VersionHistory = () => {
                 <li>Prevented infoPins from getting squashed in very low resolutions</li>
                 <li>Fixed icon transparency for the currently selected piece in "colorIcon" pieceType mode</li>
                 <li>Added discard animation for the selected piece for touch devices</li>
+                <li>Improved behavior of color and icon selector popups</li>
             </ul>
             <h2>V0.6.3</h2>
             <ul className='version-history-list'>
-                <li>Disabling and re-enabling a piece works with long press instead of click now</li>
+                <li><strong>Disabling and re-enabling a piece works with long press instead of click now</strong></li>
                 <li>Clicking a piece now puts it into the current selection</li>
                 <li>The currently active row of the game is now highlighted</li>
             </ul>

@@ -62,6 +62,7 @@ const IconSelector = (props: colorSelectorProps) => {
             })
         }
         onClose(ev);
+        ev.stopPropagation();
     }
 
     return (

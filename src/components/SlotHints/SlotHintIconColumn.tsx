@@ -13,6 +13,7 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
     const { columnIndex } = props;
 
     const {
+        canPickUpPiecesFromSlotHints,
         changeOccurrencesOnChangingPossibleSlots,
         iconsMinMax,
         disabledIcons,
@@ -24,8 +25,12 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
         const { iconsMinMax, disabledIcons, possibleSlotIconNames } = state.hints;
         const { iconCollectionNames } = state.game;
         const { setPossibleIcons, setIconMinMax } = state;
-        const { changeOccurrencesOnChangingPossibleSlots } = state.displaySettings;
+        const {
+            canPickUpPiecesFromSlotHints,
+            changeOccurrencesOnChangingPossibleSlots
+        } = state.displaySettings;
         return {
+            canPickUpPiecesFromSlotHints,
             changeOccurrencesOnChangingPossibleSlots,
             iconsMinMax,
             disabledIcons,
@@ -101,7 +106,7 @@ const SlotHintIconColumn = (props: slotHintColumnProps) => {
                 return (
                     <Drag
                     key={`${iconName}-drag`}
-                    isActive={true}
+                    isActive={canPickUpPiecesFromSlotHints}
                     dragPayloadObject={{iconName}}>
                         <Icon
                             key={iconName}

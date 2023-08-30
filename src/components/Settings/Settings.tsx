@@ -33,6 +33,10 @@ const Settings = (props: settingsProps) => {
         return [state.displaySettings.areTranspositionsActive, state.setAreTranspositionsActive];
     })
 
+    const [canPickUpPiecesFromSlotHints, setCanPickUpPiecesFromSlotHints] = useGameStore((state) => {
+        return [state.displaySettings.canPickUpPiecesFromSlotHints, state.setCanPickUpPiecesFromSlotHints];
+    })
+
     const [
         changeOccurrencesOnChangingPossibleSlots,
         setChangeOccurrencesOnChangingPossibleSlots,
@@ -147,6 +151,10 @@ const Settings = (props: settingsProps) => {
 
     const onChangeAreCombinationNotesActive = (ev: any) => {
         setAreCombinationNotesActive(ev.target.value === 'true' ? true : false);
+    }
+
+    const onChangeCanPickUpPiecesFromSlotHints = (ev: any) => {
+        setCanPickUpPiecesFromSlotHints(ev.target.value === 'true' ? true : false);
     }
 
     const onChangeAreTranspositionsActive = (ev: any) => {
@@ -342,6 +350,12 @@ const Settings = (props: settingsProps) => {
                     settingName={"areTranspositionsActive"}
                     settingLabel="Enable switching of pieces within the same row"
                     onChangeHandler={onChangeAreTranspositionsActive}
+                />
+                <BooleanSetting
+                    setting={canPickUpPiecesFromSlotHints}
+                    settingName={"canPickUpPiecesFromSlotHints"}
+                    settingLabel="Pick up pieces from possible pieces per slot"
+                    onChangeHandler={onChangeCanPickUpPiecesFromSlotHints}
                 />
                 <BooleanSetting
                     setting={isLegendDisplayed}

@@ -55,6 +55,7 @@ export type gameActions = {
     setAreSlotHintsActive: (value: boolean) => void,
     setAreCombinationNotesActive: (value: boolean) => void,
     setAreTranspositionsActive: (value: boolean) => void,
+    setCanPickUpPiecesFromSlotHints: (value: boolean) => void,
     setChangeOccurrencesOnChangingPossibleSlots: (value: boolean) => void,
     setChangeMaxOccurrencesOnChangingMinOccurrences: (value: boolean) => void,
     setIsLegendDisplayed: (value: boolean) => void,

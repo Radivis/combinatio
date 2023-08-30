@@ -75,6 +75,11 @@ const useGameStore = create<gameStore>()(
                 state.displaySettings.areTranspositionsActive = value;
             }, false, 'setAreTranspositionsActive')
         },
+        setCanPickUpPiecesFromSlotHints: (value: boolean) => {
+            set((state: gameState) => {
+                state.displaySettings.canPickUpPiecesFromSlotHints = value;
+            }, false, 'setCanPickUpPiecesFromSlotHints')
+        },
         setChangeOccurrencesOnChangingPossibleSlots: (value: boolean) => {
             set((state: gameState) => {
                 state.displaySettings.changeOccurrencesOnChangingPossibleSlots = value;

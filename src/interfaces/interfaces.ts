@@ -42,6 +42,7 @@ export interface displaySettings {
     areSlotHintsActive: boolean,
     areCombinationNotesActive: boolean,
     areTranspositionsActive: boolean,
+    canPickUpPiecesFromSlotHints: boolean,
     changeOccurrencesOnChangingPossibleSlots: boolean,
     changeMaxOccurrencesOnChangingMinOccurrences: boolean,
     isLegendDisplayed: boolean,

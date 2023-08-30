@@ -14,6 +14,7 @@ const initialGameState = {
 		areSlotHintsActive: true,
         areCombinationNotesActive: true,
         areTranspositionsActive: true,
+        canPickUpPiecesFromSlotHints: false,
         isLegendDisplayed: true,
         isRandomGuessButtonDisplayed: true,
         changeOccurrencesOnChangingPossibleSlots: false,

@@ -62,6 +62,7 @@ const Selection = () => {
                 ) : selectionClassToRender === 'Color' && selectionDataToRender instanceof Color ? (
                     <ColorPin
                     color = {selectionDataToRender}
+                    discard = {isDiscardAnimationRunning}
                 />
                 ) : selectionClassToRender === 'Icon' && typeof selectionDataToRender === 'string' ? (
                     <Icon 

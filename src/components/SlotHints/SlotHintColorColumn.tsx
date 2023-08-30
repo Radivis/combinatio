@@ -16,6 +16,7 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
     const { baseColorsDataString, columnIndex } = props;
 
     const {
+        canPickUpPiecesFromSlotHints,
         changeOccurrencesOnChangingPossibleSlots,
         colorsMinMax,
         disabledColorsDataString,
@@ -28,9 +29,13 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
         const { colorsMinMax, disabledColorsDataString, possibleSlotColorsDataStrings } = state.hints;
         const possibleSlotColorsDataString = state.hints.possibleSlotColorsDataStrings[columnIndex];
         const { paletteColorsDataString } = state.game;
-        const { changeOccurrencesOnChangingPossibleSlots } = state.displaySettings;
+        const {
+            canPickUpPiecesFromSlotHints,
+            changeOccurrencesOnChangingPossibleSlots
+        } = state.displaySettings;
         const { setPossibleColors, setColorMinMax } = state;
         return {
+            canPickUpPiecesFromSlotHints,
             changeOccurrencesOnChangingPossibleSlots,
             colorsMinMax,
             disabledColorsDataString,
@@ -99,7 +104,7 @@ const SlotHintColorColumn = (props: slotHintColumnProps) => {
                 return (
                     <Drag
                     key={color.hue - 720}
-                    isActive={true}
+                    isActive={canPickUpPiecesFromSlotHints}
                     dragPayloadObject={{
                         hue: color.hue,
                         saturation: color.saturation,

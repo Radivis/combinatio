@@ -8,5 +8,5 @@ div[draggable=true] {
 } */
 
 .no-drag {
-   cursor:alias
+   cursor: pointer;
 }

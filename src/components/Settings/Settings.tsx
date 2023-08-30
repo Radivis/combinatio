@@ -14,6 +14,7 @@ interface settingsProps {
 const Settings = (props: settingsProps) => {
     const { setActivePage } = props;
 
+    // TODO: Combine these hook usages into a single usage of the useGameStore hook
     const [settings, changeSettings] = useGameStore((state) => [state.gameSettings, state.changeGameSettings]);
     const [areColorAmountHintsActive, setAreColorAmountHintsActive] = useGameStore((state) => {
         return [state.displaySettings.areColorAmountHintsActive, state.setAreColorAmountHintsActive];

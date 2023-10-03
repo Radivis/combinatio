@@ -106,15 +106,15 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         the key is the serialization of the aspect and the value its count
 
         Make an array of columnIndices to check
-        Phase 1: Check for completely correct slots
+        Phase X1: Check for completely correct slots
         For each slot:
-            Check colorIcon for correctness, and if true,
-            Increment occurrence of colorIcon, color, and icon
+            Check colorIcon or color or icon for correctness, and if true,
+            Increment occurrence of colorIcon, color, respectively icon
             remove the column index from the columnIndices to check
 
-        Phase 2: Check the slots that remain
+        Phase X2: Check the slots that remain
         For each slot:
-            Increment occurrence of colorIcon, color, and icon
+            Increment occurrence of colorIcon or color, or icon
             If the counter is higher than the number of solutionOccurrences, the respective
             aspect is amiss, otherwise it is present
 
@@ -191,7 +191,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
         const columnIndexIconStatusArray = columnIndicesToCheck
         .map((_columnIndex: number) => aspectStatus.amiss)
 
-        // Check each slot for total correctness
+        // Phase A1: Check each slot for total correctness
         for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
             const color = currentRowColors[columnIndex];
             const iconName = currentRowIconNames[columnIndex];
@@ -208,7 +208,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             }
         }
 
-        // Check colorIcon for each slot for presence
+        // Phase A2: Check colorIcon for each slot for presence
         columnIndicesToCheck.forEach((columnIndex: number) => {
             const color = currentRowColors[columnIndex];
             const iconName = currentRowIconNames[columnIndex];
@@ -221,7 +221,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
 
         let columnIndicesToCheckForColor = [...columnIndicesToCheck];
 
-        // Check color for each slot for correctness
+        // Phase B1: Check color for each slot for correctness
         columnIndicesToCheck.forEach((columnIndex: number) => {
             const color = currentRowColors[columnIndex];
             if(color.equals(solutionColors[columnIndex])) {
@@ -232,7 +232,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             }
         });
 
-        // Check color for each remaining slot for presence
+        // Phase B2: Check color for each remaining slot for presence
         columnIndicesToCheckForColor.forEach((columnIndex: number) => {
             const color = currentRowColors[columnIndex];
             rowColorCounts[color.serialize()]++;
@@ -243,7 +243,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
 
         let columnIndicesToCheckForIcon = [...columnIndicesToCheck];
 
-        // Check icon for each slot for correctness
+        // Phase C1: Check icon for each slot for correctness
         columnIndicesToCheck.forEach((columnIndex: number) => {
             const iconName = currentRowIconNames[columnIndex];
             // Check if icon is correct
@@ -255,7 +255,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             }
         });
 
-        // Check icon for each remaining slot for presence
+        // Phase C2: Check icon for each remaining slot for presence
         columnIndicesToCheckForIcon.forEach((columnIndex: number) => {
             const iconName = currentRowIconNames[columnIndex];
             rowIconCounts[iconName]++;
@@ -264,7 +264,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             }
         });
 
-        // Compute the total pin status for each pin
+        // Phase 3: Compute the total pin status for each pin
         for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
             const colorIconStatus = columnIndexColorIconStatusArray[columnIndex];
             const colorStatus = columnIndexColorStatusArray[columnIndex];
@@ -281,7 +281,13 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
                         _infoPinStatusCounts['numColorCorrectIconPresent']++;
                     }   
                 }
-                if (iconStatus === aspectStatus.amiss) _infoPinStatusCounts['numColorCorrectIconAmiss']++;
+                if (iconStatus === aspectStatus.amiss) {
+                    if (colorIconStatus === aspectStatus.present) {
+                        _infoPinStatusCounts['numColorIconPresentColorCorrect']++;
+                    } else {
+                        _infoPinStatusCounts['numColorCorrectIconAmiss']++;
+                    }  
+                }
             } else if (colorStatus === aspectStatus.present) {
                 if (iconStatus === aspectStatus.correct) {
                     if (colorIconStatus === aspectStatus.present) {
@@ -297,11 +303,35 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
                         _infoPinStatusCounts['numColorPresentIconPresent']++;
                     }
                 }
-                if (iconStatus === aspectStatus.amiss) _infoPinStatusCounts['numColorPresentIconAmiss']++;
+                if (iconStatus === aspectStatus.amiss) {
+                    if (colorIconStatus === aspectStatus.present) {
+                        _infoPinStatusCounts['numColorIconPresent']++;
+                    } else {
+                        _infoPinStatusCounts['numColorPresentIconAmiss']++;
+                    }
+                }
             } else if (colorStatus === aspectStatus.amiss) {
-                if (iconStatus === aspectStatus.correct) _infoPinStatusCounts['numIconCorrectColorAmiss']++;
-                if (iconStatus === aspectStatus.present) _infoPinStatusCounts['numIconPresentColorAmiss']++;
-                if (iconStatus === aspectStatus.amiss) _infoPinStatusCounts['numAllAmiss']++;
+                if (iconStatus === aspectStatus.correct) {
+                    if (colorIconStatus === aspectStatus.present) {
+                        _infoPinStatusCounts['numColorIconPresent']++;
+                    } else {
+                        _infoPinStatusCounts['numIconCorrectColorAmiss']++;
+                    }
+                }
+                if (iconStatus === aspectStatus.present) {
+                    if (colorIconStatus === aspectStatus.present) {
+                        _infoPinStatusCounts['numColorIconPresent']++;
+                    } else {
+                        _infoPinStatusCounts['numIconPresentColorAmiss']++;
+                    }
+                }
+                if (iconStatus === aspectStatus.amiss) {
+                    if (colorIconStatus === aspectStatus.present) {
+                        _infoPinStatusCounts['numColorIconPresent']++;
+                    } else {
+                        _infoPinStatusCounts['numAllAmiss']++;
+                    }
+                }
             }
         }
 

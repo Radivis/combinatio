@@ -271,64 +271,45 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
             const iconStatus = columnIndexIconStatusArray[columnIndex];
 
             // Increment the corresponding evaluation pin counter
-            if (colorStatus === aspectStatus.correct) {
-                // Don't increment the numFullyCorrect status, because it has already been incremented!
-                // if (iconStatus === aspectStatus.correct) _infoPinStatusCounts['numFullyCorrect']++;
-                if (iconStatus === aspectStatus.present) {
-                    if (colorIconStatus === aspectStatus.present) {
-                        _infoPinStatusCounts['numColorIconPresentColorCorrect']++;
-                    } else {
+
+            // Don't increment the numFullyCorrect status, because it has already been incremented!
+            // if (colorIconStatus === aspectStatus.correct) _infoPinStatusCounts['numFullyCorrect']++;
+            if (colorIconStatus === aspectStatus.present) {
+                if (colorStatus === aspectStatus.correct) {
+                    _infoPinStatusCounts['numColorIconPresentColorCorrect']++;
+                } else if (iconStatus === aspectStatus.correct) {
+                    _infoPinStatusCounts['numColorIconPresentIconCorrect']++;
+                } else {
+                    _infoPinStatusCounts['numColorCorrectIconPresent']++;
+                }
+            } else {
+                if (colorStatus === aspectStatus.correct) {
+                    // Don't increment the numFullyCorrect status, because it has already been incremented!
+                    // if (iconStatus === aspectStatus.correct) _infoPinStatusCounts['numFullyCorrect']++;
+                    if (iconStatus === aspectStatus.present) {
                         _infoPinStatusCounts['numColorCorrectIconPresent']++;
-                    }   
-                }
-                if (iconStatus === aspectStatus.amiss) {
-                    if (colorIconStatus === aspectStatus.present) {
-                        _infoPinStatusCounts['numColorIconPresentColorCorrect']++;
-                    } else {
+                    }
+                    if (iconStatus === aspectStatus.amiss) {
                         _infoPinStatusCounts['numColorCorrectIconAmiss']++;
-                    }  
-                }
-            } else if (colorStatus === aspectStatus.present) {
-                if (iconStatus === aspectStatus.correct) {
-                    if (colorIconStatus === aspectStatus.present) {
-                        _infoPinStatusCounts['numColorIconPresentIconCorrect']++;
-                    } else {
+                    }
+                } else if (colorStatus === aspectStatus.present) {
+                    if (iconStatus === aspectStatus.correct) {
                         _infoPinStatusCounts['numIconCorrectColorPresent']++;
                     }   
-                }
-                if (iconStatus === aspectStatus.present) {
-                    if (colorIconStatus === aspectStatus.present) {
-                        _infoPinStatusCounts['numColorIconPresent']++;
-                    } else {
+                    if (iconStatus === aspectStatus.present) {
                         _infoPinStatusCounts['numColorPresentIconPresent']++;
                     }
-                }
-                if (iconStatus === aspectStatus.amiss) {
-                    if (colorIconStatus === aspectStatus.present) {
-                        _infoPinStatusCounts['numColorIconPresent']++;
-                    } else {
+                    if (iconStatus === aspectStatus.amiss) {
                         _infoPinStatusCounts['numColorPresentIconAmiss']++;
                     }
-                }
-            } else if (colorStatus === aspectStatus.amiss) {
-                if (iconStatus === aspectStatus.correct) {
-                    if (colorIconStatus === aspectStatus.present) {
-                        _infoPinStatusCounts['numColorIconPresent']++;
-                    } else {
+                } else if (colorStatus === aspectStatus.amiss) {
+                    if (iconStatus === aspectStatus.correct) {
                         _infoPinStatusCounts['numIconCorrectColorAmiss']++;
                     }
-                }
-                if (iconStatus === aspectStatus.present) {
-                    if (colorIconStatus === aspectStatus.present) {
-                        _infoPinStatusCounts['numColorIconPresent']++;
-                    } else {
+                    if (iconStatus === aspectStatus.present) {
                         _infoPinStatusCounts['numIconPresentColorAmiss']++;
                     }
-                }
-                if (iconStatus === aspectStatus.amiss) {
-                    if (colorIconStatus === aspectStatus.present) {
-                        _infoPinStatusCounts['numColorIconPresent']++;
-                    } else {
+                    if (iconStatus === aspectStatus.amiss) {
                         _infoPinStatusCounts['numAllAmiss']++;
                     }
                 }

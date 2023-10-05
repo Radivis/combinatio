@@ -280,7 +280,7 @@ const guess = (set: zustandSetter, get: zustandGetter) => () => {
                 } else if (iconStatus === aspectStatus.correct) {
                     _infoPinStatusCounts['numColorIconPresentIconCorrect']++;
                 } else {
-                    _infoPinStatusCounts['numColorCorrectIconPresent']++;
+                    _infoPinStatusCounts['numColorIconPresent']++;
                 }
             } else {
                 if (colorStatus === aspectStatus.correct) {

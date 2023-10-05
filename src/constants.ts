@@ -3,7 +3,7 @@ import Color from "./util/Color";
 import ColorIcons from "./util/ColorIcons";
 import Colors from "./util/Colors";
 
-export const gameVersionNumber = '0.6.4';
+export const gameVersionNumber = '0.6.5';
 export const longPressDefaultDuration = 200;
 export const longPressExtendedDuration = 500;
 export const defaultNumColumns = 4;

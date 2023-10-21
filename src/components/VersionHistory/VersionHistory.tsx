@@ -3,6 +3,10 @@ import './VersionHistory.css';
 const VersionHistory = () => {
     return (
         <div>
+            <h2>V0.6.5</h2>
+            <ul className='version-history-list'>
+                <li>Fixed a bug in "colorIcon" pieceType mode that lead to wrong row evaluations</li>
+            </ul>
             <h2>V0.6.4</h2>
             <ul className='version-history-list'>
                 <li>Added option "Change min or max occurrences on changing possible slots for pieces" (deactivated by default)</li>
